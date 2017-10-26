@@ -1,25 +1,27 @@
-
-# petro.One 0.1.1.0000
-
-## 0.1.1.9005
-* remove old_travis.yml
+## 0.1.0.9016
+* started with a fresh copy of repo to fix problem with version numbers
 * 
 
-## 0.1.1.9004
+## 0.1.1.9005= 0.1.0.9015
+* update papers count in unit testss
+* remove old_travis.yml
+* make a fresh copy of the repo to start with right versions
+
+## 0.1.1.9004= 0.1.0.9014
 * improve code coverage to 80%
 * add tests for multipage.R, custom.R and utils.R
 * fix problem with unstructured paper types: other, media and standard.
 
 
-## 0.1.1.9003
+## 0.1.1.9003 = 0.1.0.9013
 * add new params to travis.yml
 * add knitr:;kable to README
 
-## 0.1.1.9002
+## 0.1.1.9002 = 0.1.0.9012
 * add chunks with code that doesn't show with knitr::kable
 * add parameters to codecov.yml
 
-## 0.1.1.9001
+## 0.1.1.9001 = 0.1.0.9011
 * 20171015
 * add token to covr
 * 20171014
@@ -35,16 +37,14 @@
 * add travis.yml
 * NEWS sections by version
 
-## 0.1.1.9000
+## 0.1.1.9000 = 0.1.0.9010
 * Fix issues found by CRAN.
 * Correct spelling as indicated in `cran-comments.md`
 * Add link to OnePetro website
 * Add examples
-
-# petro.One 0.1.0.0000
+* start counter at 9010
 
 ## 0.1.0.9006
-
 * release to **CRAN** as v0.1.0
 * original tag was 0.1.1. Replaced by 0.1.0.9006 after CRAN return
 
@@ -56,7 +56,6 @@
 * improve README description
 
 ## 0.1.0.9004
-
 * naming vignettes alphabetically to sort them on the nav bar
 * add what's next section in vignette *improving the word cloud*
 * do not use numbers at the beginning of the filenames of vignettes
@@ -72,13 +71,11 @@
 * add PROJHOME variable with project root folder
 
 ## 0.1.0.9003
-
 * change name from petroOne to petro.One in all documents
 * add badge CRAN
 * explain options any and all.
 
 ## 0.1.0.9002
-
 * playing with RSelenium to click over the abstract link to get the text.
 * Installing a Docker container with Selenium for firfox-standalone.
 * Notebooks to play with Rselenium under ./notebooks/01-url_query folder
