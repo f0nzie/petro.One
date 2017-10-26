@@ -247,7 +247,9 @@ by_doctype
 knitr::kable(by_doctype)
 ```
 
+
 #### Total number of papers that contain **well** or **test**
+In this example we get the total number of papers by document type.
 
 ```{r}
 sum(by_doctype$value)
@@ -256,6 +258,7 @@ sum(by_doctype$value)
 Or use the R base function `summary` to give us a quick statistics of the papers:
 
 ```{r}
+# r-base function summary
 summary(by_doctype)
 ```
 
