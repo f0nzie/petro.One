@@ -46,8 +46,8 @@ term_frequency <- function(df) {
 #' @importFrom wordcloud wordcloud
 #' @export
 plot_wordcloud <- function(df, ..., max.words = 200, min.freq = 50) {
-    # tdm.df <- term_frequency(df)
-    tdm.df <- df
+    tdm.df <- term_frequency(df)
+    # tdm.df <- df
     wordcloud(words = tdm.df$word, freq = tdm.df$freq,
                          min.freq = min.freq,
               max.words=max.words, random.order=FALSE, rot.per=0.35,
@@ -105,7 +105,8 @@ term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2) {
 #' @importFrom stats reorder
 #' @export
 plot_bars <- function(df, min.freq = 25) {
-    tdm2.df <- df
+    tdm2.df <- term_frequency(df)
+    # tdm2.df <- df
     freq <- tdm2.df$freq
     word <- tdm2.df$word
     p2 <- ggplot(subset(tdm2.df, freq > min.freq), aes(x=reorder(word, freq), y=freq)) +
