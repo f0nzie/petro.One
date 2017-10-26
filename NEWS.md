@@ -1,3 +1,8 @@
+## 0.1.0.9017
+* add example to install from github develop 
+* use dataframe instead of term frequency in plot_bars and plot_wordcloud.
+* add examples with plot_bars and plot_wordcloud in README
+
 ## 0.1.0.9016
 * describe examples
 * describe OnePetro search URL
