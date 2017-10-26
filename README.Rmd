@@ -45,6 +45,41 @@ or from [CRAN](https://cran.r-project.org/) with:
 install.packages("petro.One")
 ```
 
+## What is behind the paper search
+
+A typical OnePetro search URL would look like this:
+
+        https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year=
+        
+which could be explained like this:
+
+`domain`: https://www.onepetro.org/   
+`command`: search?   
+`q=`: *parameter* that holds the query words. In the example above, it would be `q=neural+network`. As it is shown, it means search `any` word.    
+`peer_reviewed=`: *parameter* switch to get papers than have been only peer reviewed. When it has the value `on` means that is activated.      
+`published_between=`: *parameter* switch that activates when `from_year` and `to_year` have numeric entries.  
+`from_year=`: *parameter* to enter the starting year of the search  
+`to_year=`: *parameter* to enter the end year of the search.     
+
+There are additional parameters such as:
+
+`start=`: *parameter* to indicate the starting page if the resulting search has several pages.
+`rows=`: *parameter* to indicate the number of rows (papers) to display per page. In the web browser, the options are 10, 50 and 100. Off-browser it could be a number up to 1000.   
+`sort=`: *parameter* related to the selector `Sort By` with options `Relevance`, `Most recent` and `Highest rated`.   
+`dc_type`: *parameter* that indicates what type of document the paper is. These are the type of documents:
+
+    chapter
+    conference-paper
+    general
+    journal-paper
+    presentation
+    media
+    other
+    standard
+    
+There are few additional parameters but they will not be used as often as the ones we have described.    
+
+
 
 ## Get the number of papers for the keyword *neural network*.
 The option `how = "any"` means to search for papers that contain the word `neural` or the word `network`.

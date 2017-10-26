@@ -34,6 +34,37 @@ or from [CRAN](https://cran.r-project.org/) with:
 install.packages("petro.One")
 ```
 
+What is behind the paper search
+-------------------------------
+
+A typical OnePetro search URL would look like this:
+
+        https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year=
+        
+
+which could be explained like this:
+
+`domain`: <https://www.onepetro.org/>
+`command`: search?
+`q=`: *parameter* that holds the query words. In the example above, it would be `q=neural+network`. As it is shown, it means search `any` word.
+`peer_reviewed=`: *parameter* switch to get papers than have been only peer reviewed. When it has the value `on` means that is activated.
+`published_between=`: *parameter* switch that activates when `from_year` and `to_year` have numeric entries.
+`from_year=`: *parameter* to enter the starting year of the search
+`to_year=`: *parameter* to enter the end year of the search.
+
+There are additional parameters such as:
+
+`start=`: *parameter* to indicate the starting page if the resulting search has several pages. `rows=`: *parameter* to indicate the number of rows (papers) to display per page. In the web browser, the options are 10, 50 and 100. Off-browser it could be a number up to 1000.
+`sort=`: *parameter* related to the selector `Sort By` with options `Relevance`, `Most recent` and `Highest rated`.
+`dc_type`: *parameter* that indicates what type of document the paper is. These are the type of documents:
+
+    conference-papers
+    journal-papers
+    presentation
+    media
+    standard
+    general
+
 Get the number of papers for the keyword *neural network*.
 ----------------------------------------------------------
 
@@ -46,7 +77,7 @@ my_url <- make_search_url(query = "neural network", how = "any")
 my_url
 #> [1] "https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year="
 get_papers_count(my_url)
-#> [1] 3335
+#> [1] 3398
 ```
 
 Read papers from *from\_year* to *to\_year*
@@ -73,14 +104,14 @@ onepetro_page_to_dataframe(my_url)
 #>                                                           <chr>
 #>  1                          Deconvolution Using Neural Networks
 #>  2                     Neural Network Stacking Velocity Picking
-#>  3     Conductive fracture identification using neural networks
-#>  4 Reservoir Characterization Using Feedforward Neural Networks
-#>  5          Seismic Attribute Calibration Using Neural Networks
-#>  6        Neural Networks For Primary Reflection Identification
+#>  3                     Drill-Bit Diagnosis With Neural Networks
+#>  4  Seismic Principal Components Analysis Using Neural Networks
+#>  5             Neural Networks And Paper Seismic Interpretation
+#>  6                    First Break Picking Using Neural Networks
 #>  7      Artificial Intelligence I Neural Networks In Geophysics
 #>  8         Inversion of Seismic Waveforms Using Neural Networks
 #>  9                    Neural Networks In the Petroleum Industry
-#> 10             Neural Networks And Paper Seismic Interpretation
+#> 10 Reservoir Characterization Using Feedforward Neural Networks
 #> # ... with 5 more variables: paper_id <chr>, source <chr>, type <chr>,
 #> #   year <int>, author1_data <chr>
 ```
@@ -99,21 +130,21 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 2706
+#> [1] 2768
 onepetro_page_to_dataframe(my_url)
 #> # A tibble: 1,000 x 6
-#>                                                      title_data
-#>                                                           <chr>
-#>  1                                      Neural Networks And AVO
-#>  2                          Deconvolution Using Neural Networks
-#>  3                     Neural Network Stacking Velocity Picking
-#>  4       Seismic Velocity Picking using Hopfield Neural Network
-#>  5            AVO Inversion By Artificial Neural Networks (ANN)
-#>  6     Conductive fracture identification using neural networks
-#>  7 Reservoir Characterization Using Feedforward Neural Networks
-#>  8          Seismic Attribute Calibration Using Neural Networks
-#>  9        Neural Networks For Primary Reflection Identification
-#> 10             Hydrocarbon Prediction Using Dual Neural Network
+#>                                                         title_data
+#>                                                              <chr>
+#>  1                             Deconvolution Using Neural Networks
+#>  2                                         Neural Networks And AVO
+#>  3                        Neural Network Stacking Velocity Picking
+#>  4     Seismic Principal Components Analysis Using Neural Networks
+#>  5        Dynamic Neural Network Calibration of Quartz Transducers
+#>  6           Estimation of Welding Distortion Using Neural Network
+#>  7 Minimum-variance Deconvolution Using Artificial Neural Networks
+#>  8                Neural Networks And Paper Seismic Interpretation
+#>  9                Neural networks approach to spectral enhancement
+#> 10        Predicting Wax Formation Using Artificial Neural Network
 #> # ... with 990 more rows, and 5 more variables: paper_id <chr>,
 #> #   source <chr>, type <chr>, year <int>, author1_data <chr>
 ```
@@ -129,22 +160,22 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 306
+#> [1] 307
 onepetro_page_to_dataframe(my_url)
-#> # A tibble: 306 x 6
+#> # A tibble: 307 x 6
 #>                                                                     title_data
 #>                                                                          <chr>
 #>  1                   Implicit Approximation of Neural Network and Applications
-#>  2                Artificial Neural Networks Identify Restimulation Candidates
-#>  3                                    Drill-Bit Diagnosis With Neural Networks
-#>  4 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach
-#>  5 Treating Uncertainties in Reservoir-Performance Prediction With Neural Netw
-#>  6          An Artificial Neural Network Based Relative Permeability Predictor
-#>  7                      Neural Network: What It Can Do for Petroleum Engineers
-#>  8 Characterizing Partially Sealing Faults - An Artificial Neural Network Appr
-#>  9                  Neural Network for Time-Lapse Seismic Reservoir Monitoring
-#> 10                Neural Network Approach Predicts U.S. Natural Gas Production
-#> # ... with 296 more rows, and 5 more variables: paper_id <chr>,
+#>  2                                    Drill-Bit Diagnosis With Neural Networks
+#>  3                Artificial Neural Networks Identify Restimulation Candidates
+#>  4        Application of Artificial Neural Networks to Downhole Fluid Analysis
+#>  5                 Neural Networks for Predictive Control of Drilling Dynamics
+#>  6           Pseudodensity Log Generation by Use of Artificial Neural Networks
+#>  7             Application of Artificial Neural Network to Pump Card Diagnosis
+#>  8                Neural Network Approach Predicts U.S. Natural Gas Production
+#>  9 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach
+#> 10          An Artificial Neural Network Based Relative Permeability Predictor
+#> # ... with 297 more rows, and 5 more variables: paper_id <chr>,
 #> #   source <chr>, type <chr>, year <int>, author1_data <chr>
 ```
 
@@ -169,9 +200,9 @@ papers_by_type(my_url)
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |      8|
-| Conference paper |   9378|
+| Conference paper |   9440|
 | General          |    193|
-| Journal paper    |   2531|
+| Journal paper    |   2534|
 | Media            |      5|
 | Other            |      8|
 | Presentation     |     25|
@@ -182,18 +213,18 @@ papers_by_type(my_url)
 papers_by_publisher(my_url)
 ```
 
-| name                                                  |  value|
-|:------------------------------------------------------|------:|
-| American Petroleum Institute                          |     42|
-| American Rock Mechanics Association                   |     64|
-| BHR Group                                             |     10|
-| Carbon Management Technology Conference               |      1|
-| International Petroleum Technology Conference         |    364|
-| International Society for Rock Mechanics              |     39|
-| International Society of Offshore and Polar Engineers |     15|
-| NACE International                                    |     45|
-| National Energy Technology Laboratory                 |      8|
-| Offshore Mediterranean Conference                     |     44|
+| name                                                          |  value|
+|:--------------------------------------------------------------|------:|
+| American Petroleum Institute                                  |     42|
+| American Rock Mechanics Association                           |     64|
+| BHR Group                                                     |     10|
+| Carbon Management Technology Conference                       |      1|
+| International Petroleum Technology Conference                 |    364|
+| International Society for Rock Mechanics                      |     38|
+| International Society for Rock Mechanics and Rock Engineering |      1|
+| International Society of Offshore and Polar Engineers         |     15|
+| NACE International                                            |     45|
+| National Energy Technology Laboratory                         |      8|
 
 ### By publication source
 
@@ -222,16 +253,16 @@ papers_by_year(my_url)
 
 | name       |  value|
 |:-----------|------:|
-| Since 2017 |    429|
-| Since 2016 |    995|
-| Since 2015 |   1544|
-| Since 2014 |   2101|
-| Since 2013 |   2612|
-| Since 2012 |   3126|
-| Since 2011 |   3579|
-| Since 2010 |   4105|
-| Since 2009 |   4536|
-| Since 2008 |   4947|
+| Since 2017 |    494|
+| Since 2016 |   1060|
+| Since 2015 |   1609|
+| Since 2014 |   2166|
+| Since 2013 |   2677|
+| Since 2012 |   3191|
+| Since 2011 |   3644|
+| Since 2010 |   4170|
+| Since 2009 |   4601|
+| Since 2008 |   5012|
 
 Search for **any** word
 -----------------------
@@ -254,9 +285,9 @@ by_doctype
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |     60|
-| Conference paper |  87045|
+| Conference paper |  87764|
 | General          |    932|
-| Journal paper    |  15835|
+| Journal paper    |  15857|
 | Media            |      9|
 | Other            |     21|
 | Presentation     |    265|
@@ -266,5 +297,5 @@ by_doctype
 
 ``` r
 sum(by_doctype$value)
-#> [1] 104262
+#> [1] 105003
 ```
