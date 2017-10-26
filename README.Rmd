@@ -35,9 +35,17 @@ With the dataframe already in our computers we could perform a thorough search a
 You can install petro.One from github with:
 
 ```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
+# install.packages("devtools")       # install *devtools* first
+
+# install from the *master* release branch
 devtools::install_github("f0nzie/petro.One")
 ```
+
+```{r, eval = FALSE}
+# install from the *develop* branch
+devtools::install_github("f0nzie/petro.One", ref = "develop")
+```
+
 
 or from [CRAN](https://cran.r-project.org/) with:
 
