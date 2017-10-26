@@ -32,7 +32,7 @@ get_term_document_matrix <- function(df) {
 #' @param df a dataframe with paper results
 #' @export
 term_frequency <- function(df) {
-    get_term_document_matrix(df)$freq
+    tibble::as.tibble(get_term_document_matrix(df)$freq)
 }
 
 
