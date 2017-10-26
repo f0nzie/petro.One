@@ -1,4 +1,5 @@
 ## 0.1.0.9016
+* describe examples
 * describe OnePetro search URL
 * started with a fresh copy of repo to fix problem with version numbers
 * gh-pages with develop version now
