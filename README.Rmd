@@ -122,9 +122,15 @@ my_url <- make_search_url(query = "neural network",
                           to_year   = 1999, 
                           how = "all")
 
-onepetro_page_to_dataframe(my_url)
+df <- onepetro_page_to_dataframe(my_url)
+df
 ```
 
+And these are the terms that repeat more freqently:
+
+```{r}
+term_frequency(df)
+```
 
 
 ## Get papers by document type (*dc_type*)
@@ -146,8 +152,16 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-onepetro_page_to_dataframe(my_url)
+df <- onepetro_page_to_dataframe(my_url)
+df
 ```
+
+#### Word cloud for journal papers
+
+```{r fig.height=9, fig.width=6}
+plot_wordcloud(df, max.words = 100, min.freq = 10)
+```
+
 
 #### Journal papers (`journal-paper`)
 In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
@@ -161,8 +175,73 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-onepetro_page_to_dataframe(my_url)
+df <- onepetro_page_to_dataframe(my_url)
+df
 ```
+
+#### Word cloud for journal papers
+
+```{r fig.height=9, fig.width=6}
+plot_wordcloud(df, max.words = 100, min.freq = 50)
+```
+
+## Finding the most freqent terms in *well test*
+For this example we want to know about conference papers where the words *well* and *test* are found together in the papers.
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test", 
+                          dc_type = "conference-paper",
+                          how = "all")
+
+get_papers_count(my_url)
+df <- read_multidoc(my_url)
+
+term_frequency(df)
+```
+
+#### Most frequent terms in *well test*
+
+```{r}
+# plot the 500 most freqent terms
+plot_bars(df, min.freq = 400)
+```
+
+## How do the most frequent terms relate each other
+Now, it is not enough for us to know what terms are the more repeating but how those freqent terms relate to each other.
+
+In the following plot you will see that the strength of the relationship between terms is reflected by the thickness of the connection lines.
+
+```{r}
+plot_relationships(df, min.freq = 400, threshold = 0.075)
+```
+
+We can see that *wells* and *well* are connected stringly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
+
+For instance, if you are looking for papers that have stronger relationship between of *well test* and *permeability*, it would wise to add that term to the search.
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test permeability", 
+                          dc_type = "conference-paper",
+                          how = "all")
+
+get_papers_count(my_url)
+df <- read_multidoc(my_url)
+
+term_frequency(df)
+plot_bars(df, min.freq = 10)
+```
+
+In this example, we can see the effect of refining our search by including the term *permeability*.
+
+```{r}
+plot_relationships(df, min.freq = 15, threshold = 0.05)
+```
+
+This has the advantage of improving the search and narrow down the papers we are more interested in.
 
 
 ## Summaries
