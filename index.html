@@ -111,24 +111,56 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>or from <a href="https://cran.r-project.org/">CRAN</a> with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"petro.One"</span>)</code></pre></div>
 </div>
+<div id="what-is-behind-the-paper-search" class="section level2">
+<h2 class="hasAnchor">
+<a href="#what-is-behind-the-paper-search" class="anchor"></a>What is behind the paper search</h2>
+<p>A typical OnePetro search URL would look like this:</p>
+<pre><code>    https://www.onepetro.org/search?q=neural+network&amp;peer_reviewed=&amp;published_between=&amp;from_year=&amp;to_year=
+    </code></pre>
+<p>which could be explained like this:</p>
+<p><code>domain</code>: <a href="https://www.onepetro.org/" class="uri">https://www.onepetro.org/</a><br><code>command</code>: search?<br><code>q=</code>: <em>parameter</em> that holds the query words. In the example above, it would be <code>q=neural+network</code>. As it is shown, it means search <code>any</code> word.<br><code>peer_reviewed=</code>: <em>parameter</em> switch to get papers than have been only peer reviewed. When it has the value <code>on</code> means that is activated.<br><code>published_between=</code>: <em>parameter</em> switch that activates when <code>from_year</code> and <code>to_year</code> have numeric entries.<br><code>from_year=</code>: <em>parameter</em> to enter the starting year of the search<br><code>to_year=</code>: <em>parameter</em> to enter the end year of the search.</p>
+<p>There are additional parameters such as:</p>
+<p><code>start=</code>: <em>parameter</em> to indicate the starting page if the resulting search has several pages. <code>rows=</code>: <em>parameter</em> to indicate the number of rows (papers) to display per page. In the web browser, the options are 10, 50 and 100. Off-browser it could be a number up to 1000.<br><code>sort=</code>: <em>parameter</em> related to the selector <code>Sort By</code> with options <code>Relevance</code>, <code>Most recent</code> and <code>Highest rated</code>.<br><code>dc_type</code>: <em>parameter</em> that indicates what type of document the paper is. These are the type of documents:</p>
+<pre><code>chapter
+conference-paper
+general
+journal-paper
+presentation
+media
+other
+standard</code></pre>
+<p>There are few additional parameters but they will not be used as often as the ones already described.</p>
+<p>They key is build a search URL that is recognizable by OnePetro. To do that I wrote a function <code>make_search_url</code> that does just that. Instead of entering the search keywords, how will they be searched, year and type of paper, we enter them from the R console.</p>
+<p>Below some examples:</p>
+</div>
 <div id="get-the-number-of-papers-for-the-keyword-neural-network-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#get-the-number-of-papers-for-the-keyword-neural-network-" class="anchor"></a>Get the number of papers for the keyword <em>neural network</em>.</h2>
 <p>The option <code>how = "any"</code> means to search for papers that contain the word <code>neural</code> or the word <code>network</code>.</p>
+<p>Let’s take a look at the difference in returning results with <code>any</code> and <code>all</code> for the same keywords <code>neural network</code>.</p>
+<p>Here we make of of two functions of petro.One: <code>make_search_url</code> and <code>get_papers_count</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(petro.One)
-
-my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_search_url.html">make_search_url</a></span>(<span class="dt">query =</span> <span class="st">"neural network"</span>, <span class="dt">how =</span> <span class="st">"any"</span>)
-my_url
+<span class="co"># search any word like "neural" or "network"</span>
+url_any &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_search_url.html">make_search_url</a></span>(<span class="dt">query =</span> <span class="st">"neural network"</span>, <span class="dt">how =</span> <span class="st">"any"</span>)
+url_any
 <span class="co">#&gt; [1] "https://www.onepetro.org/search?q=neural+network&amp;peer_reviewed=&amp;published_between=&amp;from_year=&amp;to_year="</span>
-<span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(my_url)
-<span class="co">#&gt; [1] 3335</span></code></pre></div>
+<span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(url_any)
+<span class="co">#&gt; [1] 3398</span>
+
+<span class="co"># search for papers that have "neural" and "network" at the same time</span>
+url_all &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_search_url.html">make_search_url</a></span>(<span class="dt">query =</span> <span class="st">"neural network"</span>, <span class="dt">how =</span> <span class="st">"all"</span>)
+url_all
+<span class="co">#&gt; [1] "https://www.onepetro.org/search?q=\"neural+network\"&amp;peer_reviewed=&amp;published_between=&amp;from_year=&amp;to_year="</span>
+<span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(url_all)
+<span class="co">#&gt; [1] 3109</span></code></pre></div>
 </div>
 <div id="read-papers-from-from_year-to-to_year" class="section level2">
 <h2 class="hasAnchor">
 <a href="#read-papers-from-from_year-to-to_year" class="anchor"></a>Read papers from <em>from_year</em> to <em>to_year</em>
 </h2>
-<p>We can send a query where we specify the starting years and the end year. Use the parameters as in the example below.</p>
-<p>In this example the option <code>how = "all"</code> means to search papers that contain <strong>exactly</strong> the words <code>neural network</code>.</p>
+<p>We can send a query where we specify the starting year and the end year. Use the parameters as in the example below.</p>
+<p>In this example the option <code>how = "all"</code> means to search papers that contain <strong>exactly</strong> the words <code>neural network</code> as a difference to <code>any</code> which means search for <code>any</code> occurrence of the words. Of course, using <code>any</code> rather than <code>all</code> will yield many more results.</p>
+<p>We use two petro.One functions: <code>make_search_url</code> to build the OnePetro search URL and <code>onepetro_page_to_dataframe</code> to put the papers in a table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(petro.One)
 
 <span class="co"># neural network papers from 1990 to 2000. Exact phrase</span>
@@ -137,29 +169,33 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
                           <span class="dt">to_year   =</span> <span class="dv">1999</span>, 
                           <span class="dt">how =</span> <span class="st">"all"</span>)
 
-<span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(my_url)
-<span class="co">#&gt; [1] 415</span>
 <span class="kw"><a href="reference/onepetro_page_to_dataframe.html">onepetro_page_to_dataframe</a></span>(my_url)
 <span class="co">#&gt; # A tibble: 10 x 6</span>
-<span class="co">#&gt;                                                      title_data</span>
-<span class="co">#&gt;                                                           &lt;chr&gt;</span>
-<span class="co">#&gt;  1                          Deconvolution Using Neural Networks</span>
-<span class="co">#&gt;  2                     Neural Network Stacking Velocity Picking</span>
-<span class="co">#&gt;  3     Conductive fracture identification using neural networks</span>
-<span class="co">#&gt;  4 Reservoir Characterization Using Feedforward Neural Networks</span>
-<span class="co">#&gt;  5          Seismic Attribute Calibration Using Neural Networks</span>
-<span class="co">#&gt;  6        Neural Networks For Primary Reflection Identification</span>
-<span class="co">#&gt;  7      Artificial Intelligence I Neural Networks In Geophysics</span>
-<span class="co">#&gt;  8         Inversion of Seismic Waveforms Using Neural Networks</span>
-<span class="co">#&gt;  9                    Neural Networks In the Petroleum Industry</span>
-<span class="co">#&gt; 10             Neural Networks And Paper Seismic Interpretation</span>
+<span class="co">#&gt;                                                     title_data</span>
+<span class="co">#&gt;                                                          &lt;chr&gt;</span>
+<span class="co">#&gt;  1                         Deconvolution Using Neural Networks</span>
+<span class="co">#&gt;  2                    Neural Network Stacking Velocity Picking</span>
+<span class="co">#&gt;  3                    Drill-Bit Diagnosis With Neural Networks</span>
+<span class="co">#&gt;  4 Seismic Principal Components Analysis Using Neural Networks</span>
+<span class="co">#&gt;  5            Neural Networks And Paper Seismic Interpretation</span>
+<span class="co">#&gt;  6                   First Break Picking Using Neural Networks</span>
+<span class="co">#&gt;  7        Inversion of Seismic Waveforms Using Neural Networks</span>
+<span class="co">#&gt;  8     Artificial Intelligence I Neural Networks In Geophysics</span>
+<span class="co">#&gt;  9                   Neural Networks In the Petroleum Industry</span>
+<span class="co">#&gt; 10    Conductive fracture identification using neural networks</span>
 <span class="co">#&gt; # ... with 5 more variables: paper_id &lt;chr&gt;, source &lt;chr&gt;, type &lt;chr&gt;,</span>
 <span class="co">#&gt; #   year &lt;int&gt;, author1_data &lt;chr&gt;</span></code></pre></div>
 </div>
 <div id="get-papers-by-document-type-dc_type" class="section level2">
 <h2 class="hasAnchor">
 <a href="#get-papers-by-document-type-dc_type" class="anchor"></a>Get papers by document type (<em>dc_type</em>)</h2>
-<p>We can also get paper by the type of document. In this example we are requesting only “conference-paper” type.</p>
+<p>We can also get paper by the type of document. In OnePetro it is called <code>dc_type</code>.</p>
+<div id="conference-papers-conference-paper" class="section level4">
+<h4 class="hasAnchor">
+<a href="#conference-papers-conference-paper" class="anchor"></a>Conference papers (<code>conference-paper</code>)</h4>
+<p>In this example we are requesting only <code>conference-paper</code> type.</p>
+<p>Here we add to <code>make_search_url</code> the parameter <code>dc_type</code>.</p>
+<p>Note also that we are adding another parameter <code>rows</code> to get 1000 rows instead of 10, 50 or 100 as the browser allows.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># specify document type = "conference-paper", rows = 1000</span>
 
 my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_search_url.html">make_search_url</a></span>(<span class="dt">query =</span> <span class="st">"neural network"</span>, 
@@ -168,24 +204,28 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
                           <span class="dt">rows =</span> <span class="dv">1000</span>)
 
 <span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(my_url)
-<span class="co">#&gt; [1] 2706</span>
+<span class="co">#&gt; [1] 2768</span>
 <span class="kw"><a href="reference/onepetro_page_to_dataframe.html">onepetro_page_to_dataframe</a></span>(my_url)
 <span class="co">#&gt; # A tibble: 1,000 x 6</span>
-<span class="co">#&gt;                                                      title_data</span>
-<span class="co">#&gt;                                                           &lt;chr&gt;</span>
-<span class="co">#&gt;  1                                      Neural Networks And AVO</span>
-<span class="co">#&gt;  2                          Deconvolution Using Neural Networks</span>
-<span class="co">#&gt;  3                     Neural Network Stacking Velocity Picking</span>
-<span class="co">#&gt;  4       Seismic Velocity Picking using Hopfield Neural Network</span>
-<span class="co">#&gt;  5            AVO Inversion By Artificial Neural Networks (ANN)</span>
-<span class="co">#&gt;  6     Conductive fracture identification using neural networks</span>
-<span class="co">#&gt;  7 Reservoir Characterization Using Feedforward Neural Networks</span>
-<span class="co">#&gt;  8          Seismic Attribute Calibration Using Neural Networks</span>
-<span class="co">#&gt;  9        Neural Networks For Primary Reflection Identification</span>
-<span class="co">#&gt; 10             Hydrocarbon Prediction Using Dual Neural Network</span>
+<span class="co">#&gt;                                                         title_data</span>
+<span class="co">#&gt;                                                              &lt;chr&gt;</span>
+<span class="co">#&gt;  1                             Deconvolution Using Neural Networks</span>
+<span class="co">#&gt;  2                                         Neural Networks And AVO</span>
+<span class="co">#&gt;  3                        Neural Network Stacking Velocity Picking</span>
+<span class="co">#&gt;  4                Neural networks approach to spectral enhancement</span>
+<span class="co">#&gt;  5        Dynamic Neural Network Calibration of Quartz Transducers</span>
+<span class="co">#&gt;  6     Seismic Principal Components Analysis Using Neural Networks</span>
+<span class="co">#&gt;  7           Estimation of Welding Distortion Using Neural Network</span>
+<span class="co">#&gt;  8 Minimum-variance Deconvolution Using Artificial Neural Networks</span>
+<span class="co">#&gt;  9                Neural Networks And Paper Seismic Interpretation</span>
+<span class="co">#&gt; 10                       First Break Picking Using Neural Networks</span>
 <span class="co">#&gt; # ... with 990 more rows, and 5 more variables: paper_id &lt;chr&gt;,</span>
 <span class="co">#&gt; #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</span></code></pre></div>
-<p>In this other example we are requesting for “journal-paper” type of papers.</p>
+</div>
+<div id="journal-papers-journal-paper" class="section level4">
+<h4 class="hasAnchor">
+<a href="#journal-papers-journal-paper" class="anchor"></a>Journal papers (<code>journal-paper</code>)</h4>
+<p>In this other example we are requesting for <code>journal-paper</code> type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># specify document type = "journal-paper", rows = 1000</span>
 
 my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_search_url.html">make_search_url</a></span>(<span class="dt">query =</span> <span class="st">"neural network"</span>, 
@@ -194,27 +234,36 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
                           <span class="dt">rows =</span> <span class="dv">1000</span>)
 
 <span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(my_url)
-<span class="co">#&gt; [1] 306</span>
+<span class="co">#&gt; [1] 307</span>
 <span class="kw"><a href="reference/onepetro_page_to_dataframe.html">onepetro_page_to_dataframe</a></span>(my_url)
-<span class="co">#&gt; # A tibble: 306 x 6</span>
+<span class="co">#&gt; # A tibble: 307 x 6</span>
 <span class="co">#&gt;                                                                     title_data</span>
 <span class="co">#&gt;                                                                          &lt;chr&gt;</span>
 <span class="co">#&gt;  1                   Implicit Approximation of Neural Network and Applications</span>
-<span class="co">#&gt;  2                Artificial Neural Networks Identify Restimulation Candidates</span>
-<span class="co">#&gt;  3                                    Drill-Bit Diagnosis With Neural Networks</span>
-<span class="co">#&gt;  4 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach</span>
-<span class="co">#&gt;  5 Treating Uncertainties in Reservoir-Performance Prediction With Neural Netw</span>
-<span class="co">#&gt;  6          An Artificial Neural Network Based Relative Permeability Predictor</span>
-<span class="co">#&gt;  7                      Neural Network: What It Can Do for Petroleum Engineers</span>
-<span class="co">#&gt;  8 Characterizing Partially Sealing Faults - An Artificial Neural Network Appr</span>
-<span class="co">#&gt;  9                  Neural Network for Time-Lapse Seismic Reservoir Monitoring</span>
-<span class="co">#&gt; 10                Neural Network Approach Predicts U.S. Natural Gas Production</span>
-<span class="co">#&gt; # ... with 296 more rows, and 5 more variables: paper_id &lt;chr&gt;,</span>
+<span class="co">#&gt;  2                                    Drill-Bit Diagnosis With Neural Networks</span>
+<span class="co">#&gt;  3                Artificial Neural Networks Identify Restimulation Candidates</span>
+<span class="co">#&gt;  4             Application of Artificial Neural Network to Pump Card Diagnosis</span>
+<span class="co">#&gt;  5        Application of Artificial Neural Networks to Downhole Fluid Analysis</span>
+<span class="co">#&gt;  6                Neural Network Approach Predicts U.S. Natural Gas Production</span>
+<span class="co">#&gt;  7           Pseudodensity Log Generation by Use of Artificial Neural Networks</span>
+<span class="co">#&gt;  8                 Neural Networks for Predictive Control of Drilling Dynamics</span>
+<span class="co">#&gt;  9 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach</span>
+<span class="co">#&gt; 10          An Artificial Neural Network Based Relative Permeability Predictor</span>
+<span class="co">#&gt; # ... with 297 more rows, and 5 more variables: paper_id &lt;chr&gt;,</span>
 <span class="co">#&gt; #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</span></code></pre></div>
+</div>
 </div>
 <div id="summaries" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summaries" class="anchor"></a>Summaries</h2>
+<p>The summary functions allow us to group the papers by a preferred group:</p>
+<ul>
+<li>by type of document</li>
+<li>by publisher</li>
+<li>by publication</li>
+<li>by year</li>
+</ul>
+<p>This will give you a summary of the count not the papers themselves.</p>
 <p>Here is an example of summaries. In this case, we want papers that contain the exact words “well test”.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(petro.One)
 
@@ -236,7 +285,7 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 </tr>
 <tr class="even">
 <td align="left">Conference paper</td>
-<td align="right">9378</td>
+<td align="right">9440</td>
 </tr>
 <tr class="odd">
 <td align="left">General</td>
@@ -244,7 +293,7 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 </tr>
 <tr class="even">
 <td align="left">Journal paper</td>
-<td align="right">2531</td>
+<td align="right">2534</td>
 </tr>
 <tr class="odd">
 <td align="left">Media</td>
@@ -293,23 +342,23 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 </tr>
 <tr class="even">
 <td align="left">International Society for Rock Mechanics</td>
-<td align="right">39</td>
+<td align="right">38</td>
 </tr>
 <tr class="odd">
+<td align="left">International Society for Rock Mechanics and Rock Engineering</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
 <td align="left">International Society of Offshore and Polar Engineers</td>
 <td align="right">15</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">NACE International</td>
 <td align="right">45</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">National Energy Technology Laboratory</td>
 <td align="right">8</td>
-</tr>
-<tr class="even">
-<td align="left">Offshore Mediterranean Conference</td>
-<td align="right">44</td>
 </tr>
 </tbody>
 </table>
@@ -379,43 +428,43 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 <tbody>
 <tr class="odd">
 <td align="left">Since 2017</td>
-<td align="right">429</td>
+<td align="right">494</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2016</td>
-<td align="right">995</td>
+<td align="right">1060</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2015</td>
-<td align="right">1544</td>
+<td align="right">1609</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2014</td>
-<td align="right">2101</td>
+<td align="right">2166</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2013</td>
-<td align="right">2612</td>
+<td align="right">2677</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2012</td>
-<td align="right">3126</td>
+<td align="right">3191</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2011</td>
-<td align="right">3579</td>
+<td align="right">3644</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2010</td>
-<td align="right">4105</td>
+<td align="right">4170</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2009</td>
-<td align="right">4536</td>
+<td align="right">4601</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2008</td>
-<td align="right">4947</td>
+<td align="right">5012</td>
 </tr>
 </tbody>
 </table>
@@ -444,7 +493,7 @@ by_doctype &lt;-<span class="st"> </span><span class="kw"><a href="reference/pap
 </tr>
 <tr class="even">
 <td align="left">Conference paper</td>
-<td align="right">87045</td>
+<td align="right">87778</td>
 </tr>
 <tr class="odd">
 <td align="left">General</td>
@@ -452,7 +501,7 @@ by_doctype &lt;-<span class="st"> </span><span class="kw"><a href="reference/pap
 </tr>
 <tr class="even">
 <td align="left">Journal paper</td>
-<td align="right">15835</td>
+<td align="right">15857</td>
 </tr>
 <tr class="odd">
 <td align="left">Media</td>
@@ -476,8 +525,19 @@ by_doctype &lt;-<span class="st"> </span><span class="kw"><a href="reference/pap
 <h4 class="hasAnchor">
 <a href="#total-number-of-papers-that-contain-well-or-test" class="anchor"></a>Total number of papers that contain <strong>well</strong> or <strong>test</strong>
 </h4>
+<p>In this example we get the total number of papers by document type.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(by_doctype<span class="op">$</span>value)
-<span class="co">#&gt; [1] 104262</span></code></pre></div>
+<span class="co">#&gt; [1] 105017</span></code></pre></div>
+<p>Or use the R base function <code>summary</code> to give us a quick statistics of the papers:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># r-base function summary</span>
+<span class="kw">summary</span>(by_doctype)
+<span class="co">#&gt;      name               value         </span>
+<span class="co">#&gt;  Length:8           Min.   :    9.00  </span>
+<span class="co">#&gt;  Class :character   1st Qu.:   50.25  </span>
+<span class="co">#&gt;  Mode  :character   Median :  180.00  </span>
+<span class="co">#&gt;                     Mean   :13127.12  </span>
+<span class="co">#&gt;                     3rd Qu.: 4663.25  </span>
+<span class="co">#&gt;                     Max.   :87778.00</span></code></pre></div>
 </div>
 </div>
 </div>
