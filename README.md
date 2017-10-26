@@ -211,7 +211,7 @@ df
 plot_wordcloud(df, max.words = 100, min.freq = 10)
 ```
 
-![](README-unnamed-chunk-7-1.png)
+![](man/figures/README-unnamed-chunk-7-1.png)
 
 #### Journal papers (`journal-paper`)
 
@@ -252,7 +252,7 @@ df
 plot_wordcloud(df, max.words = 100, min.freq = 50)
 ```
 
-![](README-unnamed-chunk-9-1.png)
+![](man/figures/README-unnamed-chunk-9-1.png)
 
 Finding the most freqent terms in *well test*
 ---------------------------------------------
@@ -271,7 +271,7 @@ get_papers_count(my_url)
 df <- read_multidoc(my_url)
 
 term_frequency(df)
-#> # A tibble: 9,872 x 2
+#> # A tibble: 9,871 x 2
 #>          word  freq
 #>         <chr> <int>
 #>  1  reservoir  1817
@@ -284,7 +284,7 @@ term_frequency(df)
 #>  8 reservoirs   894
 #>  9      wells   881
 #> 10       data   825
-#> # ... with 9,862 more rows
+#> # ... with 9,861 more rows
 ```
 
 #### Most frequent terms in *well test*
@@ -294,7 +294,7 @@ term_frequency(df)
 plot_bars(df, min.freq = 400)
 ```
 
-![](README-unnamed-chunk-11-1.png)
+![](man/figures/README-unnamed-chunk-11-1.png)
 
 How do the most frequent terms relate each other
 ------------------------------------------------
@@ -307,7 +307,7 @@ In the following plot you will see that the strength of the relationship between
 plot_relationships(df, min.freq = 400, threshold = 0.075)
 ```
 
-![](README-unnamed-chunk-12-1.png)
+![](man/figures/README-unnamed-chunk-12-1.png)
 
 We can see that *wells* and *well* are connected stringly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
 
@@ -342,7 +342,7 @@ term_frequency(df)
 plot_bars(df, min.freq = 10)
 ```
 
-![](README-unnamed-chunk-13-1.png)
+![](man/figures/README-unnamed-chunk-13-1.png)
 
 In this example, we can see the effect of refining our search by including the term *permeability*.
 
@@ -350,7 +350,7 @@ In this example, we can see the effect of refining our search by including the t
 plot_relationships(df, min.freq = 15, threshold = 0.05)
 ```
 
-![](README-unnamed-chunk-14-1.png)
+![](man/figures/README-unnamed-chunk-14-1.png)
 
 This has the advantage of improving the search and narrow down the papers we are more interested in.
 
