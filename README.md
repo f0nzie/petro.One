@@ -58,34 +58,55 @@ There are additional parameters such as:
 `sort=`: *parameter* related to the selector `Sort By` with options `Relevance`, `Most recent` and `Highest rated`.
 `dc_type`: *parameter* that indicates what type of document the paper is. These are the type of documents:
 
-    conference-papers
-    journal-papers
+    chapter
+    conference-paper
+    general
+    journal-paper
     presentation
     media
+    other
     standard
-    general
+
+There are few additional parameters but they will not be used as often as the ones already described.
+
+They key is build a search URL that is recognizable by OnePetro. To do that I wrote a function `make_search_url` that does just that. Instead of entering the search keywords, how will they be searched, year and type of paper, we enter them from the R console.
+
+Below some examples:
 
 Get the number of papers for the keyword *neural network*.
 ----------------------------------------------------------
 
 The option `how = "any"` means to search for papers that contain the word `neural` or the word `network`.
 
+Let's take a look at the difference in returning results with `any` and `all` for the same keywords `neural network`.
+
+Here we make of of two functions of petro.One: `make_search_url` and `get_papers_count`.
+
 ``` r
 library(petro.One)
-
-my_url <- make_search_url(query = "neural network", how = "any")
-my_url
+# search any word like "neural" or "network"
+url_any <- make_search_url(query = "neural network", how = "any")
+url_any
 #> [1] "https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year="
-get_papers_count(my_url)
+get_papers_count(url_any)
 #> [1] 3398
+
+# search for papers that have "neural" and "network" at the same time
+url_all <- make_search_url(query = "neural network", how = "all")
+url_all
+#> [1] "https://www.onepetro.org/search?q=\"neural+network\"&peer_reviewed=&published_between=&from_year=&to_year="
+get_papers_count(url_all)
+#> [1] 3109
 ```
 
 Read papers from *from\_year* to *to\_year*
 -------------------------------------------
 
-We can send a query where we specify the starting years and the end year. Use the parameters as in the example below.
+We can send a query where we specify the starting year and the end year. Use the parameters as in the example below.
 
-In this example the option `how = "all"` means to search papers that contain **exactly** the words `neural network`.
+In this example the option `how = "all"` means to search papers that contain **exactly** the words `neural network` as a difference to `any` which means search for `any` occurrence of the words. Of course, using `any` rather than `all` will yield many more results.
+
+We use two petro.One functions: `make_search_url` to build the OnePetro search URL and `onepetro_page_to_dataframe` to put the papers in a table.
 
 ``` r
 library(petro.One)
@@ -96,8 +117,6 @@ my_url <- make_search_url(query = "neural network",
                           to_year   = 1999, 
                           how = "all")
 
-get_papers_count(my_url)
-#> [1] 415
 onepetro_page_to_dataframe(my_url)
 #> # A tibble: 10 x 6
 #>                                                      title_data
@@ -105,13 +124,13 @@ onepetro_page_to_dataframe(my_url)
 #>  1                          Deconvolution Using Neural Networks
 #>  2                     Neural Network Stacking Velocity Picking
 #>  3                     Drill-Bit Diagnosis With Neural Networks
-#>  4  Seismic Principal Components Analysis Using Neural Networks
-#>  5             Neural Networks And Paper Seismic Interpretation
-#>  6                    First Break Picking Using Neural Networks
+#>  4                    First Break Picking Using Neural Networks
+#>  5  Seismic Principal Components Analysis Using Neural Networks
+#>  6             Neural Networks And Paper Seismic Interpretation
 #>  7      Artificial Intelligence I Neural Networks In Geophysics
-#>  8         Inversion of Seismic Waveforms Using Neural Networks
-#>  9                    Neural Networks In the Petroleum Industry
-#> 10 Reservoir Characterization Using Feedforward Neural Networks
+#>  8 Reservoir Characterization Using Feedforward Neural Networks
+#>  9          Seismic Attribute Calibration Using Neural Networks
+#> 10        Neural Networks For Primary Reflection Identification
 #> # ... with 5 more variables: paper_id <chr>, source <chr>, type <chr>,
 #> #   year <int>, author1_data <chr>
 ```
@@ -119,7 +138,15 @@ onepetro_page_to_dataframe(my_url)
 Get papers by document type (*dc\_type*)
 ----------------------------------------
 
-We can also get paper by the type of document. In this example we are requesting only "conference-paper" type.
+We can also get paper by the type of document. In OnePetro it is called `dc_type`.
+
+#### Conference papers (`conference-paper`)
+
+In this example we are requesting only `conference-paper` type.
+
+Here we add to `make_search_url` the parameter `dc_type`.
+
+Note also that we are adding another parameter `rows` to get 1000 rows instead of 10, 50 or 100 as the browser allows.
 
 ``` r
 # specify document type = "conference-paper", rows = 1000
@@ -138,18 +165,20 @@ onepetro_page_to_dataframe(my_url)
 #>  1                             Deconvolution Using Neural Networks
 #>  2                                         Neural Networks And AVO
 #>  3                        Neural Network Stacking Velocity Picking
-#>  4     Seismic Principal Components Analysis Using Neural Networks
-#>  5        Dynamic Neural Network Calibration of Quartz Transducers
-#>  6           Estimation of Welding Distortion Using Neural Network
-#>  7 Minimum-variance Deconvolution Using Artificial Neural Networks
-#>  8                Neural Networks And Paper Seismic Interpretation
-#>  9                Neural networks approach to spectral enhancement
-#> 10        Predicting Wax Formation Using Artificial Neural Network
+#>  4 Minimum-variance Deconvolution Using Artificial Neural Networks
+#>  5        Predicting Wax Formation Using Artificial Neural Network
+#>  6        Dynamic Neural Network Calibration of Quartz Transducers
+#>  7           Estimation of Welding Distortion Using Neural Network
+#>  8                       First Break Picking Using Neural Networks
+#>  9     Seismic Principal Components Analysis Using Neural Networks
+#> 10                Neural Networks And Paper Seismic Interpretation
 #> # ... with 990 more rows, and 5 more variables: paper_id <chr>,
 #> #   source <chr>, type <chr>, year <int>, author1_data <chr>
 ```
 
-In this other example we are requesting for "journal-paper" type of papers.
+#### Journal papers (`journal-paper`)
+
+In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
 
 ``` r
 # specify document type = "journal-paper", rows = 1000
@@ -165,22 +194,31 @@ onepetro_page_to_dataframe(my_url)
 #> # A tibble: 307 x 6
 #>                                                                     title_data
 #>                                                                          <chr>
-#>  1                   Implicit Approximation of Neural Network and Applications
-#>  2                                    Drill-Bit Diagnosis With Neural Networks
-#>  3                Artificial Neural Networks Identify Restimulation Candidates
-#>  4        Application of Artificial Neural Networks to Downhole Fluid Analysis
-#>  5                 Neural Networks for Predictive Control of Drilling Dynamics
-#>  6           Pseudodensity Log Generation by Use of Artificial Neural Networks
-#>  7             Application of Artificial Neural Network to Pump Card Diagnosis
-#>  8                Neural Network Approach Predicts U.S. Natural Gas Production
+#>  1                Artificial Neural Networks Identify Restimulation Candidates
+#>  2                   Implicit Approximation of Neural Network and Applications
+#>  3                                    Drill-Bit Diagnosis With Neural Networks
+#>  4             Application of Artificial Neural Network to Pump Card Diagnosis
+#>  5        Application of Artificial Neural Networks to Downhole Fluid Analysis
+#>  6          An Artificial Neural Network Based Relative Permeability Predictor
+#>  7                 Neural Networks for Predictive Control of Drilling Dynamics
+#>  8           Pseudodensity Log Generation by Use of Artificial Neural Networks
 #>  9 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach
-#> 10          An Artificial Neural Network Based Relative Permeability Predictor
+#> 10 Characterizing Partially Sealing Faults - An Artificial Neural Network Appr
 #> # ... with 297 more rows, and 5 more variables: paper_id <chr>,
 #> #   source <chr>, type <chr>, year <int>, author1_data <chr>
 ```
 
 Summaries
 ---------
+
+The summary functions allow us to group the papers by a preferred group:
+
+-   by type of document
+-   by publisher
+-   by publication
+-   by year
+
+This will give you a summary of the count not the papers themselves.
 
 Here is an example of summaries. In this case, we want papers that contain the exact words "well test".
 
@@ -285,7 +323,7 @@ by_doctype
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |     60|
-| Conference paper |  87764|
+| Conference paper |  87778|
 | General          |    932|
 | Journal paper    |  15857|
 | Media            |      9|
@@ -297,5 +335,18 @@ by_doctype
 
 ``` r
 sum(by_doctype$value)
-#> [1] 105003
+#> [1] 105017
+```
+
+Or use the R base function `summary` to give us a quick statistics of the papers:
+
+``` r
+summary(by_doctype)
+#>      name               value         
+#>  Length:8           Min.   :    9.00  
+#>  Class :character   1st Qu.:   50.25  
+#>  Mode  :character   Median :  180.00  
+#>                     Mean   :13127.12  
+#>                     3rd Qu.: 4663.25  
+#>                     Max.   :87778.00
 ```

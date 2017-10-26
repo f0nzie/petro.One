@@ -77,26 +77,41 @@ There are additional parameters such as:
     other
     standard
     
-There are few additional parameters but they will not be used as often as the ones we have described.    
+There are few additional parameters but they will not be used as often as the ones already described.    
 
+
+They key is build a search URL that is recognizable by OnePetro. To do that I wrote a function `make_search_url` that does just that. Instead of entering the search keywords, how will they be searched, year and type of paper, we enter them from the R console.
+
+Below some examples:
 
 
 ## Get the number of papers for the keyword *neural network*.
 The option `how = "any"` means to search for papers that contain the word `neural` or the word `network`.
 
+Let's take a look at the difference in returning results with `any` and `all` for the same keywords `neural network`.
+
+Here we make of of two functions of petro.One:  `make_search_url` and `get_papers_count`.
+
 ```{r example}
 library(petro.One)
+# search any word like "neural" or "network"
+url_any <- make_search_url(query = "neural network", how = "any")
+url_any
+get_papers_count(url_any)
 
-my_url <- make_search_url(query = "neural network", how = "any")
-my_url
-get_papers_count(my_url)
+# search for papers that have "neural" and "network" at the same time
+url_all <- make_search_url(query = "neural network", how = "all")
+url_all
+get_papers_count(url_all)
 ```
 
 ## Read papers from *from_year* to *to_year*
-We can send a query where we specify the starting years and the end year.
+We can send a query where we specify the starting year and the end year.
 Use the parameters as in the example below.
 
-In this example the option `how = "all"` means to search papers that contain **exactly** the words `neural network`.
+In this example the option `how = "all"` means to search papers that contain **exactly** the words `neural network` as a difference to `any` which means search for `any` occurrence of the words. Of course, using `any` rather than `all` will yield many more results.
+
+We use two petro.One functions: `make_search_url` to build the OnePetro search URL and `onepetro_page_to_dataframe` to put the papers in a table.
 
 ```{r}
 library(petro.One)
@@ -107,13 +122,20 @@ my_url <- make_search_url(query = "neural network",
                           to_year   = 1999, 
                           how = "all")
 
-get_papers_count(my_url)
 onepetro_page_to_dataframe(my_url)
 ```
 
+
+
 ## Get papers by document type (*dc_type*)
-We can also get paper by the type of document.
-In this example we are requesting only "conference-paper" type.
+We can also get paper by the type of document. In OnePetro it is called `dc_type`.
+
+#### Conference papers (`conference-paper`)
+In this example we are requesting only `conference-paper` type.
+
+Here we add to `make_search_url` the parameter `dc_type`.
+
+Note also that we are adding another parameter `rows` to get 1000 rows instead of 10, 50 or 100 as the browser allows.
 
 ```{r}
 # specify document type = "conference-paper", rows = 1000
@@ -127,7 +149,8 @@ get_papers_count(my_url)
 onepetro_page_to_dataframe(my_url)
 ```
 
-In this other example we are requesting for "journal-paper" type of papers.
+#### Journal papers (`journal-paper`)
+In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
 
 ```{r}
 # specify document type = "journal-paper", rows = 1000
@@ -143,8 +166,17 @@ onepetro_page_to_dataframe(my_url)
 
 
 ## Summaries
-Here is an example of summaries.
-In this case, we want papers that contain the exact words "well test".
+The summary functions allow us to group the papers by a preferred group:
+
+* by type of document
+* by publisher
+* by publication
+* by year
+
+This will give you a summary of the count not the papers themselves.
+
+
+Here is an example of summaries. In this case, we want papers that contain the exact words "well test".
 
 ```{r}
 library(petro.One)
@@ -194,6 +226,7 @@ papers_by_year(my_url)
 knitr::kable(head(papers_by_year(my_url), 10))
 ```
 
+
 ## Search for **any** word
 In this other example, we want papers that containg the word "well" or "test".
 
@@ -218,5 +251,11 @@ knitr::kable(by_doctype)
 
 ```{r}
 sum(by_doctype$value)
+```
+
+Or use the R base function `summary` to give us a quick statistics of the papers:
+
+```{r}
+summary(by_doctype)
 ```
 
