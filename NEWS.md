@@ -1,6 +1,7 @@
 ## 0.1.0.9016
+* describe OnePetro search URL
 * started with a fresh copy of repo to fix problem with version numbers
-* 
+* gh-pages with develop version now
 
 ## 0.1.1.9005= 0.1.0.9015
 * update papers count in unit testss
