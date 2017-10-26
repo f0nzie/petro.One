@@ -32,20 +32,22 @@ term_freq
 ```
 
 ```{r fig.height=9, fig.width=6}
-plot_wordcloud(term_freq, min.freq = 20)
+library(petro.One)
+
+plot_wordcloud(df, max.words = 100, min.freq = 15)
 ```
 
 ## Bar plot
 
 ```{r}
-plot_bars(term_freq, min.freq = 25)
+plot_bars(df, min.freq = 25)
 ```
 
 
 ## dendogram
 
 ```{r}
-plot_relationships(df, min.freq = 30, threshold = 0.1)
+plot_relationships(df, min.freq = 25, threshold = 0.1)
 ```
 
 ```{r}
