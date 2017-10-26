@@ -1,4 +1,5 @@
 ## 0.1.0.9017
+* return a tibble instead of a dataframe in term_frequency
 * add example to install from github develop 
 * use dataframe instead of term frequency in plot_bars and plot_wordcloud.
 * add examples with plot_bars and plot_wordcloud in README
