@@ -1,0 +1,41 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+# 20171011
+
+## 2. Complete examples in all public functions
+
+## 3. Add ggplot for word frequency
+
+## 4. Add functions for text mining
+
+
+
+
+
+## FIXED 1. Function `make_search_url` crashes when results are zero
+### Issues
+* crashes when there are 0 records
+* some examples do not run and crash
+
+```{r}
+library(petro.One)
+
+url_3 <- make_search_url(query = "downhole flowrate measurement",
+       how = "all", from_year = 2001, to_year = 2007, peer_reviewed = TRUE)
+
+# url_3 <- make_search_url(query = "downhole flowrate measurement",
+#        how = "all", from_year = 2001, to_year = 2007)
+# get_papers_count(url_3)
+onepetro_page_to_dataframe(url_3)
+# 
+# Error in `[.data.frame`(source_data, , 2:5) : undefined columns selected
+```
+
+```{r}
+names(onepetro_page_to_dataframe(url_3))
+```
+

@@ -1,0 +1,33 @@
+2D|2-D
+3D|3-D
+4D|4-D
+algorithms|algorithm
+big data|big-data
+bottom-hole|bottomhole
+cased hole|cased-hole
+data driven|data-driven
+deep-water|deepwater
+deep water|deepwater
+feedforward|feed-forward
+fracture| frack
+fracturing| frack
+fractures| frack
+fractured| frack
+fracks|frack
+frackd|frack
+modelling|modeling
+multi phase|multiphase
+multi-phase|multiphase
+neural net |neural network   
+neural nets|neural network
+neural-network|neural network
+neural networks|neural network
+pressures|pressure
+real time|real-time
+reservoirs|reservoir
+systems|system
+time lapse|time-lapse
+underbalanced drilling|UBD
+underbalance drilling|UBD
+two phase|two-phase
+well-head|wellhead

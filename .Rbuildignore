@@ -1,0 +1,13 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^README-.*\.png$
+notebooks
+^docs$
+^NEWS\.md$
+^cran-comments\.md
+_pkgdown.yaml
+travis.yml
+^\.travis\.yml$
+^codecov\.yml$
+old_travis.yml

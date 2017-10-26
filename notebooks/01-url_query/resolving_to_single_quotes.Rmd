@@ -1,0 +1,25 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "neural network", how = "all")
+my_url
+
+grepl("\x91", my_url)
+grepl("\x92", my_url)
+
+# get_papers_count(my_url)
+
+my_url <- gsub(pattern = "\x91", replacement = "'", my_url)
+my_url <- gsub(pattern = "\x92", replacement = "'", my_url)
+
+grepl("\x91", my_url)
+grepl("\x92", my_url)
+
+get_papers_count(my_url)
+```
+

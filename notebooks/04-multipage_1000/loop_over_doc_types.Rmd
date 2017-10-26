@@ -1,0 +1,118 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic", 
+                          how = "all")
+mecha <- read_multidoc(my_url)
+mecha
+# Error in onepetro_page_to_dataframe(url) : Dataframe sizes different
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic", 
+                          how = "all")
+
+summary_by_doctype(read_onepetro(my_url))
+```
+
+```{r}
+read_multipage(my_url, doctype = "conference-paper")
+# Error in onepetro_page_to_dataframe(url) : Dataframe sizes different
+```
+
+
+
+```{r}
+read_multipage(my_url, doctype = "presentation")
+```
+
+
+```{r}
+read_multipage(my_url, doctype = "journal-paper")
+```
+
+
+```{r}
+read_multipage(my_url, doctype = "chapter")
+
+```
+
+```{r}
+read_multipage(my_url, doctype = "conference-paper")
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "build up test", 
+                          how = "all")
+bup <- read_multidoc(my_url)
+bup
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "static bottomhole pressure", 
+                          how = "all")
+read_multidoc(my_url)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "Prosper", 
+                          how = "all")
+read_multidoc(my_url)
+```
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "Prosper", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+
+sdc_df <- summary_by_doctype(result)
+sdc_df
+```
+
+```{r}
+# looping through all types of documents found
+do_not_read <- c("media", "standard", "other")
+sdc_df$name <- tolower(sdc_df$name)
+cum_df <- data.frame()
+
+for (doc in sdc_df$name) {
+    if (!any(grepl(doc, do_not_read, ignore.case = TRUE))) {
+        if (doc == "chapter") my_url <- urltools::param_set(my_url, "dc_type", "chapter")
+        if (doc == "conference paper") my_url <- urltools::param_set(my_url, "dc_type", "conference-paper")
+        if (doc == "journal paper") my_url <- urltools::param_set(my_url, "dc_type", "journal-paper")
+        if (doc == "presentation") my_url <- urltools::param_set(my_url, "dc_type", "presentation")
+        if (doc == "general") my_url <- urltools::param_set(my_url, "dc_type", "general")        
+        
+        df <- read_multipage(my_url)
+        cum_df <- rbind(cum_df, df)
+        # print(dim(df))
+    }
+}
+
+cum_df
+```
+

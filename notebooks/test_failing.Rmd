@@ -1,0 +1,77 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Document types that are not uniform
+The types `other` and `media` data is not retrieved at the moment of the query return.
+
+```{r}
+library(petroOne)
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "other")
+
+onepetro_page_to_dataframe(my_url)
+```
+
+
+```{r}
+library(petroOne)
+
+my_url <- make_search_url(query = "deepwater", dc_type = 'media')
+
+onepetro_page_to_dataframe(my_url)
+# https://www.onepetro.org/search?q=deepwater&peer_reviewed=&published_between=&from_year=&to_year=&dc_type=media
+```
+
+```{r}
+library(petroOne)
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "other")
+webpage <- read_html(my_url)
+petroOne:::read_titles(webpage)
+```
+
+```{r}
+library(petroOne)
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "media")
+webpage <- read_html(my_url)
+petroOne:::read_titles(webpage)
+```
+
+## dc_type return different number of columns
+
+```{r}
+# fails due to different size of dataframes
+# number of columns of result is not a multiple of vector length (arg 40)
+# Error in onepetro_page_to_dataframe(my_url) : Dataframe sizes different
+# 
+# specify document type = "conference-paper", rows = 1000
+source('./R/url.R')
+
+my_url <- make_search_url(query = "unconventional",
+                          rows = 1000)
+
+get_papers_count(my_url)
+# 16359
+onepetro_page_to_dataframe(my_url)
+```
+
+
+
+```{r}
+## fails when rows=1500
+source('./R/url.R')
+
+my_url <- make_search_url(query = "shale oil", 
+                          how = "all", 
+                          dc_type = "conference-paper",
+                          rows = 1500)
+
+get_papers_count(my_url)
+# 2578, dc_type = NULL
+# 2578, dc_type = "conference-paper"
+#  380, dc_type = "journal-paper"
+onepetro_page_to_dataframe(my_url)
+```

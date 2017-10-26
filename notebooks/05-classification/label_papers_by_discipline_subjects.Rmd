@@ -1,0 +1,125 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Read multipage papers and count those with keyword in title
+
+```{r}
+library(petro.One)
+
+p1 <- onepetro_page_to_dataframe("1000_conference.html")
+p2 <- onepetro_page_to_dataframe("2000_conference.html")
+p3 <- onepetro_page_to_dataframe("3000_conference.html")
+
+nn_papers <- rbind(p1, p2, p3)
+nn_papers
+
+# get only papers that the word neural in the title
+library(dplyr)
+
+nn_papers %>%
+  filter(grepl("neural", tolower(title_data)))
+
+# 537 papers with *neural network* in the title
+```
+
+## label papers with subjects and disciplines
+
+```{r rows.print=10}
+# reads the title of the paper and assign a discipline according to user entered
+# classification labels
+# 
+nn_papers_labeled <- nn_papers %>%
+  mutate(discipline = 
+           ifelse(grepl("fracture|acid|surfactant|stimulation|foam|Frackability|fracture|frack|frac|Refracturing|fracturing|grouting", nn_papers$title_data, ignore.case=TRUE), "stimulation" ,
+                             
+            ifelse(grepl("rig|bit|drilling|circulation|ROP|underbalance|placement|boring|pipe|underwater|Penetration|tidal|cuttings|moored|mooring|well cost|cement|Geosteering|steering|packer|ship|vessel|LWD|Instability|offshore|Positioning|ROV|UBD|floating|offshore|float|trajectory|navigation|jacket|tracking|piles|deepwater", nn_papers$title_data, ignore.case=TRUE), "drilling" , 
+                             
+            ifelse(grepl("reservoir|simulation|waterflooding|hydrocarbon|permeability|PVT|recovery|formation|steam|fluid|testing|EOR|proxy|history matching|spot|waterflood|Infill|asset|Well Management|resource|field development|SAGD|mature|spacing|play|transient|saturation|IOR|coalbed|forecasting|heavy oil|well test|well-test|pressure|dewpoint|shale|shallow|reserves|groundwater|porosity|overpressure|evaluation|treatment|pore|decline curve|grid|basin|bubble point|Redevelopment|radial|water cut|Cricondenbar|water control|gas control", nn_papers$title_data, ignore.case=TRUE), "reservoir" , 
+                             
+            ifelse(grepl("wax|corrosion|chemistry|chemical|polymer|viscosity|biofilm|hydrate|sour", nn_papers$title_data, ignore.case = TRUE), "flow assur" , 
+                             
+            ifelse(grepl("geophysical|reflection|wave|seismic|geophysics|magnetic|Preprocessing|inversion|attenuation|picking|Equalization|Discontinuities|Decomposition|array|harmonic|amplitude|spectral|Microseismogram|travel-time|4D|spectra|tunneling|geostress|reflectivity|Polarization", nn_papers$title_data, ignore.case = TRUE), "geophysics" , 
+                             
+            ifelse(grepl("log|logging|3D Porosity|Resistivity|imaging|image|imagery|radioactive|neutron|Tomography| PHI-K", nn_papers$title_data, ignore.case = TRUE), "logging" , 
+                             
+            ifelse(grepl("production|IPR|VLP|lift|completion|performance|casing|tubing|multiphase|pumping|buckling|mechanistic|intervention|well control|Unloading|phase|gas load|Liquefaction|packers|injection|Submersible|Centrifugal|sand control|sand|well integrity|gravel-pack|gravel pack|Correlations|beam pump|rod pump|flow rate|multi-lateral|assembly|tubular|temperature", nn_papers$title_data, ignore.case = TRUE), "production" , 
+                             
+            ifelse(grepl("pipeline|surface|flowline|compressor|welding|wellsite|accident|HSE|unsafe|sampling|refinery|vibration|safety|environmental|environment|export|tank|Hydrotreaters|line|storm surge|economic|HYDROTREATING|catalyst|ordinance|health|human|price|tunnel|structures|emission|Reclamation|Investment", nn_papers$title_data, ignore.case = TRUE), "surface" , 
+                             
+            ifelse(grepl("petrophysics|rock|grain|time domain|Deconvolution", nn_papers$title_data, ignore.case = TRUE), "petrophysics" , 
+                             
+            ifelse(grepl("deposition|ore|sediment|geological|mining|ground|geomaterial|horizon|Lithofacies|fault|geo-|geology|Turbidites|gis|fills|rift|limestone|atmospheric|karst|Geomodel|granite|Compressive|facies|Phanerozoic|tectonics|sedimentation|flank", nn_papers$title_data, ignore.case = TRUE), "geology" ,                              
+                             
+            ifelse(grepl("artificial intelligence|digital|real-time|real time|intelligent|cognitive|surveillance|modeling|modelling|Permanent Downhole Gauge|data driven|data-driven|data|expert system|Asset Integrity|data mining|analytics|clustering|genetic|algorithm|data|computing|analytics|prediction|transducers|workflow|control system|benchmarking|optimization|wireless|AVO|pattern|Quantization", nn_papers$title_data, ignore.case = TRUE), "digital" , 
+                             "other")
+            ))))))))))) %>%
+  select(year, source, paper_id, discipline, title_data, type, author1_data)
+
+nn_papers_labeled
+```
+
+```{r}
+write.csv(nn_papers_labeled, file = "nn_papers.csv", row.names = FALSE)
+```
+
+```{r}
+# how many papers by discipline
+sort(table(nn_papers_labeled$discipline))
+```
+
+
+```{r}
+# how many papers by source
+table(nn_papers_labeled$source)
+```
+
+
+```{r}
+# how many papers by year
+sort(table(nn_papers_labeled$year))
+```
+
+
+
+```{r}
+unique(nn_papers_labeled$source)
+```
+
+
+## sandbox
+
+
+```{r}
+ifelse(grepl("fracture|acid", nn_papers$title_data, ignore.case = TRUE), "stimulation" , "")
+```
+
+
+
+```{r}
+nn_papers %>%
+  mutate(discipline = ifelse(any(grepl(c("bit", "drilling"), tolower(title_data))), "drilling", 
+                      ifelse(grepl(c("fracture", "acid"), tolower(title_data)), "stimulation" , "")
+                      ))
+    
+```
+
+
+```{r}
+tolower(nn_papers$title_data) contains()
+```
+
+
+```{r}
+grep(c("bit", "drilling"), tolower(nn_papers$title_data), value = TRUE)
+```
+
+
+
+```{r}
+read_titles("1000_conference.html")
+read_sources("1000_conference.html")
+read_author("1000_conference.html")
+```
+

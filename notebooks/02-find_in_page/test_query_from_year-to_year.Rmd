@@ -1,0 +1,439 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+# neural network papers from 1970 to 1980. Exact phrase
+
+my_url <- make_search_url(query = "neural network", 
+                          from_year = 1970, 
+                          to_year   = 1980, 
+                          how = "all")
+my_url
+get_papers_count(my_url)
+# 0
+```
+
+```{r}
+# neural network papers from 1980 to 1990. Exact phrase
+my_url <- make_search_url(query = "neural network", 
+                          from_year = 1980, 
+                          to_year   = 1990, 
+                          how = "all")
+get_papers_count(my_url)
+# 17
+```
+
+```{r}
+# neural network papers from 1990 to 2000. Exact phrase
+my_url <- make_search_url(query = "neural network", 
+                          from_year = 1990, 
+                          to_year   = 2000, 
+                          how = "all")
+get_papers_count(my_url)
+# 510
+```
+
+
+```{r}
+# Onepetro page to dataframe
+# neural network papers from 1990 to 2000. Exact phrase
+
+my_url <- make_search_url(query = "neural network", 
+                          from_year = 1990, 
+                          to_year   = 2000, 
+                          how = "all")
+
+onepetro_page_to_dataframe(my_url)
+```
+
+```{r}
+# Onepetro page to dataframe
+# neural network papers. Exact phrase
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all")
+
+get_papers_count(my_url)
+# 2998
+onepetro_page_to_dataframe(my_url)
+```
+
+```{r}
+# Using regex to extract the number of papers when the result string has more info
+
+my_url <- make_search_url(query = "neural network", 
+                          from_year = 1990, 
+                          to_year   = 1999, 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+
+search_result <- result %>%
+  html_nodes("h2") %>%
+  html_text()
+
+search_result
+
+# extract the numeric part of the results
+pattern <- "[\\d,]+(?= results.)"    # a number, including comma, before " results."
+m <- regexpr(pattern, search_result[1], perl = TRUE)       # matched
+as.numeric(gsub(",", "", regmatches(search_result[1], m))) # remove comma first
+# 415
+```
+
+```{r}
+# extract results from node: .facet-unit-right
+my_url <- make_search_url(query = "shale gas", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+
+search_result <- result %>%
+  html_nodes("h2") %>%
+  html_text()
+
+search_result
+
+# extract the numeric part of the results
+pattern <- "[\\d,]+(?= results.)"    # a number, including comma, before " results."
+m <- regexpr(pattern, search_result[1], perl = TRUE)       # matched
+as.numeric(gsub(",", "", regmatches(search_result[1], m))) # remove comma first
+
+pub_doc <- result %>%
+html_nodes(".facet-unit-right") %>%
+    html_nodes("option") %>%
+    html_text()
+pub_doc
+```
+
+```{r}
+# pub_doc
+len_list <- length(pub_doc)
+len_list
+grep("All types", pub_doc)
+```
+
+```{r}
+get_dctype <- function(aList) {
+    len_list <- length(aList)
+    ix <- grep("All types", aList)
+    aList[(ix+1):len_list]
+}
+
+get_dctype(pub_doc)
+```
+
+```{r}
+get_dc_publisher_facet <- function(aList) {
+    ix_stop <- grep("All types", aList)
+    aList[2:(ix_stop-1)]
+}
+
+publishers_raw <- get_dc_publisher_facet(pub_doc)
+publishers_raw
+```
+
+```{r}
+x <- publishers
+pattern <- "(?<=\\{).+(?=\\})"
+
+## Match data from regexpr()
+m <- regexpr(pattern, x, perl = TRUE)
+regmatches(x, m)
+```
+
+```{r}
+extract_num_papers <- function(x) {
+    pattern <- "(?<=\\{).+(?=\\})"
+    m <- regexpr(pattern, x, perl = TRUE)
+    as.numeric(gsub(",", "" , regmatches(x, m)))
+}
+
+extract_num_papers(publishers_raw)
+```
+
+
+```{r}
+x <- publishers_raw
+pattern <- "(\\s[{\\d}].+)"
+gsub(pattern, "", x, perl = TRUE)
+
+```
+
+
+```{r}
+extract_publishers <- function(x) {
+    pattern <- "(\\s[{\\d}].+)"
+    gsub(pattern, "", x, perl = TRUE)
+}
+
+extract_publishers(publishers_raw)
+```
+
+
+```{r}
+publishers.as.dataframe <- function(x) {
+    pub_vector <- get_dc_publisher_facet(x)
+    pub_values <- extract_num_papers(pub_vector)
+    pub_name   <- extract_publishers(pub_vector)
+    data.frame(pub_name, pub_values, stringsAsFactors = FALSE)
+}
+
+publishers.as.dataframe(pub_doc)
+```
+
+
+```{r}
+doctype.as.dataframe <- function(x) {
+    doctype_vector <- get_dctype(x)
+    doctype_value <- extract_num_papers(doctype_vector)
+    doctype_name   <- extract_publishers(doctype_vector)
+    data.frame(doctype_name, doctype_value, stringsAsFactors = FALSE)
+}
+
+doctype.as.dataframe(pub_doc)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+source('./R/url.R')
+
+my_url <- make_search_url(query = "shale oil", 
+                          how = "all")
+
+result <- send_url(my_url)
+
+search_result <- result %>%
+  html_nodes("h2") %>%
+  html_text()
+
+search_result
+
+# extract the numeric part of the results
+pattern <- "[\\d,]+(?= results.)"    # a number, including comma, before " results."
+m <- regexpr(pattern, search_result[1], perl = TRUE)       # matched
+as.numeric(gsub(",", "", regmatches(search_result[1], m))) # remove comma first
+
+result %>%
+html_nodes(".facet-unit-right") %>%
+    html_nodes("option") %>%
+    html_text()
+```
+
+```{r}
+result %>%
+html_nodes(".facet-unit-right option .dc_type") %>%
+    # html_attr("dc_type") %>%
+    html_text()
+
+```
+
+```{r}
+result %>%
+html_nodes(".facet-unit-right") %>%
+    html_nodes("option") %>%
+    html_text()
+
+```
+
+```{r}
+result %>%
+html_nodes(".facet-unit-right option") %>%
+    html_text() %>%
+    .[20:28]
+
+```
+
+```{r}
+result %>%
+html_nodes(".filter-label") %>%
+    html_text()
+
+```
+
+```{r}
+result %>%
+html_nodes(".filter-label") %>%
+    html_nodes("Publisher") %>%
+    html_text("value")
+# html_nodes(result, "class.dc_type")
+
+```
+
+
+```{r}
+
+html_nodes(result, ".select2-choice Type")
+html_nodes(result, ".select2-results")
+html_nodes(result, ".s2id_autogen1")
+#
+```
+
+
+```{r}
+
+html_text(result, ".select2-choice Type")
+html_text(result, ".select2-results")
+html_text(result, ".s2id_autogen1")
+#
+```
+
+```{r}
+html_nodes(result, "#dc_type")
+html_nodes(result, ".dc_publisher_facet")
+html_nodes(result, "#dc_publisher_facet")
+
+html_nodes(result, "value.conference-paper")
+html_nodes(result, "option.conference-paper")
+
+html_nodes(result, "facets-dd chzn-enable ")
+
+html_nodes(result, "Type")
+html_nodes(result, "#Type")
+html_nodes(result, ".Type")
+
+```
+
+
+
+```{r}
+result %>%
+    html_nodes("div.filter-label option value")
+    
+```
+
+
+```{r}
+result %>%
+    html_nodes(".facets-form") %>%
+    html_nodes("div") # %>% html_nodes("filter-label")
+    
+```
+
+```{r}
+result %>%
+    html_nodes(".facets-form div") %>%
+    html_text("Publisher:") 
+    
+    
+```
+
+```{r}
+# obtaining the name of the variable for a class
+result %>%
+    html_nodes(".facets-form div.filter-label") %>%
+    html_text()
+    
+```
+
+```{r}
+# obtaining the name of the variable for a class
+result %>%
+    html_nodes("div") %>%
+    html_nodes("div.controls") %>%
+    html_text()
+    
+```
+
+
+```{r}
+result %>%
+    html_nodes("div") 
+
+```
+
+
+
+```{r}
+result %>%
+    html_nodes("div.container") 
+
+```
+
+```{r}
+result %>%
+    html_attrs("class") 
+```
+
+```{r}
+result %>%
+    html_nodes("div.result-item")
+```
+
+```{r}
+nodes <- html_nodes(result, "div.result-item")
+nodes[[8]]
+```
+
+
+```{r}
+nodes <- html_nodes(result, "div.facet-unit-right")
+# nodes[[1]]
+l_nodes <- nodes[[length(nodes)]]
+l_nodes
+# html_attr(x = nodes[[length(nodes)]], "filter-label")
+html_attr(l_nodes, "")
+```
+
+
+
+```{r}
+result %>%
+    html_nodes("div.result-item") %>%
+    html_attrs()
+```
+
+
+```{r}
+result %>%
+    html_nodes("div.filter-label")
+```
+
+```{r}
+result %>%
+    html_nodes("div") %>%
+    .[[64]]
+
+```
+
+
+```{r}
+result %>%
+    html_nodes("div") %>%
+    html_nodes("option")
+
+```
+
+
+```{r}
+div_res <- result %>%
+    html_nodes("div")
+
+lapply(div_res, identity)
+```
+
+
+```{r}
+result %>%
+    html_nodes("dc_publisher_facet")
+```
+
+
+```{r}
+result %>%
+    xml_structure()
+```
+

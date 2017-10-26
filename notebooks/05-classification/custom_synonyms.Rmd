@@ -1,0 +1,251 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Synonyms replacement before
+
+```{r}
+# add a space after "net"
+
+custom_synonyms <- "2D|2-D
+3D|3-D
+4D|4-D
+algorithms|algorithm
+big data|big-data
+bottom-hole|bottomhole
+cased hole|cased-hole
+data driven|data-driven
+deep-water|deepwater
+deep water|deepwater
+feedforward|feed-forward
+fracture| frack
+fracturing| frack
+fractures| frack
+fractured| frack
+fracks|frack
+frackd|frack
+modelling|modeling
+multi phase|multiphase
+multi-phase|multiphase
+neural net |neural network   
+neural nets|neural network
+neural-network|neural network
+neural networks|neural network
+pressures|pressure
+real time|real-time
+reservoirs|reservoir
+systems|system
+time lapse|time-lapse
+underbalanced drilling|UBD
+underbalance drilling|UBD
+two phase|two-phase
+well-head|wellhead
+"
+
+# read text table and split rows at carriage return
+custom_synonyms <- read.table(text = custom_synonyms, header = FALSE, 
+                              sep = "\n", stringsAsFactors = FALSE)
+
+# split string at one column by the delimiter "|"
+custom_synonyms <- data.frame(do.call('rbind', 
+                                      strsplit(custom_synonyms$V1, split = "|", 
+                                               fixed = TRUE)), stringsAsFactors = FALSE)
+
+custom_synonyms
+```
+
+## save to package data folder
+
+```{r}
+# save custom words to .rda file in package ./data
+synonyms_rda <- paste(system.file("data", package = "petro.One"), 
+                       "synonyms.rda", sep = "/")
+
+save(custom_synonyms, file = synonyms_rda)
+```
+
+## save to project data folder
+
+```{r}
+# save custom words to .rda file in project ./data
+synonyms_rda <- paste(PROJHOME, "data",
+                       "synonyms.rda", sep = "/")
+
+save(custom_synonyms, file = synonyms_rda)
+```
+
+## save to text file
+
+```{r}
+saveTo_data <- function(where = NULL) {
+    if (is.null(where)) stop()
+    if (where == "project") {
+        
+    }
+}
+```
+
+## save to package extdata folder
+```{r}
+# write to a text file with a bar separated synonyms
+synonyms_txt <- paste(system.file("extdata", package = "petro.One"), 
+                       "synonyms.txt", sep = "/")
+
+write.table(custom_synonyms, file = synonyms_txt, sep = "|",
+            quote = FALSE, row.names = FALSE, col.names = FALSE)
+```
+
+## save synonyms to project extdata folder
+```{r}
+# write to a text file with a bar separated synonyms
+synonyms_txt <- paste(PROJHOME, "inst/extdata", 
+                       "synonyms.txt", sep = "/")
+synonyms_txt
+write.table(custom_synonyms, file = synonyms_txt, sep = "|",
+            quote = FALSE, row.names = FALSE, col.names = FALSE)
+```
+
+
+## create corpus
+
+```{r}
+library(petroOne)
+library("tm")
+
+p1 <- onepetro_page_to_dataframe("1000_conference.html")
+p2 <- onepetro_page_to_dataframe("2000_conference.html")
+p3 <- onepetro_page_to_dataframe("3000_conference.html")
+
+nn_papers <- rbind(p1, p2, p3)
+
+# create corpus
+vdocsSyn <- VCorpus(VectorSource(nn_papers$title_data))
+vdocsSyn <- tm_map(vdocsSyn, content_transformer(tolower))
+```
+
+
+
+## Replace original by synonym
+
+```{r}
+# enhanced replaceBy including the dataframe to use as a replacement
+replaceBy <- function(x, df) {
+    for (k in seq_len(nrow(df))) {
+        x <- gsub(df$X1[[k]], df$X2[[k]], x, fixed = TRUE)  
+    }
+    x
+}    
+
+vdocs_proc <- tm_map(vdocsSyn, content_transformer(function(x) replaceBy(x, custom_synonyms)))
+```
+
+
+## How many have been replaced
+```{r}
+vcum <- c()
+for (ix in 1:nrow(custom_synonyms)) {
+    pattern <- custom_synonyms$X1[ix]
+    
+    v <- grep(pattern, nn_papers$title_data)
+    cat(pattern, length(v), "\n")
+    vcum <- c(vcum, v)
+}
+# vcum
+corpus_range(vdocs_proc, vcum)
+```
+
+```{r}
+corpus_range(vdocs_proc, vcum)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+tdm <- TermDocumentMatrix(vdocs)
+```
+
+### Find one of the synonyms that will be replaced
+
+```{r}
+pattern <- custom_synonyms$X1[1]
+v1 <- grep(pattern, nn_papers$title_data)
+v1
+grep(pattern, nn_papers$title_data, value = TRUE)
+```
+
+```{r}
+pattern <- shQuote(custom_synonyms$X1[2])
+pattern
+v2 <- grep(pattern, nn_papers$title_data)
+v2
+grep(pattern, nn_papers$title_data, value = TRUE)
+```
+
+
+
+
+
+
+```{r}
+
+corpus_range <- function(corp, vec) {
+    cumdf <- data.frame()
+    for (i in vec) {
+        # cat(i, corp[[i]]$content, "\n")
+        df <- data.frame(corp.num = i, corp.content = corp[[i]]$content)
+        cumdf <- rbind(cumdf, df)
+    }
+    cumdf
+}
+```
+
+
+```{r}
+vec <- c(255,  355,  387,  472)
+vec <- v1
+x <- vdocs_proc
+for (i in vec) {
+    cat(i, x[[i]]$content, "\n")
+    
+}
+```
+
+## Find ALL synonyms tat will be replaced
+
+```{r}
+pattern <- custom_synonyms$X1[1]
+v1 <- grep(pattern, nn_papers$title_data)
+v1
+grep(pattern, nn_papers$title_data, value = TRUE)
+```
+
+
+
+
+```{r}
+corpus_range(vdocs_proc, vcum)
+```
+
+
+## Test function
+
+```{r}
+load_synonyms <- function() {
+    synfile <- system.file("extdata", "synonyms.txt", package = "petro.One")
+    print(synfile)
+    custom_synonyms <- utils::read.table(file = synfile, header = TRUE, sep = "|",
+                                  stringsAsFactors = FALSE)
+    names(custom_synonyms) <- c("original", "replace_by")
+    custom_synonyms
+}
+
+load_synonyms()
+```
+

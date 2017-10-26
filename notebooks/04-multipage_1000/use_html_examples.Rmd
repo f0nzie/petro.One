@@ -1,0 +1,33 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## algorithm
+
+```{r}
+# find zip file in extdata
+# uncompress
+# 
+```
+
+
+```{r}
+zip_file <- "3_pages_conference.zip"
+
+zip_file <- paste(system.file("extdata", package = "petro.One"), zip_file, sep = "/")
+zip_file
+```
+
+```{r}
+unzip(zip_file)
+```
+
+## Test function
+
+```{r}
+library(petro.One)
+
+use_example(1)
+```
+

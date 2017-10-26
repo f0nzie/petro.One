@@ -1,0 +1,93 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library('httr')
+url <- 'https://www.fidelity.com/fund-screener/evaluator.shtml#!&ft=BAL_all&ntf=N&expand=%24FundType&rsk=5'
+page <- GET(url)
+```
+
+```{r}
+print(http_status(page))
+
+```
+
+```{r}
+page_text <- content(page, as='text')
+```
+
+```{r}
+grepl('GMMAX', page_text, ignore.case=T)
+```
+
+```{r}
+grepl('Aberdeen', page_text, ignore.case=T)
+```
+
+```{r}
+library(RSelenium)
+
+remDr <- remoteDriver(remoteServerAddr = "192.168.99.100", port = 4445L)
+```
+
+```{r}
+remDr$open()
+```
+
+```{r}
+remDr$navigate("https://cran.r-project.org/")
+remDr$switchToFrame("banner")
+webElems <- remDr$findElements("partial link text", "Download R")
+
+sapply(webElems, function(x) x$getElementText())
+```
+
+
+```{r}
+remDr$navigate("http://www.google.com/ncr")
+remDr$getTitle()
+```
+
+```{r}
+remDr$getStatus()
+```
+
+```{r}
+remDr$navigate("http://www.bbc.co.uk")
+```
+
+```{r}
+remDr$getCurrentUrl()
+```
+
+
+```{r}
+remDr$goBack()
+remDr$getCurrentUrl()
+```
+
+```{r}
+remDr$goForward()
+remDr$getCurrentUrl()
+```
+
+## Sending text to elements
+```{r}
+remDr$navigate("http://www.google.com/ncr")
+webElem <- remDr$findElement(using = "css", "[name = 'q']")
+webElem$sendKeysToElement(list("R Cran"))
+```
+
+```{r}
+remDr$navigate("http://www.google.com/ncr")
+webElem <- remDr$findElement(using = "css", "[name = 'q']")
+webElem$sendKeysToElement(list("R Cran", "\uE007"))
+```
+
+```{r}
+remDr$maxWindowSize()
+remDr$screenshot(display = TRUE)
+```
+

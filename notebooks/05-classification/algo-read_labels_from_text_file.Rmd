@@ -1,0 +1,81 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Use this algorithm for a function that labels the discipline of each paper by looking at the keywords.
+
+
+```{r}
+# read folder ./inst/extdata
+# detect files ending .txt and put them in a vector or list
+# read text file
+    # read first line and put it as a discipline
+    # read next lines (subjects) as rows and put them in a dataframe
+    # variable1: subject; variable2: discipline
+    # remove blank rows
+    # keep the dataframe
+# move to next file
+# save dataframe as RDA file in ./data
+```
+
+
+
+```{r}
+# data files (.txt) are under `extdata`
+extdata <- system.file("extdata", "disciplines", package = "petro.One")
+extdata
+```
+
+```{r}
+# list text files in extdata
+pat <- ".txt"
+label_files <- list.files(path = extdata, pattern = pat, full.names = TRUE)
+label_files
+```
+
+```{r}
+# read first line of each file to get the name of the discipline
+# first line will always contain the discipline
+discipline <- lapply(label_files, function(x) readLines(x, n = 1))
+discipline
+```
+
+## create dataframe of subjects, discipline
+```{r}
+# create a dataframe of subjects and corresponding disciplines
+cumdf <- data.frame()  # empty dataframe
+for (i in seq_len(length(discipline))) {
+    # read the discipline text file with its subjects
+    df <- read.table(label_files[i], header=F, sep = "\n", stringsAsFactors = FALSE)
+    df$V2 <- discipline[[i]]  # add the discipline to the subject
+    cumdf <- rbind(cumdf, df) # accumulate rows
+}
+# set the name of the columns
+names(cumdf) <- c("subject", "discipline")
+cumdf
+```
+
+```{r}
+# save to .rda
+labels <- cumdf
+save(labels, file = "../data/disciplines.rda")
+```
+
+
+
+
+```{r}
+# read label files, one row at a time
+datalist = lapply(label_files, function(x) read.table(x, header=F, sep = "\n")) 
+datafr = do.call("rbind", datalist) 
+datafr
+```
+
+
+
+```{r}
+utils::read.table(data_file, header = TRUE)
+```
+
+

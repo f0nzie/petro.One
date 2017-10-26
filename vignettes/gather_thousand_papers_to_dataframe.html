@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Alfonso R. Reyes" />
+
+<meta name="date" content="2017-10-11" />
+
+<title>Thousands of Papers to Dataframe</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Thousands of Papers to Dataframe</h1>
+<h4 class="author"><em>Alfonso R. Reyes</em></h4>
+<h4 class="date"><em>2017-10-11</em></h4>
+
+
+
+<p>The maximum number of rows that a OnePetro query can return is 1000. It means that the user could set up the query to return up to amximum of 1000 papers. Abover that number, the query to OnePetro will return error.</p>
+<p>OnePetro has options to define the number of rows to display at 10, 50 and 100 rows. Additionally, through scripts like these, that number could be raised up to 1,000.</p>
+<p>This article describes the process of reading multiple pages with thousand of papers to a unique dataframe.</p>
+<p>Retrieve the most numerous paper by type</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(petro.One)</code></pre></div>
+<div id="perform-a-initial-search" class="section level2">
+<h2>Perform a initial search</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_url &lt;-<span class="st"> </span><span class="kw">make_search_url</span>(<span class="dt">query =</span> <span class="st">&quot;pressure transient analysis&quot;</span>, 
+                          <span class="dt">how =</span> <span class="st">&quot;all&quot;</span>)
+
+<span class="kw">get_papers_count</span>(my_url)</code></pre></div>
+<pre><code>## [1] 3995</code></pre>
+</div>
+<div id="what-type-of-paper-do-we-have" class="section level2">
+<h2>What type of paper do we have?</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">result &lt;-<span class="st"> </span><span class="kw">read_onepetro</span>(my_url)
+<span class="kw">summary_by_doctype</span>(result)</code></pre></div>
+<pre><code>## # A tibble: 7 x 2
+##               name value
+##              &lt;chr&gt; &lt;dbl&gt;
+## 1          Chapter     1
+## 2 Conference paper  3027
+## 3          General    60
+## 4    Journal paper   894
+## 5            Media     5
+## 6            Other     1
+## 7     Presentation     7</code></pre>
+<p>For the tyme being we will retrieve only conference papers.</p>
+</div>
+<div id="collect-first-1000-rows" class="section level2">
+<h2>Collect first 1000 rows</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># we use &quot;conference-paper&quot; only because other document types have</span>
+<span class="co"># different dataframe structure</span>
+
+my_url_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">make_search_url</span>(<span class="dt">query =</span> <span class="st">&quot;pressure transient analysis&quot;</span>, 
+                          <span class="dt">how =</span> <span class="st">&quot;all&quot;</span>, 
+                          <span class="dt">dc_type =</span> <span class="st">&quot;conference-paper&quot;</span>,
+                          <span class="dt">start =</span> <span class="dv">0</span>,
+                          <span class="dt">rows  =</span> <span class="dv">1000</span>)
+
+<span class="kw">get_papers_count</span>(my_url_<span class="dv">1</span>)</code></pre></div>
+<pre><code>## [1] 3027</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">page_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">read_onepetro</span>(my_url_<span class="dv">1</span>)
+htm_<span class="dv">1</span> &lt;-<span class="st"> &quot;pta-01-conference.html&quot;</span>
+xml2<span class="op">::</span><span class="kw">write_html</span>(page_<span class="dv">1</span>, <span class="dt">file =</span> htm_<span class="dv">1</span>)
+<span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">1</span>)</code></pre></div>
+<pre><code>## # A tibble: 1,000 x 6
+##                                                         title_data
+##                                                              &lt;chr&gt;
+##  1                             Pressure Transient Analysis in SAGD
+##  2                           Well-head Pressure Transient Analysis
+##  3  Pressure Transient Analysis in Multilayered Faulted Reservoirs
+##  4  Pressure Transient Analysis of Multifractured Horizontal Wells
+##  5 Integrating Pressure Transient Analysis in Hydraulic Fracturing
+##  6             Numerical Solutions for Pressure Transient Analysis
+##  7                Pressure-Transient Analysis for Perforated Wells
+##  8     Automated Pressure Transient Analysis with Smart Technology
+##  9        How Wellbore Dynamics Affect Pressure Transient Analysis
+## 10         Software Showcase: Pressure Transient Analysis Programs
+## # ... with 990 more rows, and 5 more variables: paper_id &lt;chr&gt;,
+## #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</code></pre>
+</div>
+<div id="collect-second-set-of-1000-rows" class="section level2">
+<h2>Collect second set of 1000 rows</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_url_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">make_search_url</span>(<span class="dt">query =</span> <span class="st">&quot;pressure transient analysis&quot;</span>, 
+                          <span class="dt">how =</span> <span class="st">&quot;all&quot;</span>, 
+                          <span class="dt">dc_type =</span> <span class="st">&quot;conference-paper&quot;</span>,
+                          <span class="dt">start =</span> <span class="dv">1000</span>,
+                          <span class="dt">rows  =</span> <span class="dv">1000</span>)
+
+page_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">read_onepetro</span>(my_url_<span class="dv">2</span>)
+htm_<span class="dv">2</span> &lt;-<span class="st"> &quot;pta-02-conference.html&quot;</span>
+xml2<span class="op">::</span><span class="kw">write_html</span>(page_<span class="dv">2</span>, <span class="dt">file =</span> htm_<span class="dv">2</span>)
+<span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">2</span>)</code></pre></div>
+<pre><code>## # A tibble: 1,000 x 6
+##                                                                     title_data
+##                                                                          &lt;chr&gt;
+##  1 Storativity Ratio, Matrix/Fracture Permeability Ratio, Fracture Partitionin
+##  2 Integration Wireline Formation Testing and Well Testing Evaluation - An Exa
+##  3 An Integrated Approach to Designing an Offshore Heavy Oil Well Test - North
+##  4  Setting a New Milestone in Carbonate Matrix Stimulation with Coiled Tubing
+##  5                             Transient Analysis in Partially Completed Wells
+##  6 Performance of Plugless Toe Stages and Non-Isolated Wellbore in Multi-Stage
+##  7        Long-Term Hydraulic Fracture Conductivities Under Extreme Conditions
+##  8                        Innovative Applications of Downhole Temperature Data
+##  9 Real Time Evaluation of Pressure Transients: Advances in Dynamic Reservoir 
+## 10 New Approach for Using Surfactants to Enhance Oil Recovery from Naturally F
+## # ... with 990 more rows, and 5 more variables: paper_id &lt;chr&gt;,
+## #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</code></pre>
+</div>
+<div id="collect-next-set-of-1000-rows" class="section level2">
+<h2>Collect next set of 1000 rows</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_url_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">make_search_url</span>(<span class="dt">query =</span> <span class="st">&quot;pressure transient analysis&quot;</span>, 
+                          <span class="dt">how =</span> <span class="st">&quot;all&quot;</span>, 
+                          <span class="dt">dc_type =</span> <span class="st">&quot;conference-paper&quot;</span>,
+                          <span class="dt">start =</span> <span class="dv">2000</span>,
+                          <span class="dt">rows  =</span> <span class="dv">1000</span>)
+
+page_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">read_onepetro</span>(my_url_<span class="dv">3</span>)
+htm_<span class="dv">3</span> &lt;-<span class="st"> &quot;pta-03-conference.html&quot;</span>
+xml2<span class="op">::</span><span class="kw">write_html</span>(page_<span class="dv">3</span>, <span class="dt">file =</span> htm_<span class="dv">3</span>)
+<span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">3</span>)</code></pre></div>
+<pre><code>## # A tibble: 1,000 x 6
+##                                                                     title_data
+##                                                                          &lt;chr&gt;
+##  1 Integration of Numerical Simulations for Uncertainty Analysis of Transient 
+##  2 Implementation of Wireline Formation Testing Configuration for the Evaluati
+##  3 Fault and Fracture Corridors - How to Reduce the Structural Uncertainty for
+##  4 Analysis of Capillary Pressure Effects on Well Tests in Solution Gas-Drive 
+##  5 Type Curves for Predicting Production Performance From Horizontal Wells in 
+##  6 Successful Deployments of a New Well-Intervention Methodology in Horizontal
+##  7 Inflow Performance Relationships of Horizontal and Multibranched Wells in a
+##  8 &quot;Application of Real-time ESP Data Processing and Interpretation in Permian
+##  9    Unconventional Performance Metrics Validated Using Eagle Ford Field Data
+## 10                        Modelling of Fractured Wells in Reservoir Simulation
+## # ... with 990 more rows, and 5 more variables: paper_id &lt;chr&gt;,
+## #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</code></pre>
+</div>
+<div id="collect-remaining-set" class="section level2">
+<h2>Collect remaining set</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_url_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">make_search_url</span>(<span class="dt">query =</span> <span class="st">&quot;pressure transient analysis&quot;</span>, 
+                          <span class="dt">how =</span> <span class="st">&quot;all&quot;</span>, 
+                          <span class="dt">dc_type =</span> <span class="st">&quot;conference-paper&quot;</span>,
+                          <span class="dt">start =</span> <span class="dv">3000</span>,
+                          <span class="dt">rows  =</span> <span class="dv">100</span>)
+
+page_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">read_onepetro</span>(my_url_<span class="dv">4</span>)
+htm_<span class="dv">4</span> &lt;-<span class="st"> &quot;pta-04-conference.html&quot;</span>
+xml2<span class="op">::</span><span class="kw">write_html</span>(page_<span class="dv">4</span>, <span class="dt">file =</span> htm_<span class="dv">4</span>)
+<span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">4</span>)</code></pre></div>
+<pre><code>## # A tibble: 27 x 6
+##                                                                     title_data
+##                                                                          &lt;chr&gt;
+##  1              The Role of Knowledge, Tools and Systems for Drilling Analysis
+##  2 Evaluating Fissured Formation Geometry from Well Test Data: a Field Example
+##  3               Afterflow Measurement and Deconvolution in Well Test Analysis
+##  4 A Step by Step Approach to Hydraulic Fracture Treatment Design, Implementat
+##  5 Fluid Flow in a Fractured Reservoir Using a Geomechanically-Constrained Fau
+##  6 Evaluating Barnett Shale Production Performance-Using an Integrated Approac
+##  7 A Semi-Analytic (p/z) Rate-Time Relation for the Analysis and Prediction of
+##  8 Reservoir Engineering for Unconventional Reservoirs: What Do We Have to Con
+##  9                        After-Closure Analysis of Fracture Calibration Tests
+## 10 A Predictive Model for Analyzing Erosional Velocity and Corrosion Effects E
+## # ... with 17 more rows, and 5 more variables: paper_id &lt;chr&gt;,
+## #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</code></pre>
+</div>
+<div id="binding-tables-in-one-dataframe" class="section level2">
+<h2>Binding tables in one dataframe</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p1 &lt;-<span class="st"> </span><span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">1</span>)
+p2 &lt;-<span class="st"> </span><span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">2</span>)
+p3 &lt;-<span class="st"> </span><span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">3</span>)
+p4 &lt;-<span class="st"> </span><span class="kw">onepetro_page_to_dataframe</span>(htm_<span class="dv">4</span>)
+
+papers &lt;-<span class="st"> </span><span class="kw">rbind</span>(p1, p2, p3, p4)
+papers</code></pre></div>
+<pre><code>## # A tibble: 3,027 x 6
+##                                                         title_data
+##                                                              &lt;chr&gt;
+##  1                             Pressure Transient Analysis in SAGD
+##  2                           Well-head Pressure Transient Analysis
+##  3  Pressure Transient Analysis in Multilayered Faulted Reservoirs
+##  4  Pressure Transient Analysis of Multifractured Horizontal Wells
+##  5 Integrating Pressure Transient Analysis in Hydraulic Fracturing
+##  6             Numerical Solutions for Pressure Transient Analysis
+##  7                Pressure-Transient Analysis for Perforated Wells
+##  8     Automated Pressure Transient Analysis with Smart Technology
+##  9        How Wellbore Dynamics Affect Pressure Transient Analysis
+## 10         Software Showcase: Pressure Transient Analysis Programs
+## # ... with 3,017 more rows, and 5 more variables: paper_id &lt;chr&gt;,
+## #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</code></pre>
+</div>
+<div id="find-which-papers-have-the-search-word-in-the-title" class="section level2">
+<h2>Find which papers have the search word in the title</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pattern &lt;-<span class="st"> &quot;pressure transient analysis&quot;</span>
+rows &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="dt">pattern =</span> pattern, papers<span class="op">$</span>title_data, <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>)
+papers[rows, ]</code></pre></div>
+<pre><code>## # A tibble: 161 x 6
+##                                                                     title_data
+##                                                                          &lt;chr&gt;
+##  1                                         Pressure Transient Analysis in SAGD
+##  2                                       Well-head Pressure Transient Analysis
+##  3              Pressure Transient Analysis in Multilayered Faulted Reservoirs
+##  4              Pressure Transient Analysis of Multifractured Horizontal Wells
+##  5             Integrating Pressure Transient Analysis in Hydraulic Fracturing
+##  6                         Numerical Solutions for Pressure Transient Analysis
+##  7                 Automated Pressure Transient Analysis with Smart Technology
+##  8                    How Wellbore Dynamics Affect Pressure Transient Analysis
+##  9                     Software Showcase: Pressure Transient Analysis Programs
+## 10 Pressure Transient Analysis as an Element of Permanent Reservoir Monitoring
+## # ... with 151 more rows, and 5 more variables: paper_id &lt;chr&gt;,
+## #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># remove files that were created</span>
+files &lt;-<span class="st"> </span><span class="kw">c</span>(htm_<span class="dv">1</span>, htm_<span class="dv">2</span>, htm_<span class="dv">3</span>, htm_<span class="dv">4</span>)
+<span class="kw">file.remove</span>(files)</code></pre></div>
+<pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

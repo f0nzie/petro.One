@@ -1,0 +1,187 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# petro.One
+[![Travis-CI Build Status](https://travis-ci.org/f0nzie/petro.One.svg?branch=master)](https://travis-ci.org/f0nzie/petro.One)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/petro.One)](https://cran.r-project.org/package=petro.One)
+[![codecov](https://codecov.io/gh/f0nzie/petro.One/branch/master/graph/badge.svg)](https://codecov.io/gh/f0nzie/petro.One)
+
+
+The goal of **petro.One** is providing a reproducible platform for acquiring and analyzing metadata while searching papers on oil and gas in the OnePetro website.
+
+## Motivation
+The standard way of searching for papers in [OnePetro](https://www.onepetro.org/) is using a web browser to enter the search terms for a particular paper we are looking for. The result will come in web pages with which could be dozens, hundreds or thousand of paper titles. We will need to browse all the resulting pages to find papers that have a better match with the subject we are researching.
+
+By using some statistical tools available through `R`, the search could turn in highly profitable in terms of time, matching quality and selection of the papers. 
+
+The search keywords are entered thorugh the R console and the papers will return in a shape of a dataframe, which is identical to a spreadsheet: rows of paper titles and columns with details from the metadata extracted from the web page.
+
+With the dataframe already in our computers we could perform a thorough search and narrow down to the most ideal papers.
+
+
+## Installation
+
+You can install petro.One from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("f0nzie/petro.One")
+```
+
+or from [CRAN](https://cran.r-project.org/) with:
+
+```{r eval=FALSE}
+install.packages("petro.One")
+```
+
+
+## Get the number of papers for the keyword *neural network*.
+The option `how = "any"` means to search for papers that contain the word `neural` or the word `network`.
+
+```{r example}
+library(petro.One)
+
+my_url <- make_search_url(query = "neural network", how = "any")
+my_url
+get_papers_count(my_url)
+```
+
+## Read papers from *from_year* to *to_year*
+We can send a query where we specify the starting years and the end year.
+Use the parameters as in the example below.
+
+In this example the option `how = "all"` means to search papers that contain **exactly** the words `neural network`.
+
+```{r}
+library(petro.One)
+
+# neural network papers from 1990 to 2000. Exact phrase
+my_url <- make_search_url(query = "neural network", 
+                          from_year = 1990, 
+                          to_year   = 1999, 
+                          how = "all")
+
+get_papers_count(my_url)
+onepetro_page_to_dataframe(my_url)
+```
+
+## Get papers by document type (*dc_type*)
+We can also get paper by the type of document.
+In this example we are requesting only "conference-paper" type.
+
+```{r}
+# specify document type = "conference-paper", rows = 1000
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all",
+                          dc_type = "conference-paper",
+                          rows = 1000)
+
+get_papers_count(my_url)
+onepetro_page_to_dataframe(my_url)
+```
+
+In this other example we are requesting for "journal-paper" type of papers.
+
+```{r}
+# specify document type = "journal-paper", rows = 1000
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all",
+                          dc_type = "journal-paper",
+                          rows = 1000)
+
+get_papers_count(my_url)
+onepetro_page_to_dataframe(my_url)
+```
+
+
+## Summaries
+Here is an example of summaries.
+In this case, we want papers that contain the exact words "well test".
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test", 
+                          how = "all")
+```
+
+```{r eval=FALSE}
+papers_by_type(my_url)
+```
+
+
+### By document type
+```{r, echo=FALSE, results='asis'}
+knitr::kable(papers_by_type(my_url))
+```
+
+
+### By publisher
+```{r eval=FALSE}
+papers_by_publisher(my_url)
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(papers_by_publisher(my_url), 10))
+```
+
+### By publication source
+
+```{r eval=FALSE}
+papers_by_publication(my_url)
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(papers_by_publication(my_url), 10))
+```
+
+
+### By year of publication
+
+```{r eval=FALSE}
+papers_by_year(my_url)
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(papers_by_year(my_url), 10))
+```
+
+## Search for **any** word
+In this other example, we want papers that containg the word "well" or "test".
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test", 
+                          how = "any")
+
+by_doctype <- papers_by_type(my_url)
+```
+
+```{r eval=FALSE}
+by_doctype
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(by_doctype)
+```
+
+#### Total number of papers that contain **well** or **test**
+
+```{r}
+sum(by_doctype$value)
+```
+

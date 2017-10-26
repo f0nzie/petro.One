@@ -1,0 +1,46 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(urltools)
+#Get a component
+example_url <- "http://en.wikipedia.org/wiki/Aaron_Halfaker?debug=true"
+parameters(example_url)
+#[1] "debug=true"
+#Set a component
+parameters(example_url) <- "debug=false"
+
+```
+
+```{r}
+library(urltools)
+
+url <- "https://www.onepetro.org/search?q=\"heat+transfer\"&peer_reviewed=&published_between=&from_year=&to_year=&dc_type="
+parameters(url)
+```
+
+```{r}
+(url_parse(url)$parameter)
+```
+
+```{r}
+param_get(url, c("q"))
+param_get(url, c("dc_type"))
+
+```
+
+```{r}
+param_get(url, c("q", "dc_type", "to_year", "rows", "start"))
+```
+
+```{r}
+param_set(url, "rows", 100)
+```
+
+
+```{r}
+fragment(url)
+```
+

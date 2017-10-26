@@ -1,0 +1,547 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic", 
+                          how = "all")
+my_url
+page <- xml2::read_html(my_url)
+petro.One:::is_dctype_enabled(page)
+# get_papers_count(my_url)
+papers_by_type(my_url)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic performance",
+                          how = "all")
+my_url
+page <- xml2::read_html(my_url)
+petro.One:::is_dctype_enabled(page)
+# get_papers_count(my_url)
+papers_by_type(my_url)
+```
+
+
+## example when the selector for paper types is DISABLED
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic performance",
+                          how = "all")
+
+page <- xml2::read_html(my_url)
+petro.One:::is_dctype_enabled(page)
+get_papers_count(my_url)
+item_source_d <- petro.One:::get_item_source(page)
+# item_source
+item_source_d <- trimws(gsub("\n", "",item_source_d))
+item_source_d
+# strsplit(item_source, " ")
+# data.frame(item_source = as.character(item_source),
+#                                  stringsAsFactors = FALSE)
+# papers_by_type(my_url)
+```
+
+```{r}
+item_source <- gsub("-", "", item_source_d)
+item_source_df <- read.table(text =item_source, stringsAsFactors = FALSE)
+if (ncol(item_source_df) > 4) {
+    item_source_df$V3 <- tolower(paste(item_source_df$V3, item_source_df$V4, sep = "-"))
+    item_source_df$V4 <- item_source_df$V5
+    item_source_df <- item_source_df[, 1:4]
+} else {
+    item_source_df$V3 <- tolower(item_source_df$V3)
+}
+item_source_df
+```
+
+### disabled
+
+```{r}
+x <- item_source_d
+pattern <- "^([^\\s]+\\s+)"
+m1       <- regexpr(pattern, x, perl = TRUE)
+paper_id <- trimws(regmatches(x, m1, invert = FALSE))
+s1r      <- trimws(gsub(pattern, "", x, perl = TRUE))
+
+x2 <- gsub("-", "", s1r)
+
+pattern <- "^([^\\s]+\\s+)"
+m2     <- regexpr(pattern, x2, perl = TRUE)
+source <- trimws(regmatches(x2, m2, invert = FALSE))
+s2r    <- gsub(pattern, "", x2, perl = TRUE)
+x3 <- s2r
+
+pattern <- "\\d+$"
+m3   <-  regexpr(pattern, x3, perl = TRUE)
+year <- trimws(regmatches(x3, m3, invert = FALSE))
+type <- trimws(gsub(pattern, "", x3, perl = TRUE))
+type
+
+data.frame(paper_id, source, type, year)
+```
+
+```{r}
+break_by_pattern <- function(x, pattern) {
+    m     <- regexpr(pattern, x, perl = TRUE)
+    left  <- trimws(regmatches(x, m, invert = FALSE))
+    right <- trimws(gsub(pattern, "", x, perl = TRUE))
+    list(left, right)
+}
+
+pattern <- "^([^\\s]+\\s+)"
+paper_id  <- break_by_pattern(item_source_d, pattern)[[1]]
+right     <- break_by_pattern(item_source_d, pattern)[[2]]
+right     <- gsub("-", "", right)
+
+pattern <- "^([^\\s]+\\s+)"
+source <- break_by_pattern(right, pattern)[[1]]
+right    <- break_by_pattern(right, pattern)[[2]]
+
+pattern <- "\\d+$"
+year  <- break_by_pattern(right, pattern)[[1]]
+type <- break_by_pattern(right, pattern)[[2]]
+
+df <- data.frame(paper_id, source, type, year, stringsAsFactors = FALSE)
+df
+```
+
+
+
+
+
+
+```{r}
+grepl("chapter", item_source_d, perl = TRUE, ignore.case = TRUE)
+
+```
+
+
+## example when the selector for paper types is enabled
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "wellhead",
+                          how = "any")
+
+page <- xml2::read_html(my_url)
+petro.One:::is_dctype_enabled(page)
+get_papers_count(my_url)
+item_source_e <- petro.One:::get_item_source(page)
+# item_source
+item_source_e <- trimws(gsub("\n", "",item_source_e))
+item_source_e
+# strsplit(item_source, " ")
+# data.frame(item_source = as.character(item_source),
+#                                  stringsAsFactors = FALSE)
+# papers_by_type(my_url)
+```
+
+```{r}
+x <- item_source_e
+pattern <- "^([^\\s]+\\s+)"
+# pattern <- "^([^\\s]+)|\\d.+$"
+# item_source_2 <- gsub("-", "", item_source_e)
+# substr(item_source_2, 1, 11)
+# gsub("^([^\\s]+)", "\\1", item_source_e, perl = TRUE)
+m1 <- regexpr(pattern, x, perl = TRUE)
+s1l <- regmatches(x, m1, invert = FALSE)
+s1r <- gsub(pattern, "", x, perl = TRUE)
+
+x2 <- gsub("-", "", s1r)
+m2 <- regexpr(pattern, x2, perl = TRUE)
+s2l <- trimws(regmatches(x2, m2, invert = FALSE))
+s2r <- gsub(pattern, "", x2, perl = TRUE)
+x3 <- s2r
+
+pattern <- "\\d+$"
+m3 <-  regexpr(pattern, x3, perl = TRUE)
+s3r <- regmatches(x3, m3, invert = FALSE)
+s3l <- trimws(gsub(pattern, "", x3, perl = TRUE))
+s3l
+# s1r <- unlist(regmatches(x, m, invert = TRUE))
+# s1l
+# regmatches(item_source_e, regexpr(pattern, item_source_e))
+# strsplit(item_source_2, "(?<=^..)(?=[A-Z])", perl=TRUE)
+# item_source_ef <- read.table(text =item_source2, stringsAsFactors = FALSE, sep = " ")
+# if (ncol(item_source_ef) > 4) {
+#     item_source_ef$V3 <- tolower(paste(item_source_ef$V3, item_source_ef$V4, sep = "-"))
+#     item_source_ef$V4 <- item_source_ef$V5
+#     item_source_ef <- item_source_ef[, 1:4]
+# } else {
+#     item_source_ef$V3 <- tolower(item_source_ef$V3)
+# }
+# item_source_ef
+```
+
+
+```{r}
+x <- item_source_e
+pattern <- "^([^\\s]+\\s+)"
+m1       <- regexpr(pattern, x, perl = TRUE)
+paper_id <- trimws(regmatches(x, m1, invert = FALSE))
+s1r      <- trimws(gsub(pattern, "", x, perl = TRUE))
+
+x2 <- gsub("-", "", s1r)
+
+pattern <- "^([^\\s]+\\s+)"
+m2     <- regexpr(pattern, x2, perl = TRUE)
+source <- trimws(regmatches(x2, m2, invert = FALSE))
+s2r    <- gsub(pattern, "", x2, perl = TRUE)
+x3 <- s2r
+
+pattern <- "\\d+$"
+m3   <-  regexpr(pattern, x3, perl = TRUE)
+year <- trimws(regmatches(x3, m3, invert = FALSE))
+type <- trimws(gsub(pattern, "", x3, perl = TRUE))
+type
+
+data.frame(paper_id, source, type, year)
+```
+
+
+```{r}
+break_by_pattern <- function(x, pattern) {
+    m     <- regexpr(pattern, x, perl = TRUE)
+    left  <- trimws(regmatches(x, m, invert = FALSE))
+    right <- trimws(gsub(pattern, "", x, perl = TRUE))
+    list(left, right)
+}
+
+pattern <- "^([^\\s]+\\s+)"
+paper_id  <- break_by_pattern(item_source_e, pattern)[[1]]
+right     <- break_by_pattern(item_source_e, pattern)[[2]]
+right     <- gsub("-", "", right)
+
+pattern <- "^([^\\s]+\\s+)"
+source <- break_by_pattern(right, pattern)[[1]]
+right    <- break_by_pattern(right, pattern)[[2]]
+
+pattern <- "\\d+$"
+year  <- break_by_pattern(right, pattern)[[1]]
+type <- break_by_pattern(right, pattern)[[2]]
+
+df <- data.frame(paper_id, source, type, year, stringsAsFactors = FALSE)
+df
+```
+
+```{r}
+library(dplyr)
+library(tibble)
+
+# dplyr::group_by(df, type)
+df2 <- df %>%
+    group_by(type) %>%
+    summarize (value = n()) %>%
+    rename(name = type)
+
+as.tibble(df2)
+```
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic", 
+                          how = "all")
+mecha <- read_multidoc(my_url)
+mecha
+# Error in onepetro_page_to_dataframe(url) : Dataframe sizes different
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic model", 
+                          how = "all")
+
+summary_by_doctype(read_onepetro(my_url))
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic physics", 
+                          how = "all")
+my_url
+get_papers_count(my_url)
+mecha <- read_multidoc(my_url)
+mecha
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+```
+
+## error related to dataframe sizes not URL
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic correlation", 
+                          how = "all")
+my_url
+get_papers_count(my_url)
+summary_by_doctype(read_onepetro(my_url))
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+
+## error related to dataframe sizes not URL
+```
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic theory", 
+                          how = "all")
+
+summary_by_doctype(read_onepetro(my_url))
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic vertical lift", 
+                          how = "all")
+my_url
+class(my_url)
+get_papers_count(my_url)
+op <- read_onepetro(my_url)
+class(op)
+
+papers_by_type(my_url)
+
+# summary_by_doctype(op)
+# Error in (ix + 1):len_list : argument of length 0
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic tubing", 
+                          how = "all")
+my_url
+get_papers_count(my_url)
+papers_by_type(my_url)
+# summary_by_doctype(read_onepetro(my_url))
+# Error in (ix + 1):len_list : argument of length 0
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic performance", 
+                          how = "all")
+my_url
+get_papers_count(my_url)
+x <- xml2::read_html(my_url)
+papers_by_type(my_url)
+# read_multidoc(my_url)
+# summary_by_doctype(x)
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+```
+
+
+    [18] "Unconventional Resources Technology Conference {28}"       
+    [19] "World Petroleum Congress {8}"                              
+    [20] "All types"                                                 
+    [21] "Chapter {1}"                                               
+    [22] "Conference paper {2,626}"                                  
+    [23] "General {15}"                                              
+    [24] "Journal paper {645}"                                       
+    [25] "Media {1}"                                                 
+    [26] "Presentation {9}"                                          
+    [27] "Standard {2}"                                              
+    ix: 20 
+
+
+```{r}
+library(petro.One)
+library(magrittr)
+library(rvest)
+
+my_url <- make_search_url(query = "mechanistic performance", 
+                          how = "any")
+page <- xml2::read_html(my_url)
+# petro.One:::is_dctype_enabled(page)
+
+pub_doc <- page %>%
+    html_nodes(".facet-unit-right") %>%
+    html_nodes("select") %>%
+    .[2] %>%
+    html_attr("class")
+print(pub_doc)
+grepl("disabled", pub_doc)
+```
+
+
+
+```{r}
+pub_doc <- page %>%
+    html_nodes(".facet-unit-right") %>%
+    html_nodes("select") %>%
+    .[2] %>%
+    html_attr("class")
+print(pub_doc)
+grepl("disabled", pub_doc)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic performance", 
+                          how = "all")
+page <- xml2::read_html(my_url)
+petro.One:::is_dctype_enabled(page)
+```
+
+
+```{r}
+div <- xml_find_all(x, ".//div")
+xml_path(div)
+```
+
+```{r}
+xml_attr(div, "id")
+```
+
+```{r}
+# this query works without error 1746 rows
+library(petro.One)
+
+my_url <- make_search_url(query = "IPR", 
+                          how = "all")
+
+mecha <- read_multidoc(my_url)
+mecha
+```
+
+
+```{r}
+library(xml2)
+x <- xml2::read_html(my_url)
+summary_by_doctype(x)
+```
+
+```{r}
+xml_children(x)
+```
+
+```{r}
+xml_find_all(x, ".//h2")
+xml_find_all(x, ".//result-item-source")
+xml_find_all(x, ".//facet-unit-right")
+xml_find_all(x, ".//facet-unit-left")
+# xml_path(div)
+```
+
+```{r}
+rvest::html_nodes(x, "h2")
+rvest::html_nodes(x, ".result-item-source")
+rvest::html_nodes(x, ".facet-unit-left")
+rvest::html_nodes(x, ".facet-unit-left")
+```
+
+## with error
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic performance", 
+                          how = "all")
+
+y <- xml2::read_html(my_url)
+# summary_by_doctype(y)
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+rvest::html_nodes(y, "h2")
+rvest::html_nodes(y, ".result-item-source")
+rvest::html_nodes(y, ".facet-unit-left")
+rvest::html_nodes(y, ".facet-unit-left")
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic tubing", 
+                          how = "all")
+my_url
+y <- xml2::read_html(my_url)
+# summary_by_doctype(y)
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+rvest::html_nodes(y, "h2")
+rvest::html_nodes(y, ".result-item-source")
+rvest::html_nodes(y, ".facet-unit-left")
+rvest::html_nodes(y, ".facet-unit-left")
+
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic tubing", 
+                          how = "all")
+my_url
+y <- xml2::read_html(my_url)
+# summary_by_doctype(y)
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+rvest::html_nodes(y, "h2")
+rvest::html_nodes(y, ".result-item-source")
+rvest::html_nodes(y, ".facet-unit-left")
+rvest::html_nodes(y, ".facet-unit-left")
+
+# return 0 records but in reality it has 1265
+```
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic correlation", 
+                          how = "all")
+
+my_url
+get_papers_count(my_url)
+y <- xml2::read_html(my_url)
+# summary_by_doctype(y)
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+rvest::html_nodes(y, "h2")
+rvest::html_nodes(y, ".result-item-source")
+rvest::html_nodes(y, ".facet-unit-left")
+rvest::html_nodes(y, ".facet-unit-left")
+
+
+# return 8 records but in reality it has 2235
+summary_by_doctype(y)
+# Error in data.frame(name, value, stringsAsFactors = FALSE) : arguments imply differing number of rows: 2, 0
+```
+
+
+```{r}
+# url read from OnePetro
+url <- "https://www.onepetro.org/search?q=\\%22mechanistic+correlation\\%22&peer_reviewed=&published_between=&from_year=&to_year="
+
+z <- xml2::read_html(url)
+summary_by_doctype(z)
+```
+
+```{r}
+# url built by function
+url <- "https://www.onepetro.org/search?q=\'mechanistic+correlation\'&peer_reviewed=&published_between=&from_year=&to_year="
+
+z <- xml2::read_html(url)
+summary_by_doctype(z)
+
+# changed quotes inside the query word by single quotes and now works!!
+```

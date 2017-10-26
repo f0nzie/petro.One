@@ -1,0 +1,169 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+custom_stopwords <- "about
+across
+after
+aid
+all
+along
+and
+ant
+approach
+around
+back
+based
+before
+behind
+between
+big
+black
+bound
+can
+case
+closer
+cohort
+dancer
+democratic
+determine
+did
+distinguish
+distinguished
+due
+editing
+east
+enough
+establish
+fast
+first
+for
+four
+from
+front
+fully
+further
+games
+great
+greater
+have
+high
+highly
+higher
+holidays
+how
+imperialist
+incorporating
+initial
+issues
+its
+juan
+large
+late
+latest
+long
+look
+low
+memories
+middle
+more
+much
+new
+next
+non
+north
+novel
+objects
+off
+old
+only
+one
+other
+over
+past
+perceptually
+pleasant
+pre
+project
+province
+quickly
+realize
+really
+recent
+red
+related
+river
+san
+second
+self
+short
+small
+some
+south
+suggestions
+support
+status
+study
+their
+through
+the
+this
+toward
+trough
+tricks
+true
+two
+three
+under
+used
+using
+use
+very
+via
+west
+western
+what
+when
+where
+while
+why
+wide
+whilst
+whole
+with
+within
+work
+you
+young
+"
+
+custom_stopwords <- unlist(strsplit(custom_stopwords, split = "\n"))
+```
+
+```{r}
+# save custom words to .rda file in ./data
+stopwords_rda <- paste(system.file("data", package = "petro.One"), 
+                       "stopwords.rda", sep = "/")
+# stopwords_rda
+save(custom_stopwords, file = stopwords_rda)
+```
+
+```{r}
+# write to text file in ./extdata
+stopwords_txt <- paste(system.file("extdata", package = "petro.One"), 
+                       "stopwords.txt", sep = "/")
+
+write.table(custom_stopwords, file = stopwords_txt, 
+            quote = FALSE, row.names = FALSE, col.names = FALSE)
+```
+
+
+```{r}
+library(petro.One)
+
+system.file("data", package = "petro.One")
+system.file("extdata", package = "petro.One")
+```
+

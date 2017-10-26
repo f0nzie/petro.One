@@ -1,0 +1,488 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "BHP", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "IPR", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "VLP", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "FGS", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "wellhead", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "bottomhole", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "nodal analysis", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "BHFP", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "BHT", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "PDG", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "heavy oil", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "oil price", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "Prosper", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "GAP", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "Petroleum Experts", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "inflow performance", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "tubing performance", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "digital", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "digital oilfield", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "field of the future", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "intelligent field", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "subsurface", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "downhole", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "integrated operations", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "production engineering", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "production technology", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "production optimization", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well network", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "PVT correlation", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "gas compressibility", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "z factor", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "equation of state", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "gas lift", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "choke control", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "reservoir simulation", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "reservoir model", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well model", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "industrial drilling", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "deepwater drilling", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "blowout", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "completion costs", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "monte carlo", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "montecarlo", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+```
+
+
+

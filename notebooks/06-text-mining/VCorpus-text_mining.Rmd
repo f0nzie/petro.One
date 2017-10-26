@@ -1,0 +1,449 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+library("tm")
+
+p1 <- onepetro_page_to_dataframe("1000_conference.html")
+p2 <- onepetro_page_to_dataframe("2000_conference.html")
+p3 <- onepetro_page_to_dataframe("3000_conference.html")
+
+nn_papers <- rbind(p1, p2, p3)
+nn_papers
+
+
+vdocs <- VCorpus(VectorSource(nn_papers$title_data))
+```
+
+```{r}
+vdocs
+```
+
+
+```{r}
+# convert to lowercase
+vdocs <- tm_map(vdocs, content_transformer(tolower))
+vdocs[[1]]$content
+```
+
+```{r}
+for (i in 1:5) {
+    cat(i, vdocs[[i]]$content, "\n")
+}
+```
+
+```{r}
+vdocs <- tm_map(vdocs, removeWords, stopwords("english"))
+```
+
+
+```{r}
+tdm <- TermDocumentMatrix(vdocs)
+
+tdm.matrix <- as.matrix(tdm)
+tdm.rs <- sort(rowSums(tdm.matrix), decreasing=TRUE)
+tdm.df <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+tdm.df
+```
+
+
+```{r}
+# words with punctuation
+head(grep("[[:punct:]]", tdm.df$word, value = TRUE))
+tail(grep("[[:punct:]]", tdm.df$word, value = TRUE))
+```
+
+```{r warning=FALSE}
+library("wordcloud")
+
+set.seed(1234)
+wordcloud(words = tdm.df$word, freq = tdm.df$freq, min.freq = 50,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+## removing custom stopwords
+
+```{r}
+# dataset with package
+data("stopwords")
+head(custom_stopwords)
+```
+
+
+```{r}
+# manual call
+# we see several common use words such as: use, using, new
+load(file = "../data/stopwords.rda")
+head(custom_stopwords)
+```
+
+```{r}
+# this is one way to remove custom stopwords
+vdocs <- tm_map(vdocs, removeWords, custom_stopwords)
+```
+
+```{r warning=FALSE}
+library(wordcloud)
+
+# remove custom stopwords using control
+ctrl <- list(stopwords = custom_stopwords)
+
+tdm <- TermDocumentMatrix(vdocs, control = ctrl)
+
+tdm.matrix <- as.matrix(tdm)
+tdm.rs <- sort(rowSums(tdm.matrix), decreasing=TRUE)
+tdm.df <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+
+set.seed(1234)
+wordcloud(words = tdm.df$word, freq = tdm.df$freq, min.freq = 50,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+```{r}
+# now we see that common words like using, new, based are gone
+# There are some words with punctuation that we don't want
+head(grep("[[:punct:]]", tdm.df$word, value = TRUE), 50)
+# we want to keep the dashes bu remove everything else
+# real-time data-driven  3-d  cased-hole  deep-water  multi-phase  bottom-hole, etc
+```
+
+
+
+```{r warning=FALSE}
+# this is one way to remove punctuation
+vdocs <- tm_map(vdocs, content_transformer(removePunctuation), preserve_intra_word_dashes = TRUE)
+
+tdm <- TermDocumentMatrix(vdocs)
+
+tdm.matrix <- as.matrix(tdm)
+tdm.rs <- sort(rowSums(tdm.matrix), decreasing=TRUE)
+tdm.df <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+
+grep("[[:punct:]]", tdm.df$word, value = TRUE)
+# there are 455 words with intra-word dashes
+```
+
+## plotting with intra-word dashes
+
+```{r warning=FALSE}
+set.seed(1234)
+wordcloud(words = tdm.df$word, freq = tdm.df$freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+## stemming for common root words
+
+```{r warning=FALSE}
+vdocs <- tm_map(vdocs, stemDocument)
+
+tdm <- TermDocumentMatrix(vdocs)
+
+tdm.matrix <- as.matrix(tdm)
+tdm.rs <- sort(rowSums(tdm.matrix), decreasing=TRUE)
+tdm.df <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+
+set.seed(1234)
+wordcloud(words = tdm.df$word, freq = tdm.df$freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+
+# we notice that words with the same root: reservoir(s), network(s), fracture, fracturing, technology, technologies have dissapeared and replaced by the root.
+```
+
+## Two-grams
+
+```{r warning=FALSE}
+# this time we will remove all punctuation, all whitespaces, convert to lowercase,
+# without stemming
+
+vdocs <- VCorpus(VectorSource(nn_papers$title_data))
+
+# convert to lowercase
+vdocs <- tm_map(vdocs, content_transformer(tolower))
+
+# vdocs <- tm_map(vdocs, removeNumbers)             # if we remove the number CO2 and 3D won't be recognized
+
+# remove built-in stopwords
+vdocs <- tm_map(vdocs, removeWords, stopwords("english"))
+
+# remove custom stopwords
+# load(file = "../data/stopwords.rda")
+data("stopwords")
+vdocs <- tm_map(vdocs, removeWords, custom_stopwords)
+
+vdocs <- tm_map(vdocs, stripWhitespace)
+
+vdocs <- tm_map(vdocs, removePunctuation)
+
+tdm <- TermDocumentMatrix(vdocs)
+
+tdm.matrix <- as.matrix(tdm)
+tdm.rs <- sort(rowSums(tdm.matrix), decreasing=TRUE)
+tdm.df <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+
+set.seed(1234)
+wordcloud(words = tdm.df$word, freq = tdm.df$freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+
+## all punctuation has been removed. Words like real-time, deep-water have been
+# split and are now have their own frequency
+
+```
+
+```{r}
+library(RWeka)
+
+options(mc.cores=1)
+twogramTokenizer <- function(x) {
+    NGramTokenizer(x, Weka_control(min=2, max=2))
+}
+
+tdm2 <- TermDocumentMatrix(vdocs,
+                           control=list(tokenize=twogramTokenizer))
+
+tdm2.matrix <- as.matrix(tdm2)
+tdm2.rs <- sort(rowSums(tdm2.matrix), decreasing=TRUE)
+tdm2.df <- data.frame(word = names(tdm2.rs), freq = tdm2.rs, stringsAsFactors = FALSE)
+head(tdm2.df, 60)
+# the only problem here is that "neural network" and "neural networks" are being treated
+# like separate 2-words
+```
+
+
+```{r warning=FALSE}
+# we change the minimum frequency of appearance otherwise will be too crowded
+set.seed(1234)
+wordcloud(words = tdm2.df$word, freq = tdm2.df$freq, min.freq = 15,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+```{r fig.asp=1.1}
+library(ggplot2)
+p1 <- ggplot(subset(tdm2.df, freq > 25), aes(x=word, y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + 
+    coord_flip()
+
+p2 <- ggplot(subset(tdm2.df, freq > 25), aes(x=reorder(word, freq), y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + 
+    coord_flip()
+
+require("gridExtra")
+grid.arrange(arrangeGrob(p1, p2))
+```
+
+```{r fig.asp=1.1}
+p3 <- ggplot(subset(tdm2.df, (freq <= 25 & freq > 15)), aes(x=reorder(word, freq), y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + ggtitle("Between 25 and 15") +
+    coord_flip()
+print(p3)
+```
+
+
+## Three-grams
+Wordclouds don not seem to be applicable in this case because of the lentgh of the words.
+
+```{r}
+library(RWeka)
+
+options(mc.cores=1)
+threegramTokenizer <- function(x) {
+    NGramTokenizer(x, Weka_control(min=3, max=3))
+}
+
+tdm3 <- TermDocumentMatrix(vdocs,
+                           control=list(tokenize=threegramTokenizer))
+
+tdm3.matrix <- as.matrix(tdm3)
+tdm3.rs <- sort(rowSums(tdm3.matrix), decreasing=TRUE)
+tdm3.df <- data.frame(word = names(tdm3.rs), freq = tdm3.rs, stringsAsFactors = FALSE)
+head(tdm3.df, 20)
+
+
+```
+
+```{r}
+# set.seed(1234)
+wordcloud(words = tdm3.df$word, scale = c(1,3), freq = tdm3.df$freq, min.freq = 10,
+          max.words=30, random.order=FALSE, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+```{r fig.asp=1.1}
+library(ggplot2)
+
+p1 <- ggplot(subset(tdm3.df, freq > 7), aes(x=word, y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + 
+    coord_flip()
+
+p2 <- ggplot(subset(tdm3.df, freq > 7), aes(x=reorder(word, freq), y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + 
+    coord_flip()
+
+require("gridExtra")
+grid.arrange(arrangeGrob(p1, p2))
+```
+
+## Explore frequent terms and their associations
+
+```{r}
+# Explore frequent terms and their associations
+# words that occur at least 100 times
+findFreqTerms(tdm, lowfreq = 100)
+```
+
+```{r}
+# analyze the association between frequent terms
+findAssocs(tdm, terms = "artificial", corlimit = 0.25)
+findAssocs(tdm, terms = "development", corlimit = 0.2)
+findAssocs(tdm, terms = "reservoir", corlimit = 0.2)
+findAssocs(tdm, terms = "modeling", corlimit = 0.1)
+```
+
+```{r}
+# Plot word frequencies
+barplot(tdm.df[1:10,]$freq, las = 2, names.arg = tdm.df[1:10,]$word,
+        col ="lightblue", main ="Most frequent words",
+        ylab = "Word frequencies")
+```
+
+
+```{r}
+# Plot word frequencies
+barplot(tdm2.df[1:10,]$freq, las = 2, names.arg = tdm2.df[1:10,]$word,
+        col ="lightblue", main ="Most frequent words",
+        ylab = "Word frequencies")
+```
+
+
+## Remove sparse items
+
+```{r}
+tdm.sp <- removeSparseTerms(tdm, 0.2)
+tdm.sp
+```
+
+
+```{r}
+findAssocs(tdm, c("neural" , "production"), corlimit=0.15)
+```
+
+```{r}
+findAssocs(tdm, c("neural" , "reservoir"), corlimit=0.15)
+```
+
+## Clustering
+
+```{r}
+tdm.rst <- removeSparseTerms(tdm, 0.98)
+```
+
+
+```{r}
+library(cluster)   
+
+tdm.rst <- removeSparseTerms(tdm, 0.98)
+
+d <- dist(tdm.rst, method="euclidian")   
+fit <- hclust(d=d, method="complete")   # for a different look try substituting: method="ward.D"
+fit 
+```
+
+```{r}
+plot(fit, hang=-1)   
+```
+
+```{r}
+library(cluster)   
+
+tdm.rst <- removeSparseTerms(tdm, 0.88)
+
+d <- dist(tdm.rst, method="euclidian")   
+fit <- hclust(d=d, method="complete")   # for a different look try substituting: method="ward.D"
+plot(fit)   
+```
+
+```{r}
+library(cluster)   
+
+tdm.rst <- removeSparseTerms(tdm, 0.92)
+
+d <- dist(tdm.rst, method="euclidian")   
+fit <- hclust(d=d, method="complete")   # for a different look try substituting: method="ward.D"
+plot(fit)   
+```
+
+
+```{r}
+library(cluster)   
+
+tdm.rst <- removeSparseTerms(tdm, 0.95)
+
+d <- dist(tdm.rst, method="euclidian")   
+fit <- hclust(d=d, method="complete")   # for a different look try substituting: method="ward.D"
+plot(fit)   
+```
+
+
+```{r}
+library(cluster)   
+
+tdm.rst <- removeSparseTerms(tdm, 0.97)
+
+d <- dist(tdm.rst, method="euclidian")   
+fit <- hclust(d=d, method="complete")   # for a different look try substituting: method="ward.D"
+plot(fit)   
+```
+
+
+## K-means clustering
+The k-means clustering method will attempt to cluster words into a specified number of groups (in this case 2), such that the sum of squared distances between individual words and one of the group centers. You can change the number of groups you seek by changing the number specified within the kmeans() command.
+
+```{r}
+library(fpc)   
+
+tdm.rst <- removeSparseTerms(tdm, 0.97)
+
+d <- dist(tdm.rst, method="euclidian")   
+kfit <- kmeans(d, 2) 
+
+clusplot(as.matrix(d), kfit$cluster, color=T, shade=T, labels=2, lines=0)   
+```
+
+
+
+
+```{r}
+library(fpc)   
+tdm.rst <- removeSparseTerms(tdm, 0.94)
+
+d <- dist(tdm.rst, method="euclidian")   
+kfit <- kmeans(d, 2) 
+
+clusplot(as.matrix(d), diss = FALSE,
+         kfit$cluster, color=T, shade=T, labels=2, lines=0, cex.txt = 0.9)   #labels = 3, cex.txt = 0.6
+```
+
+
+
+
+```{r}
+library(graph)
+library(Rgraphviz)
+
+#inspect frequent words
+freq.terms <- findFreqTerms(tdm, lowfreq=150)
+plot(tdm, term = freq.terms, corThreshold = 0.05, weighting = T)
+```
