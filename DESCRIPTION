@@ -2,9 +2,7 @@ Package: petro.One
 Type: Package
 Title: Statistics and Text Mining for Oil and Gas Papers from OnePetro Metadata
 Version: 0.1.0
-Authors@R: person("Alfonso", "Reyes", role = c("aut", "cre"), email = "alfonso.reyes@oilgainsanalytics.com")
-Author: Alfonso Reyes <alfonso.reyes@oilgainsanalytics.com>
-Maintainer: Alfonso Reyes <alfonso.reyes@oilgainsanalytics.com>
+Authors@R: person("Alfonso R.", "Reyes", role = c("aut", "cre"), email = "alfonso.reyes@oilgainsanalytics.com")
 Description: Application that retrieves papers metadata from the OnePetro website.
     Thousands of papers on oil and gas live in OnePetro. By retrieving metadata 
     from the search queries, a summary of papers that match the
