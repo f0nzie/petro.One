@@ -1,3 +1,6 @@
+## 0.1.0.9018
+* submitting 0.1.0 to CRAN on 20171026 at 20:00
+
 ## 0.1.0.9017
 * return a tibble instead of a dataframe in term_frequency
 * add example to install from github develop 
