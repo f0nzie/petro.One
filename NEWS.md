@@ -1,4 +1,5 @@
 ## 0.1.0.9018
+* use devtools from gtihub to prevent errors with Travis
 * remove author and maintainer from Description at suggestion from Uwe Ligges
 * removed the R. from the author name
 * Returned by CRAN with 2 NOTES
