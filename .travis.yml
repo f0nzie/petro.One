@@ -4,8 +4,8 @@ language: R
 sudo: false
 cache: packages
 
-r_github_packages:
-  - hadley/devtools
+# r_github_packages:
+#  - hadley/devtools
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
