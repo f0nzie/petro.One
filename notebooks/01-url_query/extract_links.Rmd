@@ -1,0 +1,198 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+https://stackoverflow.com/a/36723520/5270873
+
+```{r}
+library(xml2)
+library(rvest)
+
+URL <- "http://stackoverflow.com/questions/3746256/extract-links-from-webpage-using-r"
+
+pg <- read_html(URL)
+
+head(html_attr(html_nodes(pg, "a"), "href"))
+```
+
+
+
+
+
+https://stackoverflow.com/a/35247304/5270873
+
+```{r}
+library(rvest)
+
+page=read_html("http://www.yelp.com/search?find_loc=New+York,+NY,+USA")
+page %>% html_nodes(".biz-name") %>% html_attr('href')
+```
+
+## Using R to scrape the link address of a downloadable file from a web page?
+https://stackoverflow.com/questions/31517121/using-r-to-scrape-the-link-address-of-a-downloadable-file-from-a-web-page
+
+```{r}
+library(rvest)
+realtime.page <- "http://www.acleddata.com/data/realtime-data/"
+realtime.html <- read_html(realtime.page)
+
+realtime.html %>% 
+    html_node(xpath = "/html/body/div/div/div/div[1]/div/article/div/ul[1]/li[2]/a") %>% 
+    html_attr("href")
+```
+
+
+```{r}
+
+```
+
+https://stackoverflow.com/a/31525104/5270873
+
+```{r}
+library(rvest)
+library(stringr)
+
+page <- read_html("http://www.acleddata.com/data/realtime-data/")
+
+page %>%
+  html_nodes("a") %>%        # find all links
+  html_attr("href") %>%      # get the url
+  str_subset("\\.xlsx") %>%  # find those that end in xlsx
+  .[[1]]                     # look at the first one
+```
+
+
+```{r}
+library(rvest)
+
+x <- "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Picture" %>% 
+  read_html() %>% 
+  html_nodes("#mw-content-text table:nth-child(55)")
+
+html_table(x)
+```
+
+
+```{r}
+trace(rvest:::html_table.xml_node, quote({ 
+  values      <- lapply(lapply(cells, html_node, "a"), html_attr, name = "href")
+  values[[1]] <- html_text(cells[[1]])
+}), at = 14)
+```
+html_table essentially extracts the cells of the html table and runs html_text on them. All we need to do is replace that by extracting the <a> tag from each cell and running html_attr(., "href") instead.
+
+```{r}
+html_table(x)
+```
+
+
+```{r}
+library(rvest)
+
+url <- "http://www.ajnr.org/content/30/7/1402.full"
+page <- read_html(url)
+
+# First find all the urls
+table_urls <- page %>% 
+  html_nodes(".table-inline li:nth-child(1) a") %>%
+  html_attr("href") %>%
+  xml2::url_absolute(url)
+
+table_urls
+# Then loop over the urls, downloading & extracting the table
+# lapply(table_urls, . %>% 
+#            read_html() %>% 
+#            html_table())
+```
+
+
+```{r}
+main_url <- "http://www.ajnr.org/content/30/7/1402/"
+urls <- paste(main_url, c("T1.expansion", "T2.expansion", "T3.expansion", "T4.expansion"), ".html", sep = "")
+
+urls 
+tables <- list()
+for(i in seq_along(urls))
+{
+  total <- readHTMLTable(urls[i])
+  n.rows <- unlist(lapply(total, function(t) dim(t)[1]))
+  tables[[i]] <- as.data.frame(total[[which.max(n.rows)]])
+}
+tables
+```
+
+```{r}
+readHTMLTable(urls[1])
+```
+
+
+```{r}
+library(rvest)
+library(XML)
+library(httr)
+
+url <- "http://en.wikipedia.org/wiki/List_of_The_Simpsons_episodes"
+doc <- content(GET(url))
+
+getHrefs <- function(node, encoding) {  
+  x <- xmlChildren(node)$a 
+  if (!is.null(x)) paste0("http://", parseURI(url)$server, xmlGetAttr(x, "href"), " | ", xmlValue(x) ) else xmlValue(xmlChildren(node)$text) 
+}
+
+tab <- readHTMLTable(doc, which = 3, elFun = getHrefs)
+head(tab[, 1:4])
+```
+
+
+
+## with error
+
+
+```{r}
+library(rvest)
+library(XML)
+
+pg <- htmlParse("http://www.bvl.com.pe/includes/empresas_todas.dat")
+pg %>% 
+    html_nodes("a") %>% 
+    html_attr("href")
+```
+
+
+```{r}
+
+links <- function(URL) 
+{
+    getLinks <- function() {
+        links <- character()
+        list(a = function(node, ...) {
+                links <<- c(links, xmlGetAttr(node, "href"))
+                node
+             },
+             links = function() links)
+        }
+    h1 <- getLinks()
+    htmlTreeParse(URL, handlers = h1)
+    h1$links()
+}
+
+links("https://www.bvl.com.pe/listado-de-empresas")
+```
+
+
+
+```{r}
+# Option 1
+library(RCurl)
+getHTMLLinks('https://www.bvl.com.pe/listado-de-empresas/')
+
+
+```
+
+```{r}
+# Option 2
+library(rvest)
+library(pipeR) # %>>% will be faster than %>%
+html("http://www.bvl.com.pe/includes/empresas_todas.dat")%>>% html_nodes("a") %>>% html_attr("href")
+```

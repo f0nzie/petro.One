@@ -1,0 +1,88 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petroOne)
+library(rvest)
+
+# test for smartwell query
+# source('./R/url.R')
+my_url <- make_search_url(query = "smartwell")
+my_url
+smartwell <- read_onepetro(my_url)
+
+results <- smartwell %>%
+  html_nodes("h2") %>%
+  html_text()
+
+results <- results[1]
+results
+
+as.numeric(gsub("[^\\d]+", "", results, perl=TRUE))
+
+```
+
+
+
+```{r}
+# test create_url for smartwell query
+
+my_url <- make_search_url(query = "smar twell", how = "all")
+my_url
+smartwell <- read_onepetro(my_url)
+
+results <- smartwell %>%
+  html_nodes("h2") %>%
+  html_text()
+
+results <- results[1]
+results
+as.numeric(gsub("[^\\d]+", "", results, perl=TRUE))
+# 0
+```
+
+
+```{r}
+# with file url.R sourced, create URL for query=completions
+my_url <- make_search_url(query = "completions")
+completions <- read_onepetro(my_url)
+
+papers <- completions %>%
+    html_nodes("h2") %>%
+    html_text()
+
+# extract the numeric part only
+as.numeric(gsub("[^\\d]+", "", papers[1], perl=TRUE))
+# 37653
+```
+
+
+```{r}
+# test function get_papers_count() with how = "all"
+# test that *neural* and *network* both appear in the papers
+
+my_url <- make_search_url(query = "neural network", how = "all")
+my_url
+get_papers_count(my_url)
+# 2998
+```
+
+```{r}
+# test function get_papers_count() with how = "any"
+# test that any of the words *neural* and *network* appear in the papers
+
+my_url <- make_search_url(query = "neural network", how = "any")
+my_url
+get_papers_count(my_url)
+# 3284
+```
+
+
+
+
+
+
+
+

@@ -1,0 +1,120 @@
+---
+title: "Text Mining of Permanent Downhole Gauges"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Text Mining of Permanent Downhole Gauges}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+library(petro.One)
+library(tm)
+
+my_url <- make_search_url(query = "Permanent Downhole Gauge", 
+                          how = "all")        
+
+get_papers_count(my_url)    # how many papers total
+papers_by_type(my_url)      # papers by type
+
+# create a dataframe of papers found
+df <- read_multidoc(my_url)
+df
+```
+
+```{r}
+library(petro.One)
+
+tf <- term_frequency(df)
+tf
+```
+
+```{r fig.height=9, fig.width=6}
+plot_wordcloud(tf, min.freq = 20)
+```
+
+
+```{r}
+library(petro.One)
+
+# plot two-grams
+# tf2 <- term_frequency_deep(df)
+tf2 <- term_frequency_n_grams(df, gram.min = 2, gram.max = 2)
+tf2
+```
+
+```{r, fig.height=10, fig.width=7}
+# plot 2-grams
+plot_wordcloud(tf2, min.freq = 5)
+```
+
+```{r}
+library(petro.One)
+plot_bars(tf2, min.freq = 10)
+```
+
+```{r}
+new_url <- make_search_url(query = "Permanent Downhole Gauge", 
+                          how = "all") 
+```
+
+
+```{r}
+library(petro.One)
+
+# plot two-grams
+# tf2 <- term_frequency_deep(df)
+tf3 <- term_frequency_n_grams(df, gram.min = 3, gram.max = 3)
+tf3
+```
+
+
+
+```{r}
+library(petro.One)
+plot_bars(tf3, min.freq = 3)
+```
+
+
+
+```{r}
+library(petro.One)
+
+# plot two-grams
+tf4 <- term_frequency_n_grams(df, gram.min = 4, gram.max = 4)
+tf4
+plot_bars(tf4, min.freq = 2)
+```
+
+
+
+```{r}
+library(petro.One)
+
+# plot two-grams
+tf12 <- term_frequency_n_grams(df, gram.min = 1, gram.max = 2)
+tf12
+plot_bars(tf12, min.freq = 20)
+```
+
+
+## dendogram
+
+```{r}
+TDM <- get_term_document_matrix(df)
+tdm <- TDM$tdm
+```
+
+
+```{r}
+library(graph)
+library(Rgraphviz)
+
+#inspect frequent words
+freq.terms <- findFreqTerms(tdm, lowfreq=30)
+plot(tdm, term = freq.terms, corThreshold = 0.10, weighting = T)
+```
+
+

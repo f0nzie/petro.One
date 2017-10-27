@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+## Pulling x1000 pages
+Onepetro starts the counting of records at 0 not 1.
+
+```{r}
+my_url <- make_search_url(query = "shale oil", 
+                          how = "all", 
+                          dc_type = "conference-paper",
+                          rows = 1000)
+
+get_papers_count(my_url)
+# 2578, dc_type = NULL
+# 2109, dc_type = "conference-paper"
+#  381, dc_type = "journal-paper"
+onepetro_page_to_dataframe(my_url)
+```
+
+We get 1000 rows of papers indicating only the number of rows in the query.
+In this case, paper "Discussion" is record #1000
+
+The next query should start at 1000.
+
+```{r}
+my_url <- make_search_url(query = "shale oil", 
+                          how = "all", 
+                          dc_type = "conference-paper",
+                          start = 1000,
+                          rows  = 1000)
+
+get_papers_count(my_url)
+# 2578, dc_type = NULL
+# 2578, dc_type = "conference-paper"
+#  381, dc_type = "journal-paper"
+onepetro_page_to_dataframe(my_url)
+```
+
+And the next x1000 page should start at 2000 as well.
+The size of the maximum page is rows=1000 always.
+This should give the rest 109 rows.
+
+```{r}
+my_url <- make_search_url(query = "shale oil", 
+                          how = "all", 
+                          dc_type = "conference-paper",
+                          start = 2000,
+                          rows  = 1000)
+
+get_papers_count(my_url)
+# 2578, dc_type = NULL
+# 2578, dc_type = "conference-paper"
+#  381, dc_type = "journal-paper"
+onepetro_page_to_dataframe(my_url)
+```
+
+## document type: journal-paper
+
+```{r}
+my_url <- make_search_url(query = "shale oil", 
+                          how = "all",
+                          dc_type = "journal-paper")
+
+get_papers_count(my_url)
+# 2577, dc_type = NULL
+# 2109, dc_type = "conference-paper"
+#  381, dc_type = "journal-paper"
+# 
+# total = 2577
+```
+
+```{r}
+my_url <- make_search_url(query = "shale oil", 
+                          how = "all",
+                          dc_type = "journal-paper",
+                          rows  = 1000)
+
+get_papers_count(my_url)
+# 381
+onepetro_page_to_dataframe(my_url)
+```
+
+

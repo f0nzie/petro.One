@@ -1,0 +1,285 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all")
+
+result <- read_onepetro(my_url)
+summary_by_doctype(result)
+
+```
+
+```{r}
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "conference-paper"
+                          )
+c_df <- read_multipage(my_url)
+
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "journal-paper"
+                          )
+j_df <- read_multipage(my_url)
+
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "general"
+                          )
+g_df <- read_multipage(my_url)
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "presentation"
+                          )
+p_df <- read_multipage(my_url)
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "chapter"
+                          )
+ch_df <- read_multipage(my_url)
+
+df <- rbind(c_df, j_df, g_df, p_df, ch_df)
+df
+
+```
+
+```{r}
+
+j_df
+```
+
+
+
+
+
+
+```{r}
+library(petro.One)
+
+my_url_1 <- make_search_url(query = "pressure transient analysis", 
+                          how = "all", 
+                          dc_type = "conference-paper",
+                          start = 0,
+                          rows  = 1000)
+
+paper_count <- get_papers_count(my_url_1)
+```
+
+```{r}
+# read url to dataframe
+df1 <- onepetro_page_to_dataframe(my_url_1)
+```
+
+```{r}
+# read page by page in thousands size
+pages <- paper_count %/% 1000 + ifelse((paper_count %% 1000) > 0, 1, 0)
+
+df_cum <- data.frame()
+
+for (page in 1:pages) {
+    # print(page)
+    url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all", 
+                          dc_type = "conference-paper",
+                          start = 1000 * page - 1000,
+                          rows  = 1000)
+    
+    # cat(page, 1000 * page - 1000, get_papers_count(url), "\n")
+    df <- onepetro_page_to_dataframe(url)
+    # print(df[1, ])   # print first row of dataframe
+    df_cum <- rbind(df_cum, df)  # accumulate dataframes
+    
+}
+
+df_cum
+    
+```
+
+
+```{r}
+library(petro.One)
+
+my_url_1 <- make_search_url(query = "pressure transient analysis", 
+                          how = "all", 
+                          dc_type = "conference-paper",
+                          start = 0,
+                          rows  = 1000)
+
+breakup_url(my_url_1)
+
+```
+
+
+```{r}
+domain <- urltools::domain(url)
+q       <- param_get(my_url_1, c("q"))[1,1]
+dc_type <- param_get(my_url_1, c("dc_type"))[1,1]
+peer_reviewed     <- param_get(my_url_1, c("peer_reviewed"))[1,1]
+published_between <- param_get(my_url_1, c("published_between"))[1,1]
+from_year <- param_get(my_url_1, c("from_year"))[1,1]
+to_year   <- param_get(my_url_1, c("to_year"))[1,1]
+
+# "q=\"pressure+transient+analysis\"&peer_reviewed=&published_between=&from_year=&to_year=&start=0&rows=1000&dc_type=conference-paper"
+```
+
+
+
+
+```{r}
+# 
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all", 
+                          dc_type = "conference-paper")
+
+read_multipage(my_url)
+```
+
+```{r}
+# 
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "chapter"
+                          )
+
+read_multipage(my_url)
+```
+
+
+
+
+
+
+
+```{r}
+library(petro.One)
+
+read_multipage <- function(url) {
+    # read page by page in thousands size
+    paper_count <- get_papers_count(url)
+    print(paper_count)
+    pages <- paper_count %/% 1000 + ifelse((paper_count %% 1000) > 0, 1, 0)
+
+    df_cum <- data.frame()
+
+    # url <- param_set(url, "dc_type", doctype)
+
+    for (page in 1:pages) {
+        url <- param_set(url, "start", 1000 * page - 1000)
+        url <- param_set(url, "rows", 1000)
+
+        # cat(page, 1000 * page - 1000, get_papers_count(url), "\n")
+        df <- onepetro_page_to_dataframe(url)
+        # print(df[1, ])   # print first row of dataframe
+        df_cum <- rbind(df_cum, df)  # accumulate dataframes
+    }
+    df_cum
+}
+
+
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "journal-paper"
+                          )
+
+read_multipage(my_url)
+
+
+```
+
+
+
+## dc_type=general
+```{r}
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "general"
+                          )
+
+read_multipage(my_url)
+```
+
+## dc_type=chapter
+
+```{r}
+
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "chapter"
+                          )
+
+read_multipage(my_url)
+```
+
+
+## dc_type=presentation
+
+```{r}
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "presentation"
+                          )
+
+read_multipage(my_url)
+```
+
+## dc_type=other
+
+```{r}
+my_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "other"
+                          )
+
+read_multipage(my_url)
+# Error in `[.data.frame`(source_data, , 5) : undefined columns selected
+```
+
+
+
+# dc_type=media
+```{r}
+m_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "media"
+                          )
+
+get_papers_count(m_url)
+read_multipage(m_url)
+# Error in onepetro_page_to_dataframe(url) : Dataframe sizes different
+```
+
+
+# dc_type=standard. needs to resend query
+```{r}
+st_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all",
+                          dc_type = "standard"
+                          )
+
+get_papers_count(st_url)
+read_multipage(st_url)
+# Error in open.connection(x, "rb") : HTTP error 500.
+```
+
+
+https://www.onepetro.org/search?q="pressure+transient+analysis"&peer_reviewed=&published_between=&from_year=&to_year=&dc_type=standard&start=-1000&rows=1000)
+[1] 0
+
+
+
+

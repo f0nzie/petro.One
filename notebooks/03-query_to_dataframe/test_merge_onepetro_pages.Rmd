@@ -1,0 +1,191 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+url <- "https://www.onepetro.org/search?q=smartwell&peer_reviewed=&published_between=&from_year=&to_year="
+
+webpage1 <- read_html(url)
+```
+
+
+```{r}
+webpage1
+```
+
+```{r}
+#Specifying the url for desired website to be scrapped
+url <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=10&to_year="
+
+#Reading the HTML code from the website
+webpage2 <- read_html(url)
+webpage2
+```
+
+
+```{r}
+#Loading the rvest package
+library('rvest')
+
+#Specifying the url for desired website to be scrapped
+url <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=100&to_year="
+
+#Reading the HTML code from the website
+webpage1 <- read_html(url)
+webpage1
+xml2::write_html(webpage1, file = "100rows.html")
+```
+
+
+
+
+```{r}
+#Specifying the url for desired website to be scrapped
+url2 <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=3000&to_year="
+
+#Reading the HTML code from the website
+webpage2 <- read_html(url2)
+xml2::write_html(webpage2, file = "0to3000.html")
+```
+
+
+```{r}
+#Specifying the url for desired website to be scrapped
+url2 <- "https://www.onepetro.org/search?start=2501&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=1000&to_year="
+
+#Reading the HTML code from the website
+webpage2 <- read_html(url2)
+xml2::write_html(webpage2, file = "2501to3500.html")
+```
+
+```{r}
+webpage <- read_html("1501to2500.html")
+```
+
+
+```{r}
+# append al html pages that were scrapped separately]
+acumm_page <- read_html("0to1000.html")
+xml2::write_html(acumm_page, file = "accum_page.html")
+
+# file.append("accum_page.html", "0to1000.html")
+
+file.append("accum_page.html", "1001to1500.html")
+
+file.append("accum_page.html", "1501to2500.html")
+
+file.append("accum_page.html", "2501to3500.html")
+```
+
+```{r}
+# webpage <- read_html("accum_page.html")
+
+# webpage <- read_html("1501to2500.html")
+# webpage <- read_html("0to1000.html")
+# webpage <- read_html("2501to3500.html")
+
+```
+
+
+```{r rows.print=10}
+webpage <- read_html("3000_conference.html")
+
+
+# title
+# .result-link
+
+#Using CSS selectors to scrap the rankings section
+title_data_html <- html_nodes(webpage, '.result-link')
+
+#Converting the ranking data to text
+title_data <- html_text(title_data_html)
+
+# data pre-processing
+title_data <- trimws(gsub("\n", "",title_data))
+
+
+#Let's have a look at the rankings
+df <- data.frame(title_data, stringsAsFactors = FALSE)
+write.csv(df, file = "3000-conf.csv")
+```
+
+
+
+```{r rows.print=100}
+# year, paper id, institution, type, year
+# .result-item-source
+
+#Using CSS selectors to scrap the rankings section
+source_data_html <- html_nodes(webpage, '.result-item-source')
+
+#Converting the ranking data to text
+source_data <- html_text(source_data_html)
+
+# pre-processing. split at \n
+  source_data <- data.frame(do.call('rbind', strsplit(as.character(source_data),'\n',fixed=TRUE)), 
+                            stringsAsFactors = FALSE)
+  # remove blank columns
+    source_data <- source_data[, 2:5]
+  # rename columns
+    names(source_data) <- c("paper_id", "source", "type", "year")
+  # remove dash from year
+    source_data$year <- gsub("-", "", source_data$year)
+
+# Let's have a look at the paper source data
+source_data
+```
+
+
+```{r}
+webpage <- read_html("3000_conference.html")
+```
+
+
+```{r}
+# author #1
+#Using CSS selectors to scrap the rankings section
+author1_data_html <- html_nodes(webpage, '.result-item-author:nth-child(1)')
+
+#Converting the ranking data to text
+author1_data <- html_text(author1_data_html)
+
+# data pre-processing
+author1_data <- trimws(gsub("\n", "", author1_data))
+
+#Let's have a look at the rankings
+data.frame(author1_data)
+```
+
+```{r}
+# author #2
+#Using CSS selectors to scrap the rankings section
+author2_data_html <- html_nodes(webpage, '.result-item-author:nth-child(2)')
+
+#Converting the ranking data to text
+author2_data <- html_text(author2_data_html)
+
+# data pre-processing
+author2_data <- trimws(gsub("\n", "", author2_data))
+
+#Let's have a look at the rankings
+data.frame(author2_data)
+```
+
+
+
+```{r}
+# author #3
+#Using CSS selectors to scrap the rankings section
+author3_data_html <- html_nodes(webpage, '.result-item-author:nth-child(3)')
+
+#Converting the ranking data to text
+author3_data <- html_text(author3_data_html)
+
+# data pre-processing
+author3_data <- trimws(gsub("\n", "", author3_data))
+
+#Let's have a look at the rankings
+data.frame(author3_data)
+```

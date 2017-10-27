@@ -1,0 +1,39 @@
+title: petro.One
+url: https://github.com/f0nzie/petro.One
+
+template:
+    params:
+        bootswatch: paper
+
+reference:
+  - title: Search Papers
+    contents:
+    - get_papers_count
+    - make_search_url
+    - onepetro_page_to_dataframe
+    - read_multipage
+  - title: Papers Summary
+    contents:
+    - papers_by_type
+    - papers_by_year
+    - papers_by_publication
+    - papers_by_publisher
+  - title: datasets
+    contents:
+    - custom_stopwords
+    - custom_synonyms
+
+articles:
+  - title: "Papers by Document Type"
+    contents:
+    - document_types_of_papers
+  - title: "Convert thousands of papers to a dataframe"
+    contents:
+    - gather_thousand_papers_to_dataframe
+  - title: "Making a word cloud"
+    contents:
+    - make_wordcloud_01
+  - title: "Improving the word cloud with custom stopwords"
+    contents:
+    - make_wordcloud_02
+

@@ -1,0 +1,37 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+m_url <- make_search_url(query = "pressure transient analysis", 
+                          how = "all", 
+                          dc_type = "media",
+                          start = 0,
+                          rows  = 1000)
+
+m_paper_count <- get_papers_count(m_url)
+m_paper_count
+```
+
+
+## get the page with results
+
+```{r}
+m_html <- read_onepetro(m_url)
+```
+
+```{r}
+petro.One:::read_titles(m_html)
+```
+
+```{r}
+petro.One:::read_sources(m_html)
+petro.One:::read_author(m_html)
+```
+
+
+
+

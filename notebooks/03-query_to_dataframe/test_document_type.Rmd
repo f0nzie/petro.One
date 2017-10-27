@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(petroOne)
+# nanodarcy. exact phrase.
+
+my_url <- make_search_url(query = "nanodarcy", 
+                          how = "all")
+
+get_papers_count(my_url)
+# 496
+onepetro_page_to_dataframe(my_url)
+```
+
+
+
+
+```{r}
+# specify document type = "conference-paper", rows = 1000
+
+my_url <- make_search_url(query = "smartwell", 
+                          how = "all",
+                          dc_type = "conference-paper",
+                          rows = 1000)
+
+get_papers_count(my_url)
+# 52
+onepetro_page_to_dataframe(my_url)
+```
+
+
+
+```{r}
+
+my_url <- make_search_url(query = "smartwells", 
+                          how = "all",
+                          dc_type = "conference-paper")
+
+get_papers_count(my_url)
+# 22
+onepetro_page_to_dataframe(my_url)
+```
+
+
+
+
+
+

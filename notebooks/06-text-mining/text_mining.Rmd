@@ -1,0 +1,578 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petroOne)
+
+p1 <- onepetro_page_to_dataframe("1000_conference.html")
+p2 <- onepetro_page_to_dataframe("2000_conference.html")
+p3 <- onepetro_page_to_dataframe("3000_conference.html")
+
+nn_papers <- rbind(p1, p2, p3)
+nn_papers
+```
+
+```{r}
+nn_title_data <- as.data.frame(nn_papers$title_data)
+```
+
+
+
+```{r}
+# convert to lowercase
+library("tm")
+
+docs <- Corpus(VectorSource(nn_papers$title_data))
+inspect(docs[1:5])
+
+library(SnowballC)
+
+docs <- tm_map(docs, content_transformer(tolower))
+# inspect(docs[1:5])
+inspect(docs[600:620])
+```
+
+
+## Synonyms replacement before
+
+```{r}
+# add a space after "net"
+
+synonyms_before <- "
+3-D|3 D
+cased hole|cased-hole
+data driven|data-driven
+deep-water|deepwater
+deep water|deepwater
+feedforward|feed-forward
+modelling|modeling
+multi phase|multiphase
+multi-phase|multiphase
+neural net |neural network   
+neural nets|neural network
+neural-network|neural network
+neural networks|neural network
+real time|real-time
+time lapse|time-lapse
+two phase|two-phase
+"
+
+# read text table and split rows at carriage return
+synonyms_before <- read.table(text = synonyms_before, header = FALSE, 
+                              sep = "\n", stringsAsFactors = FALSE)
+
+# split string at one column by the delimiter "|"
+synonyms_before <- data.frame(do.call('rbind', 
+                                      strsplit(synonyms_before$V1, split = "|", 
+                                               fixed = TRUE)), stringsAsFactors = FALSE)
+
+synonyms_before
+```
+
+
+```{r}
+# enhanced replaceBy including the dataframe to use as a replacement
+replaceBy <- function(x, df) {
+    for (k in seq_len(nrow(df))) {
+        x <- gsub(df$X1[[k]], df$X2[[k]], x, fixed = TRUE)  
+    }
+    x
+}    
+
+docs <- tm_map(docs, content_transformer(function(x) replaceBy(x, synonyms_before)))
+inspect(docs[600:620])
+```
+
+
+
+## Words that should stay together
+
+```{r}
+stay_together <- "
+3D seismic
+abu dhabi
+Adaptive Control
+artificial intelligence
+artificial lift
+Ashtart Field
+Asset Integrity
+Asset Management
+Bati Raman
+bakken shale
+Barnett Shale
+beam pump
+bermejo field
+Big Data
+Bottom Hole
+Bubble Point
+by exception
+Capillary Pressure
+Carbon Dioxide
+case history
+case study
+Cathodic Protection
+coiled tubing
+Computer Science
+Cost Effective
+data mining
+down hole
+cased hole
+Compressive Strength
+Data Analysis
+Data Analytics
+Data Mining
+data driven
+Deep Learning
+Digital Oilfield
+Digital Oil field
+dimension reduction 
+drill pipe
+Drilling Engineering
+Drilling Mud
+dynamic modeling
+Eagle Ford
+equatorial guinea
+Electric Centrifugal Pump
+Enhanced Oil Recovery
+expert system
+expert systems
+Fault Tolerance
+Field Development
+Field Study
+flow rate
+Fluid Dynamics
+Formation Damage
+Formation Volume Factor
+Fuzzy Logic 
+fracture network
+gas lift
+Gas Field
+Gas Storage
+Genetic Algorithms
+genetic algorithm
+Gulf of Mexico
+Gas Hydrates
+Gravel Pack
+heat transfer
+heavy oil
+Human Factor
+Hydrate Formation
+Hydraulic Fracturing
+High Resolution
+history matching
+inflow performance
+intelligent system
+Kalman Filter
+Kuparuk River Field
+lateral log
+Log Data
+Logging Data
+Lost Circulation
+machine learning
+Marcellus Shale
+Multiphase Flow
+natural gas
+net pay
+Neural Systems
+Neural System
+Neural Network
+Neural Networks
+non linear
+North American
+north sea
+Nuclear Magnetic Resonance
+Quality Assurance
+Oil and Gas
+Oil Field
+Oil Price
+Oil Sand
+oil supply
+Oil Well
+Oil And Gas Industry
+Oil Recovery
+open hole
+pattern recognition
+petroleum engineering
+petroleum industry
+pore pressure
+Predictive Model
+Pressure Transient
+principal components analysis
+Production Optimization
+proxy model
+regression analysis
+predictive model
+Predictive Analytics
+Pressure Drop
+progressive cavity pumps
+Proxy Modeling
+Rate of Penetration
+real time
+Recovery Factor
+Relative Permeability
+reservoir performance
+reservoir simulation
+Reservoir Characterization
+Reservoir Management
+Reservoir Modelling
+Reservoir Modeling
+reservoir surveillance
+Risk Assessment 
+Rock Mechanics
+Rod Pump
+Sensitivity Analysis
+Seismic Data
+shale oil
+shale gas
+Shear Strength 
+Single Phase
+Smart Field
+Smart Fields
+south florida
+Support Vector Machine
+tight gas
+tight oil
+tight shale
+time lapse
+toldado field
+Total Organic Carbon
+type curve
+Ultimate Recovery
+Utica Shale
+Vaca Muerta
+Water Injection
+wave spectra
+Well Construction
+well log
+Well Performance
+Well Positioning
+Well Test
+Well Testing
+Well Trajectory
+Wind Speed
+Workflow Automation
+zonal isolation
+"
+
+# create dataframe for stay-together words
+stay_together <- read.table(text = stay_together, header = FALSE, sep = "\n")
+stay_together$V1 <- tolower(stay_together$V1) 
+stay_together$V1 <- trimws(stay_together$V1) 
+stay_together$V2 <- tolower(gsub(" ", "_", stay_together$V1))
+stay_together
+```
+
+
+
+
+```{r}
+# first testing routine to replace stay-together words
+replaceBy <- function(x) {
+    x <- gsub("neural network", "neural_network", x)
+    x <- gsub("neural-network", "neural_network", x)
+    x <- gsub("petroleum engineering", "petroleum_engineering", x)
+    x <- gsub("artificial intelligence", "artificial_intelligence", x)
+    x <- gsub("principal components analysis", "principal_components_analysis", x)
+    x <- gsub("pattern recognition", "pattern_recognition", x)
+    x <- gsub("gas lift", "gas_lift", x)
+    x
+}    
+```
+
+
+```{r}
+# shorter version of replacing stay-together words
+replaceBy0 <- function(x) {
+    for (k in seq_len(nrow(stay_together))) {
+        pattern <- paste0("(?<=^|\\s|[\\/])", stay_together$V1[[k]], "(?=\\s|$|[:\\/,.])")
+        x <- gsub(pattern, stay_together$V2[[k]], x, perl = TRUE)  
+    }
+    x
+}    
+
+# DocsCopy <- docs
+# DocsCopy <- tm_map(DocsCopy, content_transformer(replaceBy))
+docs <- tm_map(docs, content_transformer(replaceBy0))
+
+inspect(docs[1:5])
+inspect(docs[1800:1820])
+inspect(docs[119:125])
+```
+
+
+```{r}
+# writeLines(as.character(docs[[1]]))
+# a_string = "output"
+# docs_df <- as.data.frame(lapply(docs, function(x) writeLines(as.character(x), con=a_string)))
+```
+
+
+
+
+```{r}
+synonyms_after <- "
+3-d seismic|3d_seismic
+ann|ANN
+avo|AVO
+auca field|Auca_field
+brazil|Brazil
+chile|Chile
+colombia|Colombia
+eagle_ford|Eagle-Ford
+esp|ESP
+gis|GIS
+iran|Iran
+iranian|Iranian
+maturin|Maturin
+nmr|NMR
+sagd|SAGD
+texas|Texas
+turkey|Turkey
+ubd|UBD
+umm gudair field|Umm_Gudair_field
+usa|USA
+venezuela|Venezuela
+"
+
+# read text table and split rows at carriage return
+synonyms_after <- read.table(text = synonyms_after, header = FALSE, 
+                              sep = "\n", stringsAsFactors = FALSE)
+
+# split string at one column by the delimiter "|"
+synonyms_after <- data.frame(do.call('rbind', 
+                                      strsplit(synonyms_after$V1, split = "|", 
+                                               fixed = TRUE)), stringsAsFactors = FALSE)
+
+synonyms_after
+```
+
+
+```{r}
+docs <- sdocs
+```
+
+
+
+```{r}
+writeLines(as.character(docs[[11]]))
+```
+
+
+```{r}
+docs[[2]]
+```
+
+
+```{r}
+inspect(docs[1:5])
+```
+
+
+```{r}
+for (j in seq(docs))
+{
+  docs[[j]] <- gsub("petroleum engineering", "petroleum_engineering", docs[[j]])
+  docs[[j]] <- gsub("petroleum industry", "petroleum_industry", docs[[j]])
+  docs[[j]] <- gsub("principal components analysis", "principal_components_analysis", docs[[j]])
+  docs[[j]] <- gsub("regression analysis", "regression_analysis", docs[[j]])
+}
+
+```
+
+
+```{r}
+stopwords("english")
+```
+
+```{r}
+docs <- tm_map(docs, removeWords, stopwords("english"))
+#docs <- tm_map(docs, PlainTextDocument)
+```
+
+```{r}
+inspect(docs[1:20])
+```
+
+
+```{r}
+custom_stopwords <- "
+about
+across
+after
+aid
+all
+along
+and
+ant
+approach
+around
+back
+based
+before
+behind
+between
+big
+black
+bound
+can
+case
+closer
+cohort
+dancer
+democratic
+determine
+did
+distinguish
+distinguished
+due
+editing
+east
+enough
+establish
+fast
+first
+for
+four
+from
+front
+fully
+further
+games
+great
+greater
+have
+high
+highly
+higher
+holidays
+how
+imperialist
+incorporating
+initial
+issues
+its
+juan
+large
+late
+latest
+long
+look
+low
+memories
+middle
+more
+much
+new
+next
+non
+north
+novel
+objects
+off
+old
+only
+one
+other
+over
+past
+perceptually
+pleasant
+pre
+project
+province
+quickly
+realize
+really
+recent
+red
+related
+river
+san
+second
+self
+short
+small
+some
+south
+suggestions
+support
+status
+study
+their
+through
+the
+this
+toward
+trough
+tricks
+true
+two
+three
+under
+used
+using
+use
+very
+via
+west
+western
+what
+when
+where
+while
+why
+wide
+whilst
+whole
+with
+within
+work
+you
+young
+"
+
+custom_stopwords <- unlist(strsplit(custom_stopwords, split = "\n"))
+```
+
+```{r}
+tdm <- TermDocumentMatrix(docs, control = list(stopwords = stopwords("english"),
+                                               removeNumbers = TRUE,
+                                               removePunctuation = FALSE))
+
+# tdm <- TermDocumentMatrix(docs) #, control = list(stopwords = custom_stopwords))
+
+m <- as.matrix(tdm)
+v <- sort(rowSums(m), decreasing=TRUE)
+d <- data.frame(word = names(v), freq=v, stringsAsFactors = FALSE)
+d
+grep("neuralnetwork", d$word)
+grep("neural", d$word)
+d[grep("neural", d$word),]
+```
+
+```{r}
+inspect(docs[1:5])
+dtm$dimnames$Terms[1:5]
+```
+
+
+
+```{r warning=FALSE}
+library("wordcloud")
+set.seed(1234)
+wordcloud(words = d$word, freq = d$freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+```{r}
+dtm <- DocumentTermMatrix(docs)
+
+
+m <- as.matrix(dtm)
+v <- sort(rowSums(m), decreasing=TRUE)
+d <- data.frame(word = names(v), freq=v, stringsAsFactors = FALSE)
+d
+```
