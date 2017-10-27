@@ -1,3 +1,12 @@
+## 20171027
+Note from Uwe Ligges:
+    Simply delete the Author/Maintainer fields from your master sources.
+    R CMD build will create these from the Authoras@R field.
+    Best,
+    Uwe Ligges
+
+
+
 ## Resubmission
 This is a resubmission. In this version I have:
 
