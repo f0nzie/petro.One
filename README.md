@@ -131,14 +131,14 @@ df
 #>                                                           <chr>
 #>  1                          Deconvolution Using Neural Networks
 #>  2                     Neural Network Stacking Velocity Picking
-#>  3                     Drill-Bit Diagnosis With Neural Networks
-#>  4  Seismic Principal Components Analysis Using Neural Networks
-#>  5             Neural Networks And Paper Seismic Interpretation
+#>  3             Neural Networks And Paper Seismic Interpretation
+#>  4                     Drill-Bit Diagnosis With Neural Networks
+#>  5  Seismic Principal Components Analysis Using Neural Networks
 #>  6                    First Break Picking Using Neural Networks
-#>  7      Artificial Intelligence I Neural Networks In Geophysics
-#>  8     Conductive fracture identification using neural networks
-#>  9 Reservoir Characterization Using Feedforward Neural Networks
-#> 10          Seismic Attribute Calibration Using Neural Networks
+#>  7 Reservoir Characterization Using Feedforward Neural Networks
+#>  8          Seismic Attribute Calibration Using Neural Networks
+#>  9        Neural Networks For Primary Reflection Identification
+#> 10     Conductive fracture identification using neural networks
 #> # ... with 5 more variables: paper_id <chr>, source <chr>, type <chr>,
 #> #   year <int>, author1_data <chr>
 ```
@@ -147,20 +147,20 @@ And these are the terms that repeat more freqently:
 
 ``` r
 term_frequency(df)
-#> # A tibble: 27 x 2
+#> # A tibble: 26 x 2
 #>                word  freq
 #>               <chr> <int>
 #>  1           neural    10
 #>  2         networks     9
 #>  3          seismic     3
-#>  4          picking     2
-#>  5         analysis     1
-#>  6       artificial     1
+#>  4   identification     2
+#>  5          picking     2
+#>  6         analysis     1
 #>  7        attribute     1
 #>  8            break     1
 #>  9      calibration     1
 #> 10 characterization     1
-#> # ... with 17 more rows
+#> # ... with 16 more rows
 ```
 
 Get papers by document type (*dc\_type*)
@@ -194,13 +194,13 @@ df
 #>  1                             Deconvolution Using Neural Networks
 #>  2                                         Neural Networks And AVO
 #>  3                        Neural Network Stacking Velocity Picking
-#>  4                Neural networks approach to spectral enhancement
-#>  5        Dynamic Neural Network Calibration of Quartz Transducers
-#>  6     Seismic Principal Components Analysis Using Neural Networks
-#>  7           Estimation of Welding Distortion Using Neural Network
-#>  8 Minimum-variance Deconvolution Using Artificial Neural Networks
-#>  9                Neural Networks And Paper Seismic Interpretation
-#> 10                       First Break Picking Using Neural Networks
+#>  4                Neural Networks And Paper Seismic Interpretation
+#>  5     Seismic Principal Components Analysis Using Neural Networks
+#>  6                Neural networks approach to spectral enhancement
+#>  7        Predicting Wax Formation Using Artificial Neural Network
+#>  8           Estimation of Welding Distortion Using Neural Network
+#>  9                       First Break Picking Using Neural Networks
+#> 10 Minimum-variance Deconvolution Using Artificial Neural Networks
 #> # ... with 990 more rows, and 5 more variables: paper_id <chr>,
 #> #   source <chr>, type <chr>, year <int>, author1_data <chr>
 ```
@@ -232,16 +232,16 @@ df
 #> # A tibble: 307 x 6
 #>                                                                     title_data
 #>                                                                          <chr>
-#>  1                   Implicit Approximation of Neural Network and Applications
-#>  2                                    Drill-Bit Diagnosis With Neural Networks
-#>  3                Artificial Neural Networks Identify Restimulation Candidates
+#>  1                                    Drill-Bit Diagnosis With Neural Networks
+#>  2                Artificial Neural Networks Identify Restimulation Candidates
+#>  3                   Implicit Approximation of Neural Network and Applications
 #>  4             Application of Artificial Neural Network to Pump Card Diagnosis
 #>  5        Application of Artificial Neural Networks to Downhole Fluid Analysis
-#>  6                Neural Network Approach Predicts U.S. Natural Gas Production
-#>  7           Pseudodensity Log Generation by Use of Artificial Neural Networks
-#>  8                 Neural Networks for Predictive Control of Drilling Dynamics
-#>  9 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach
-#> 10                      Neural Network: What It Can Do for Petroleum Engineers
+#>  6           Pseudodensity Log Generation by Use of Artificial Neural Networks
+#>  7                 Neural Networks for Predictive Control of Drilling Dynamics
+#>  8                Neural Network Approach Predicts U.S. Natural Gas Production
+#>  9          An Artificial Neural Network Based Relative Permeability Predictor
+#> 10 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach
 #> # ... with 297 more rows, and 5 more variables: paper_id <chr>,
 #> #   source <chr>, type <chr>, year <int>, author1_data <chr>
 ```
@@ -386,7 +386,7 @@ papers_by_type(my_url)
 | Chapter          |      8|
 | Conference paper |   9440|
 | General          |    193|
-| Journal paper    |   2534|
+| Journal paper    |   2536|
 | Media            |      5|
 | Other            |      8|
 | Presentation     |     25|
@@ -404,8 +404,8 @@ papers_by_publisher(my_url)
 | BHR Group                                                     |     10|
 | Carbon Management Technology Conference                       |      1|
 | International Petroleum Technology Conference                 |    364|
-| International Society for Rock Mechanics                      |     38|
-| International Society for Rock Mechanics and Rock Engineering |      1|
+| International Society for Rock Mechanics                      |     34|
+| International Society for Rock Mechanics and Rock Engineering |      5|
 | International Society of Offshore and Polar Engineers         |     15|
 | NACE International                                            |     45|
 | National Energy Technology Laboratory                         |      8|
@@ -437,16 +437,16 @@ papers_by_year(my_url)
 
 | name       |  value|
 |:-----------|------:|
-| Since 2017 |    494|
-| Since 2016 |   1060|
-| Since 2015 |   1609|
-| Since 2014 |   2166|
-| Since 2013 |   2677|
-| Since 2012 |   3191|
-| Since 2011 |   3644|
-| Since 2010 |   4170|
-| Since 2009 |   4601|
-| Since 2008 |   5012|
+| Since 2017 |    496|
+| Since 2016 |   1062|
+| Since 2015 |   1611|
+| Since 2014 |   2168|
+| Since 2013 |   2679|
+| Since 2012 |   3193|
+| Since 2011 |   3646|
+| Since 2010 |   4172|
+| Since 2009 |   4603|
+| Since 2008 |   5014|
 
 Search for **any** word
 -----------------------
@@ -469,9 +469,9 @@ by_doctype
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |     60|
-| Conference paper |  87797|
+| Conference paper |  87790|
 | General          |    932|
-| Journal paper    |  15857|
+| Journal paper    |  15860|
 | Media            |      9|
 | Other            |     21|
 | Presentation     |    265|
@@ -483,7 +483,7 @@ In this example we get the total number of papers by document type.
 
 ``` r
 sum(by_doctype$value)
-#> [1] 105036
+#> [1] 105032
 ```
 
 Or use the R base function `summary` to give us a quick statistics of the papers:
@@ -495,7 +495,7 @@ summary(by_doctype)
 #>  Length:8           Min.   :    9.00  
 #>  Class :character   1st Qu.:   50.25  
 #>  Mode  :character   Median :  180.00  
-#>                     Mean   :13129.50  
-#>                     3rd Qu.: 4663.25  
-#>                     Max.   :87797.00
+#>                     Mean   :13129.00  
+#>                     3rd Qu.: 4664.00  
+#>                     Max.   :87790.00
 ```
