@@ -1,5 +1,5 @@
 ## 0.1.1.9000 20171028
-* 
+* remove commented lines from .travis.yml
 
 ## 0.1.0
 * add this line in travis.yml "r: bioc-release" to get packages from BioConductor
