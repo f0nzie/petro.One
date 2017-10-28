@@ -1,5 +1,9 @@
 ## 0.1.1.9000 20171028
 * remove commented lines from .travis.yml
+* TODO:
+  * implement the classification of papers. there is already material in notebooks but functions on script need to be created.
+  * implement function to save paper search results and classification in the cloud. Have to look for a public database where the data could be saved and then later retrieved by anyone.
+  
 
 ## 0.1.0
 * add this line in travis.yml "r: bioc-release" to get packages from BioConductor
