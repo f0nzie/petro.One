@@ -8,7 +8,7 @@ test_that("document type = *journal-paper* matches", {
                               dc_type = "journal-paper",
                               rows = 1000)
 
-    expect_equal(get_papers_count(my_url), 303, tolerance = 3)
+    expect_gte(get_papers_count(my_url), 303)
 })
 
 
@@ -19,5 +19,5 @@ test_that("document type = *conference-paper* matches", {
                               rows = 1000)
 
     # expect_equal(get_papers_count(my_url), 2661, tolerance = 30)
-    expect_equal(get_papers_count(my_url), 2687, tolerance = 30)
+    expect_gte(get_papers_count(my_url), 2687)
 })
