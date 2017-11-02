@@ -1,5 +1,6 @@
-## 0.1.0.9001 20171028
-* 
+## 0.1.0.9001 20171028-20171102
+* bump to version 0.1.1 with patch
+* fix issues with unit tests on papers. See cran-comments
 
 ## 0.1.0.9000 20171028
 * remove commented lines from .travis.yml

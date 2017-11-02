@@ -1,3 +1,15 @@
+## 20171102
+Kurt Hornik <Kurt.Hornik@r-project.org>
+3:05 PM (2 hours ago)
+to alfonso.reyes, CRAN 
+    Dear maintainer,
+    Pls see the problems shown on
+    <https://cran.r-project.org/web/checks/check_results_petro.One.html>:
+    Can you pls fix as necessary?
+Best,
+-k
+
+
 ## 20171027
 Note from Uwe Ligges:
     Simply delete the Author/Maintainer fields from your master sources.
