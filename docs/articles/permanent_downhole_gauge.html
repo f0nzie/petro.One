@@ -87,7 +87,7 @@
       <h1>Text Mining of Permanent Downhole Gauges</h1>
                         <h4 class="author">Vignette Author</h4>
             
-            <h4 class="date">2017-10-27</h4>
+            <h4 class="date">2017-11-02</h4>
           </div>
 
     
@@ -100,37 +100,37 @@
                           <span class="dt">how =</span> <span class="st">"all"</span>)        
 
 <span class="kw"><a href="../reference/get_papers_count.html">get_papers_count</a></span>(my_url)    <span class="co"># how many papers total</span></code></pre></div>
-<pre><code>## [1] 544</code></pre>
+<pre><code>## [1] 545</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/papers_by_type.html">papers_by_type</a></span>(my_url)      <span class="co"># papers by type</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##               name value
 ##              &lt;chr&gt; &lt;dbl&gt;
-## 1 Conference paper   464
+## 1 Conference paper   465
 ## 2    Journal paper    76
 ## 3     Presentation     4</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create a dataframe of papers found</span>
 df &lt;-<span class="st"> </span><span class="kw"><a href="../reference/read_multidoc.html">read_multidoc</a></span>(my_url)
 df</code></pre></div>
-<pre><code>## # A tibble: 544 x 6
+<pre><code>## # A tibble: 545 x 6
 ##                                                                     title_data
 ##                                                                          &lt;chr&gt;
-##  1              Encouraging Experience in the Use of Permanent Downhole Gauges
-##  2                               Permanent Downhole Gauge: A Need or A Luxury?
-##  3       Reservoir Management Optimization Using Permanent Downhole Gauge Data
+##  1                               Permanent Downhole Gauge: A Need or A Luxury?
+##  2       Reservoir Management Optimization Using Permanent Downhole Gauge Data
+##  3              Encouraging Experience in the Use of Permanent Downhole Gauges
 ##  4          Pressure Transient Analysis Of Data From Permanent Downhole Gauges
 ##  5                          Wavelet Filtering of Permanent Downhole Gauge Data
 ##  6    Comparative Analysis of Permanent Downhole Gauges and their Applications
-##  7 Analyzing Transient Pressure From Permanent Downhole Gauges (PDG) Using Wav
-##  8 Analyzing Simultaneous Rate and Pressure Data From Permanent Downhole Gauge
-##  9 Pressure Transient Analysis of Data from Permanent Downhole Gauge PDG: Case
-## 10 Interpreting Pressure and Flow Rate Data from Permanent Downhole Gauges Usi
-## # ... with 534 more rows, and 5 more variables: paper_id &lt;chr&gt;,
+##  7 Recovery Increase by Permanent Downhole Gages Data - Western Siberia Field 
+##  8 Recovery Increase by Permanent Downhole Gages Data - Western Siberia Field 
+##  9 Permanent Downhole Gauges Selection for HPHT and Fractured Basement Reservo
+## 10 Pressure Transient Analysis of Data from Permanent Downhole Gauge PDG: Case
+## # ... with 535 more rows, and 5 more variables: paper_id &lt;chr&gt;,
 ## #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(petro.One)
 
 term_freq &lt;-<span class="st"> </span><span class="kw"><a href="../reference/term_frequency.html">term_frequency</a></span>(df)
 term_freq</code></pre></div>
-<pre><code>## # A tibble: 1,507 x 2
+<pre><code>## # A tibble: 1,508 x 2
 ##          word  freq
 ##         &lt;chr&gt; &lt;int&gt;
 ##  1  reservoir   124
@@ -138,12 +138,12 @@ term_freq</code></pre></div>
 ##  3       data    99
 ##  4   pressure    85
 ##  5   downhole    83
-##  6      field    82
-##  7 production    82
+##  6      field    83
+##  7 production    83
 ##  8  permanent    70
 ##  9        gas    69
 ## 10   analysis    62
-## # ... with 1,497 more rows</code></pre>
+## # ... with 1,498 more rows</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(petro.One)
 
 <span class="kw"><a href="../reference/plot_wordcloud.html">plot_wordcloud</a></span>(df, <span class="dt">max.words =</span> <span class="dv">100</span>, <span class="dt">min.freq =</span> <span class="dv">15</span>)</code></pre></div>
