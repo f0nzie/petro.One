@@ -17,21 +17,21 @@ test_that("when read_multidoc gets almost 3000 rows", {
                               dc_type = "conference-paper",
                               rows = 1000)
     df <- read_multidoc(my_url)
-    petro.One:::expect_equal_scale(nrow(df), 2756, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 2756)
 })
 
 test_that("when read_multidoc with neural network gets almost 3000 rows", {
     my_url <- make_search_url(query = "neural network",
                               how = "all")
     df <- read_multidoc(my_url)
-    petro.One:::expect_equal_scale(nrow(df), 3090, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 3090)
 })
 
 test_that("when read_multidoc search mechanistic performance", {
     my_url <- make_search_url(query = "mechanistic performance",
                               how = "all")
     df <- read_multidoc(my_url)
-    petro.One:::expect_equal_scale(nrow(df), 4, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 4)
 })
 
 
@@ -44,7 +44,7 @@ test_that("when read_multipage conference-paper gets almost 3000 rows", {
                               dc_type = "conference-paper",
                               how = "all")
     df <- read_multipage(my_url)
-    petro.One:::expect_equal_scale(nrow(df), 2756, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 2756)
 })
 
 test_that("when read_multipage journal-paper gets almost 3000 rows", {
@@ -52,7 +52,7 @@ test_that("when read_multipage journal-paper gets almost 3000 rows", {
                               dc_type = "journal-paper",
                               how = "all")
     df <- read_multipage(my_url)
-    petro.One:::expect_equal_scale(nrow(df), 306, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 306)
 })
 
 test_that("when read_multipage presentation only", {
@@ -60,7 +60,7 @@ test_that("when read_multipage presentation only", {
                               dc_type = "presentation",
                               how = "all")
     df <- read_multipage(my_url)
-    petro.One:::expect_equal_scale(nrow(df), 23, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 23)
 })
 
 test_that("when read_multipage media only", {
@@ -68,7 +68,7 @@ test_that("when read_multipage media only", {
                               dc_type = "media",
                               how = "all")
     df <- read_multipage(my_url)
-    petro.One:::expect_equal_scale(nrow(df), 0, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 0)
 })
 
 test_that("when read_multipage standard type only", {
@@ -108,14 +108,14 @@ test_that("when read_multipage journal-paper only", {
     my_url <- make_search_url(query = "neural network",
                               how = "all")
     df <- read_multipage(my_url, doctype = "conference-paper")
-    petro.One:::expect_equal_scale(nrow(df), 2756, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 2756)
 })
 
 test_that("when read_multipage journal-paper only", {
     my_url <- make_search_url(query = "neural network",
                               how = "all")
     df <- read_multipage(my_url, doctype = "journal-paper")
-    petro.One:::expect_equal_scale(nrow(df), 306, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 306)
 })
 
 
@@ -123,5 +123,5 @@ test_that("when read_multipage has no dc_type or doctype", {
     my_url <- make_search_url(query = "neural network",
                               how = "all")
     df <- read_multipage(my_url, doctype = "presentation")
-    petro.One:::expect_equal_scale(nrow(df), 23, tolerance_pct = 0.01)
+    expect_gte(nrow(df), 23)
 })
