@@ -1,3 +1,6 @@
+## petro.One 0.1.1.9000 20171102
+* build site with pkgdown
+
 ## petro.One 0.1.1 20171102
 * released to CRAN to fix two errors with the paper count
 * using instead expect_equal to expect_gte in some unit tests that call for paper count.
