@@ -1,3 +1,7 @@
+## petro.One 0.1.1 20171102
+* released to CRAN to fix two errors with the paper count
+* using instead expect_equal to expect_gte in some unit tests that call for paper count.
+
 ## 0.1.0.9001 20171028-20171102
 * bump to version 0.1.1 with patch
 * change expect_equal to expect_gte because we have the expected values changing when OnePetro adds new papers.
