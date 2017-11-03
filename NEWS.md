@@ -1,3 +1,9 @@
+## 0.1.0.9001 20171028-20171102
+* bump to version 0.1.1 with patch
+* change expect_equal to expect_gte because we have the expected values changing when OnePetro adds new papers.
+* rename couple of test files to have the GTE words in them.
+* fix issues with unit tests on papers. See cran-comments
+
 ## 0.1.0.9000 20171028
 * remove commented lines from .travis.yml
 * this dev version was incorrectly named 0.1.1.9000
