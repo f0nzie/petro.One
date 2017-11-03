@@ -149,14 +149,14 @@ url_any &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_s
 url_any
 <span class="co">#&gt; [1] "https://www.onepetro.org/search?q=neural+network&amp;peer_reviewed=&amp;published_between=&amp;from_year=&amp;to_year="</span>
 <span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(url_any)
-<span class="co">#&gt; [1] 3400</span>
+<span class="co">#&gt; [1] 3403</span>
 
 <span class="co"># search for papers that have "neural" and "network" at the same time</span>
 url_all &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_search_url.html">make_search_url</a></span>(<span class="dt">query =</span> <span class="st">"neural network"</span>, <span class="dt">how =</span> <span class="st">"all"</span>)
 url_all
 <span class="co">#&gt; [1] "https://www.onepetro.org/search?q=\"neural+network\"&amp;peer_reviewed=&amp;published_between=&amp;from_year=&amp;to_year="</span>
 <span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(url_all)
-<span class="co">#&gt; [1] 3111</span></code></pre></div>
+<span class="co">#&gt; [1] 3114</span></code></pre></div>
 </div>
 <div id="read-papers-from-from_year-to-to_year" class="section level2">
 <h2 class="hasAnchor">
@@ -176,35 +176,35 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 df &lt;-<span class="st"> </span><span class="kw"><a href="reference/onepetro_page_to_dataframe.html">onepetro_page_to_dataframe</a></span>(my_url)
 df
 <span class="co">#&gt; # A tibble: 10 x 6</span>
-<span class="co">#&gt;                                                      title_data</span>
-<span class="co">#&gt;                                                           &lt;chr&gt;</span>
-<span class="co">#&gt;  1                          Deconvolution Using Neural Networks</span>
-<span class="co">#&gt;  2                     Neural Network Stacking Velocity Picking</span>
-<span class="co">#&gt;  3             Neural Networks And Paper Seismic Interpretation</span>
-<span class="co">#&gt;  4                     Drill-Bit Diagnosis With Neural Networks</span>
-<span class="co">#&gt;  5  Seismic Principal Components Analysis Using Neural Networks</span>
-<span class="co">#&gt;  6                    First Break Picking Using Neural Networks</span>
-<span class="co">#&gt;  7 Reservoir Characterization Using Feedforward Neural Networks</span>
-<span class="co">#&gt;  8          Seismic Attribute Calibration Using Neural Networks</span>
-<span class="co">#&gt;  9        Neural Networks For Primary Reflection Identification</span>
-<span class="co">#&gt; 10     Conductive fracture identification using neural networks</span>
+<span class="co">#&gt;                                                     title_data</span>
+<span class="co">#&gt;                                                          &lt;chr&gt;</span>
+<span class="co">#&gt;  1                         Deconvolution Using Neural Networks</span>
+<span class="co">#&gt;  2                    Neural Network Stacking Velocity Picking</span>
+<span class="co">#&gt;  3                    Drill-Bit Diagnosis With Neural Networks</span>
+<span class="co">#&gt;  4 Seismic Principal Components Analysis Using Neural Networks</span>
+<span class="co">#&gt;  5                   First Break Picking Using Neural Networks</span>
+<span class="co">#&gt;  6            Neural Networks And Paper Seismic Interpretation</span>
+<span class="co">#&gt;  7                   Neural Networks In the Petroleum Industry</span>
+<span class="co">#&gt;  8     Artificial Intelligence I Neural Networks In Geophysics</span>
+<span class="co">#&gt;  9        Inversion of Seismic Waveforms Using Neural Networks</span>
+<span class="co">#&gt; 10    Conductive fracture identification using neural networks</span>
 <span class="co">#&gt; # ... with 5 more variables: paper_id &lt;chr&gt;, source &lt;chr&gt;, type &lt;chr&gt;,</span>
 <span class="co">#&gt; #   year &lt;int&gt;, author1_data &lt;chr&gt;</span></code></pre></div>
 <p>And these are the terms that repeat more freqently:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/term_frequency.html">term_frequency</a></span>(df)
 <span class="co">#&gt; # A tibble: 26 x 2</span>
-<span class="co">#&gt;                word  freq</span>
-<span class="co">#&gt;               &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1           neural    10</span>
-<span class="co">#&gt;  2         networks     9</span>
-<span class="co">#&gt;  3          seismic     3</span>
-<span class="co">#&gt;  4   identification     2</span>
-<span class="co">#&gt;  5          picking     2</span>
-<span class="co">#&gt;  6         analysis     1</span>
-<span class="co">#&gt;  7        attribute     1</span>
-<span class="co">#&gt;  8            break     1</span>
-<span class="co">#&gt;  9      calibration     1</span>
-<span class="co">#&gt; 10 characterization     1</span>
+<span class="co">#&gt;             word  freq</span>
+<span class="co">#&gt;            &lt;chr&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1        neural    10</span>
+<span class="co">#&gt;  2      networks     9</span>
+<span class="co">#&gt;  3       seismic     3</span>
+<span class="co">#&gt;  4       picking     2</span>
+<span class="co">#&gt;  5      analysis     1</span>
+<span class="co">#&gt;  6    artificial     1</span>
+<span class="co">#&gt;  7         break     1</span>
+<span class="co">#&gt;  8    components     1</span>
+<span class="co">#&gt;  9    conductive     1</span>
+<span class="co">#&gt; 10 deconvolution     1</span>
 <span class="co">#&gt; # ... with 16 more rows</span></code></pre></div>
 </div>
 <div id="get-papers-by-document-type-dc_type" class="section level2">
@@ -225,7 +225,7 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
                           <span class="dt">rows =</span> <span class="dv">1000</span>)
 
 <span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(my_url)
-<span class="co">#&gt; [1] 2770</span>
+<span class="co">#&gt; [1] 2773</span>
 df &lt;-<span class="st"> </span><span class="kw"><a href="reference/onepetro_page_to_dataframe.html">onepetro_page_to_dataframe</a></span>(my_url)
 df
 <span class="co">#&gt; # A tibble: 1,000 x 6</span>
@@ -234,12 +234,12 @@ df
 <span class="co">#&gt;  1                             Deconvolution Using Neural Networks</span>
 <span class="co">#&gt;  2                                         Neural Networks And AVO</span>
 <span class="co">#&gt;  3                        Neural Network Stacking Velocity Picking</span>
-<span class="co">#&gt;  4                Neural Networks And Paper Seismic Interpretation</span>
-<span class="co">#&gt;  5     Seismic Principal Components Analysis Using Neural Networks</span>
-<span class="co">#&gt;  6                Neural networks approach to spectral enhancement</span>
-<span class="co">#&gt;  7        Predicting Wax Formation Using Artificial Neural Network</span>
-<span class="co">#&gt;  8           Estimation of Welding Distortion Using Neural Network</span>
-<span class="co">#&gt;  9                       First Break Picking Using Neural Networks</span>
+<span class="co">#&gt;  4        Predicting Wax Formation Using Artificial Neural Network</span>
+<span class="co">#&gt;  5        Dynamic Neural Network Calibration of Quartz Transducers</span>
+<span class="co">#&gt;  6     Seismic Principal Components Analysis Using Neural Networks</span>
+<span class="co">#&gt;  7                       First Break Picking Using Neural Networks</span>
+<span class="co">#&gt;  8      Artificial Neural Networks in Drilling Troubles Prediction</span>
+<span class="co">#&gt;  9           Estimation of Welding Distortion Using Neural Network</span>
 <span class="co">#&gt; 10 Minimum-variance Deconvolution Using Artificial Neural Networks</span>
 <span class="co">#&gt; # ... with 990 more rows, and 5 more variables: paper_id &lt;chr&gt;,</span>
 <span class="co">#&gt; #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</span></code></pre></div>
@@ -269,14 +269,14 @@ df
 <span class="co">#&gt;                                                                     title_data</span>
 <span class="co">#&gt;                                                                          &lt;chr&gt;</span>
 <span class="co">#&gt;  1                                    Drill-Bit Diagnosis With Neural Networks</span>
-<span class="co">#&gt;  2                Artificial Neural Networks Identify Restimulation Candidates</span>
-<span class="co">#&gt;  3                   Implicit Approximation of Neural Network and Applications</span>
-<span class="co">#&gt;  4             Application of Artificial Neural Network to Pump Card Diagnosis</span>
-<span class="co">#&gt;  5        Application of Artificial Neural Networks to Downhole Fluid Analysis</span>
-<span class="co">#&gt;  6           Pseudodensity Log Generation by Use of Artificial Neural Networks</span>
-<span class="co">#&gt;  7                 Neural Networks for Predictive Control of Drilling Dynamics</span>
-<span class="co">#&gt;  8                Neural Network Approach Predicts U.S. Natural Gas Production</span>
-<span class="co">#&gt;  9          An Artificial Neural Network Based Relative Permeability Predictor</span>
+<span class="co">#&gt;  2                   Implicit Approximation of Neural Network and Applications</span>
+<span class="co">#&gt;  3                Artificial Neural Networks Identify Restimulation Candidates</span>
+<span class="co">#&gt;  4        Application of Artificial Neural Networks to Downhole Fluid Analysis</span>
+<span class="co">#&gt;  5             Application of Artificial Neural Network to Pump Card Diagnosis</span>
+<span class="co">#&gt;  6                Neural Network Approach Predicts U.S. Natural Gas Production</span>
+<span class="co">#&gt;  7           Pseudodensity Log Generation by Use of Artificial Neural Networks</span>
+<span class="co">#&gt;  8          An Artificial Neural Network Based Relative Permeability Predictor</span>
+<span class="co">#&gt;  9                 Neural Networks for Predictive Control of Drilling Dynamics</span>
 <span class="co">#&gt; 10 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach</span>
 <span class="co">#&gt; # ... with 297 more rows, and 5 more variables: paper_id &lt;chr&gt;,</span>
 <span class="co">#&gt; #   source &lt;chr&gt;, type &lt;chr&gt;, year &lt;int&gt;, author1_data &lt;chr&gt;</span></code></pre></div>
@@ -300,24 +300,24 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
                           <span class="dt">how =</span> <span class="st">"all"</span>)
 
 <span class="kw"><a href="reference/get_papers_count.html">get_papers_count</a></span>(my_url)
-<span class="co">#&gt; [1] 9440</span>
+<span class="co">#&gt; [1] 9458</span>
 df &lt;-<span class="st"> </span><span class="kw"><a href="reference/read_multidoc.html">read_multidoc</a></span>(my_url)
 
 <span class="kw"><a href="reference/term_frequency.html">term_frequency</a></span>(df)
-<span class="co">#&gt; # A tibble: 9,871 x 2</span>
+<span class="co">#&gt; # A tibble: 9,877 x 2</span>
 <span class="co">#&gt;          word  freq</span>
 <span class="co">#&gt;         &lt;chr&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1  reservoir  1817</span>
-<span class="co">#&gt;  2       well  1667</span>
-<span class="co">#&gt;  3        gas  1447</span>
-<span class="co">#&gt;  4      field  1289</span>
-<span class="co">#&gt;  5 production  1101</span>
+<span class="co">#&gt;  1  reservoir  1821</span>
+<span class="co">#&gt;  2       well  1672</span>
+<span class="co">#&gt;  3        gas  1449</span>
+<span class="co">#&gt;  4      field  1291</span>
+<span class="co">#&gt;  5 production  1103</span>
 <span class="co">#&gt;  6   analysis  1042</span>
 <span class="co">#&gt;  7   pressure   947</span>
 <span class="co">#&gt;  8 reservoirs   894</span>
-<span class="co">#&gt;  9      wells   881</span>
-<span class="co">#&gt; 10       data   825</span>
-<span class="co">#&gt; # ... with 9,861 more rows</span></code></pre></div>
+<span class="co">#&gt;  9      wells   882</span>
+<span class="co">#&gt; 10       data   826</span>
+<span class="co">#&gt; # ... with 9,867 more rows</span></code></pre></div>
 <div id="most-frequent-terms-in-well-test" class="section level4">
 <h4 class="hasAnchor">
 <a href="#most-frequent-terms-in-well-test" class="anchor"></a>Most frequent terms in <em>well test</em>
@@ -400,7 +400,7 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 </tr>
 <tr class="even">
 <td align="left">Conference paper</td>
-<td align="right">9440</td>
+<td align="right">9458</td>
 </tr>
 <tr class="odd">
 <td align="left">General</td>
@@ -408,7 +408,7 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 </tr>
 <tr class="even">
 <td align="left">Journal paper</td>
-<td align="right">2536</td>
+<td align="right">2538</td>
 </tr>
 <tr class="odd">
 <td align="left">Media</td>
@@ -457,11 +457,11 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 </tr>
 <tr class="even">
 <td align="left">International Society for Rock Mechanics</td>
-<td align="right">34</td>
+<td align="right">31</td>
 </tr>
 <tr class="odd">
 <td align="left">International Society for Rock Mechanics and Rock Engineering</td>
-<td align="right">5</td>
+<td align="right">8</td>
 </tr>
 <tr class="even">
 <td align="left">International Society of Offshore and Polar Engineers</td>
@@ -543,43 +543,43 @@ my_url &lt;-<span class="st"> </span><span class="kw"><a href="reference/make_se
 <tbody>
 <tr class="odd">
 <td align="left">Since 2017</td>
-<td align="right">496</td>
+<td align="right">515</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2016</td>
-<td align="right">1062</td>
+<td align="right">1081</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2015</td>
-<td align="right">1611</td>
+<td align="right">1630</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2014</td>
-<td align="right">2168</td>
+<td align="right">2187</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2013</td>
-<td align="right">2679</td>
+<td align="right">2698</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2012</td>
-<td align="right">3193</td>
+<td align="right">3212</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2011</td>
-<td align="right">3646</td>
+<td align="right">3665</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2010</td>
-<td align="right">4172</td>
+<td align="right">4192</td>
 </tr>
 <tr class="odd">
 <td align="left">Since 2009</td>
-<td align="right">4603</td>
+<td align="right">4623</td>
 </tr>
 <tr class="even">
 <td align="left">Since 2008</td>
-<td align="right">5014</td>
+<td align="right">5034</td>
 </tr>
 </tbody>
 </table>
@@ -608,7 +608,7 @@ by_doctype &lt;-<span class="st"> </span><span class="kw"><a href="reference/pap
 </tr>
 <tr class="even">
 <td align="left">Conference paper</td>
-<td align="right">87790</td>
+<td align="right">87857</td>
 </tr>
 <tr class="odd">
 <td align="left">General</td>
@@ -616,7 +616,7 @@ by_doctype &lt;-<span class="st"> </span><span class="kw"><a href="reference/pap
 </tr>
 <tr class="even">
 <td align="left">Journal paper</td>
-<td align="right">15860</td>
+<td align="right">15876</td>
 </tr>
 <tr class="odd">
 <td align="left">Media</td>
@@ -642,7 +642,7 @@ by_doctype &lt;-<span class="st"> </span><span class="kw"><a href="reference/pap
 </h4>
 <p>In this example we get the total number of papers by document type.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(by_doctype<span class="op">$</span>value)
-<span class="co">#&gt; [1] 105032</span></code></pre></div>
+<span class="co">#&gt; [1] 105115</span></code></pre></div>
 <p>Or use the R base function <code>summary</code> to give us a quick statistics of the papers:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># r-base function summary</span>
 <span class="kw">summary</span>(by_doctype)
@@ -650,9 +650,9 @@ by_doctype &lt;-<span class="st"> </span><span class="kw"><a href="reference/pap
 <span class="co">#&gt;  Length:8           Min.   :    9.00  </span>
 <span class="co">#&gt;  Class :character   1st Qu.:   50.25  </span>
 <span class="co">#&gt;  Mode  :character   Median :  180.00  </span>
-<span class="co">#&gt;                     Mean   :13129.00  </span>
-<span class="co">#&gt;                     3rd Qu.: 4664.00  </span>
-<span class="co">#&gt;                     Max.   :87790.00</span></code></pre></div>
+<span class="co">#&gt;                     Mean   :13139.38  </span>
+<span class="co">#&gt;                     3rd Qu.: 4668.00  </span>
+<span class="co">#&gt;                     Max.   :87857.00</span></code></pre></div>
 </div>
 </div>
 </div>
