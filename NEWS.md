@@ -1,5 +1,7 @@
 ## petro.One 0.1.1.9000 20171102
+* Link to "Thousands of Papers to Dataframe" not working.
 * build site with pkgdown
+
 
 ## petro.One 0.1.1 20171102
 * released to CRAN to fix two errors with the paper count
