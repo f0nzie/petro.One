@@ -15,6 +15,10 @@ keywords <- "
     gas lift
     gas-lift
     GasLift
+    gas-lifted
+    gas lifted
+    lift gas
+    lift-gas
     gas.lift
     gas_lift"
 # convert the text to a dataframe
@@ -33,7 +37,7 @@ kw_tbl
 # iterate through the keywords dataframe
 rec <- vector("list")
 i <- 1
-for (k in kw_tbl$V1) {
+for (k in kw_tbl$keyword) {
     url_all  <- make_search_url(query = k, how = "all")    # create search query
     count    <- get_papers_count(url_all)                  # paper count
     rec[[i]] <- list(keyword = k, count = count)           # add observation
