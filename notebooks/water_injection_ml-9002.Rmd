@@ -40,16 +40,17 @@ join_keywords <- function(..., get_papers = TRUE, bool_op = "AND", sleep = 3) {
         
         # build a record of results
         rec[[i]] <- list(paper_count = paper_count, sf  = sf, url = url.1)
-        url.2 <- make_search_url(sf, how = "all", rows = paper_count)
-        papers.df <- onepetro_page_to_dataframe(url.2)
-        papers.df$keyword <- sf
-        papers.df.k <- rbind(papers.df, papers.df.k)
         
+        # work on a datframe of papers based on the paper count
+        url.2 <- make_search_url(sf, how = "all", rows = paper_count)
+        papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
+        papers.df$keyword <- sf                           # add columns
+        papers.df.k <- rbind(papers.df, papers.df.k)      # cumulative dataframe
         Sys.sleep(sleep)                    # give OnePetro a break
     } 
     rec.df <- data.table::rbindlist(rec)    # convert list to dataframe
     df <- cbind(df, rec.df)                 # join the results
-    invisible(papers.df.k)
+    invisible(papers.df.k)                  # return cumulative dataframe
 }
 
 ```
