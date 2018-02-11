@@ -5,7 +5,6 @@ output: html_notebook
 
 
 
-
 ```{r rows.print = 20}
 library(petro.One)
 
@@ -306,7 +305,7 @@ url1 <- make_search_url(query = "water injection optimization",
                           rows = 129)
 df1 <- onepetro_page_to_dataframe(url1)
 
-url2 <- make_search_url(query = "water injection optimization", 
+url2 <- make_search_url(query = "water injection optimisation", 
                           how = "all",
                           rows = 53)
 df2 <- onepetro_page_to_dataframe(url2)
@@ -518,16 +517,29 @@ for (i in 1:nrow(df)) {
 
 ## Function using algorithm that joins multiple composite keywords 
 
-```{r}
+```{r rows.print=20}
+library(petro.One)
 
-join_keywords <- function(..., bool_op = "AND", sleep = 3) {
+# provide different set of keywords to combine as vectors
+major  <- c("water injection", "water flooding")
+minor  <- c("machine-learning", "intelligent")
+lesser <- c("neural network", "SVM", "genetic", "algorithm")
+df <- expand.grid(major, minor, lesser, stringsAsFactors = FALSE)
+df
+
+
+#' @param ...     input character vectors
+#' @param bool_op boolean operator. It can be AND or OR
+join_keywords <- function(..., bool_op = "AND") {
+    rec <- vector("list")
+    sleep <- 3
     # works for "n" columns
-    df <- expand.grid(..., stringsAsFactors = FALSE)
-    
-    # bool_op <- "AND"
-    sep     <- paste0("'", bool_op, "'")
+    df <- expand.grid(..., stringsAsFactors = FALSE)   # combine keywords
+    sep     <- paste0("'", bool_op, "'")               # add apostrophes to operator
+    # iterate through the rows of keyword combinations dataframe
     for (i in 1:nrow(df)) {
         sf <- NULL
+        # iterate through columns of keywords
         for (j in 1:ncol(df)) {
             s     <- unlist(strsplit(df[i, j], " "))
             splus <- paste(s, collapse = "+")
@@ -539,24 +551,59 @@ join_keywords <- function(..., bool_op = "AND", sleep = 3) {
         }
         sf <- paste0(sf, "'")
         url <- make_search_url(sf, how = "all")
-        cat(sprintf("%3d %60s %5d \n", i, sf, get_papers_count(url)))
-        Sys.sleep(sleep)
+        paper_count <- get_papers_count(url)
+        cat(sprintf("%3d %60s %5d \n", i, sf, paper_count))
         
+        # build a record of results
+        rec[[i]] <- list(paper_count = paper_count, sf  = sf, url = url)
+        Sys.sleep(sleep)                    # give OnePetro a break
     } 
+    rec.df <- data.table::rbindlist(rec)    # convert list to dataframe
+    df <- cbind(df, rec.df)                 # join the results
+    invisible(df)
 }
 
-
+#paper_count_from_vectors <- function() {}
 
 # provide two different set of keywords to combine as vectors
 major  <- c("water injection", "water flooding")
 minor  <- c("machine-learning", "intelligent")
-lesser <- c("neural network", "SVM", "genetic")
-another <- c("algorithm")
+lesser <- c("neural network", "SVM", "genetic", "algorithm")
 
-join_keywords(major, minor, lesser, another)
-
+# join_keywords(major, minor, lesser)
+# p.df <- join_keywords(major, minor)
+p.df <- join_keywords(major, minor, lesser)
+p.df
 ```
 
+
+```{r}
+paper_count_from_vectors <- function(..., bool_op = "AND", sleep = 3) {
+    joined <- join_keywords(...)
+    i <- 1
+    for (u in joined$url) {
+        # print(u)
+        joined$paper_count[[i]] <- get_papers_count(u)
+        #cat(get_papers_count(u))
+        #cat(u, "\n")
+        Sys.sleep(sleep)
+        i <-  i + 1
+    }
+    #cat(sprintf("%3d %60s %5d \n", i, sf, joined$paper_count[]))
+    #Sys.sleep(sleep)
+    return(joined)
+}
+
+
+# provide two different set of keywords to combine as vectors
+major   <- c("water injection", "water flooding")
+minor   <- c("machine-learning", "intelligent")
+lesser  <- c("neural network", "SVM", "genetic")
+another <- c("algorithm")
+
+
+paper_count_from_vectors(major, minor, lesser, another, bool_op = "AND")
+```
 
 
 ```{r}
