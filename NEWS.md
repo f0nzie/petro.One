@@ -1,4 +1,18 @@
-## petro.One 0.1.1.9000 20171102
+## petro.One 0.1.1.9000 
+* `20180211`
+* notebook `water_injection_ml-9001.Rmd`advances the previous 9000, with a function that retrieves a dataframe of papers in addition to the paper count.
+* `20180208`
+* create function to join composite keywords (see water_injection_ml.Rmd)
+* add check.attributes to function expect_equal_scale() 
+* `20180207`
+* add notebook for water injection, waterflood, machine learning, AI
+* `20180124`
+* use code in `gas_lift` notebook for article in LinkedIn
+* add notebook that analyzes variation on the word gas lift.
+* add some comments to Cantarell.
+* `20180105`
+* adding notebook Cantarell to find best paper for productin optimization.
+* 20171102
 * Link to "Thousands of Papers to Dataframe" not working.
 * build site with pkgdown
 
