@@ -1,4 +1,9 @@
 ## petro.One 0.1.1.9000 
+* `200817`
+* add vignette for joining keywords
+* add function `joining_keywords`
+* add function to convert graphic foreign character to spaces in `get_term_document_matrix`.
+* remove some tests to reduce test time.
 * `20180211`
 * notebook `water_injection_ml-9001.Rmd`advances the previous 9000, with a function that retrieves a dataframe of papers in addition to the paper count.
 * `20180208`
