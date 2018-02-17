@@ -22,10 +22,18 @@ parameters(url)
 ```
 
 ```{r}
+parsed_address <- url_parse(url)
+str(parsed_address)
+```
+
+
+```{r}
+# show only the parameter
 (url_parse(url)$parameter)
 ```
 
 ```{r}
+# decompose/parse the parameter variable
 param_get(url, c("q"))
 param_get(url, c("dc_type"))
 
@@ -42,5 +50,16 @@ param_set(url, "rows", 100)
 
 ```{r}
 fragment(url)
+```
+
+## Parsing and composing
+
+```{r}
+parsed_address <- url_parse("https://en.wikipedia.org/wiki/Article")
+str(parsed_address)
+```
+
+```{r}
+url_compose(parsed_address)
 ```
 

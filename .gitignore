@@ -5,3 +5,8 @@
 inst/doc
 # docs/*
 # man/*
+
+*.html
+*.png
+*.csv
+man/
