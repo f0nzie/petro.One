@@ -4,6 +4,7 @@ urls:
 articles:
   document_types_of_papers: document_types_of_papers.html
   gather_thousand_papers_to_dataframe: gather_thousand_papers_to_dataframe.html
+  joining_keywords: joining_keywords.html
   make_wordcloud_01: make_wordcloud_01.html
   make_wordcloud_02: make_wordcloud_02.html
   permanent_downhole_gauge: permanent_downhole_gauge.html
