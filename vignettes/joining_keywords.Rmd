@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+This is a demonstration on how the number of papers can be reduced using additional keywords to control the number of results returned.
 
 ```{r}
 library(petro.One)
