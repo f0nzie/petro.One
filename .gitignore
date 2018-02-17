@@ -7,9 +7,6 @@ inst/doc
 # man/*
 
 *.html
-
 *.png
-
 *.csv
-
 man/
