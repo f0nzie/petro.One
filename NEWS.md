@@ -1,3 +1,6 @@
+## petro.One 0.1.2 20180217
+* release to CRAN to fix error in tests
+
 ## petro.One 0.1.1.9000 
 * `200817`
 * add vignette for joining keywords
