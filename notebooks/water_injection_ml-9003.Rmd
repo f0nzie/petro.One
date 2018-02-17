@@ -96,7 +96,7 @@ unique(p.df$keyword)
 ```
 
 
-### test #4
+### test #5.1
 ```{r}
 # provide two different set of keywords to combine as vectors
 major   <- c("waterflooding")
@@ -109,7 +109,7 @@ p.df <- join_keywords(major, minor, lesser, another, more, get_papers = FALSE, s
 p.df
 ```
 
-### test #5
+### test #5.2
 * using get_papers = TRUE, sleep = 1
 
 ```{r}
