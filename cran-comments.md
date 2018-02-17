@@ -1,3 +1,21 @@
+
+## 20180216
+From: Kurt Hornik <Kurt.Hornik@r-project.org>
+Date: Fri, Feb 16, 2018 at 1:11 AM
+Subject: CRAN package petro.One
+To: alfonso.reyes@oilgainsanalytics.com
+Cc: CRAN@r-project.org
+
+Dear maintainer,
+
+Please see the problems shown on
+<https://cran.r-project.org/web/checks/check_results_petro.One.html>.
+
+Please correct before 2018-03-01 to safely retain your package on CRAN.
+
+Best,
+-k
+
 ## 20171102
 Kurt Hornik <Kurt.Hornik@r-project.org>
 3:05 PM (2 hours ago)
