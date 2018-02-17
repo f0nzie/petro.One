@@ -4,6 +4,7 @@
 #' @param bool_op boolean operator. It can be AND or OR
 #' @param get_papers generate or not a dataframe with papers
 #' @param sleep seconds to wait before a new quiery to OnePetro
+#' @param verbose show progress if TRUE
 #' @import data.table
 #' @export
 join_keywords <- function(...,
