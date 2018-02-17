@@ -51,6 +51,6 @@ join_keywords <- function(...,
         Sys.sleep(sleep)                    # give OnePetro a break
     }
     rec.df <- data.table::rbindlist(rec)    # convert list to dataframe
-    df <- cbind(df, rec.df)                 # join the results
+    df <- tibble::as.tibble(cbind(df, rec.df))            # join the results
     invisible(list(keywords=df, papers=papers.df.k))      # return cumulative dataframe
 }
