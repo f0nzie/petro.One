@@ -50,22 +50,17 @@ join_keywords <- function(..., get_papers = TRUE, bool_op = "AND", sleep = 3) {
     } 
     rec.df <- data.table::rbindlist(rec)    # convert list to dataframe
     df <- cbind(df, rec.df)                 # join the results
-    invisible(papers.df.k)                  # return cumulative dataframe
+    invisible(list(keywords=df, papers=papers.df.k))      # return cumulative dataframe
 }
-
 ```
 
 ### test #1
 ```{r}
-#paper_count_from_vectors <- function() {}
-
 # provide two different set of keywords to combine as vectors
 major  <- c("water injection", "water flooding")
 minor  <- c("machine-learning", "intelligent")
 lesser <- c("neural network", "SVM", "genetic", "algorithm")
 
-# join_keywords(major, minor, lesser)
-# p.df <- join_keywords(major, minor)
 p.df <- join_keywords(major, minor, lesser)
 p.df
 ```
@@ -91,11 +86,11 @@ lesser <- c("algorithm")
 
 p.df <- join_keywords(major, minor, lesser)
 p.df
-```
 
-```{r}
 unique(p.df$keyword)
 ```
+
+
 
 ### test #4
 ```{r}
