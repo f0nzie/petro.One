@@ -4,7 +4,8 @@
 \alias{join_keywords}
 \title{Get paper count and paper dataframe by joining keywords as vectors}
 \usage{
-join_keywords(..., get_papers = TRUE, bool_op = "AND", sleep = 3)
+join_keywords(..., get_papers = TRUE, bool_op = "AND", sleep = 3,
+  verbose = TRUE)
 }
 \arguments{
 \item{...}{input character vectors}
@@ -14,6 +15,8 @@ join_keywords(..., get_papers = TRUE, bool_op = "AND", sleep = 3)
 \item{bool_op}{boolean operator. It can be AND or OR}
 
 \item{sleep}{seconds to wait before a new quiery to OnePetro}
+
+\item{verbose}{show progress if TRUE}
 }
 \description{
 Get paper count and paper dataframe by joining keywords as vectors
