@@ -1,5 +1,6 @@
 ## petro.One 0.1.3 20180218
 * remove badge in README. Causing error.
+* accepted by CRAN on 20180218 at 12:26 PM Singapore time.
 
 ## petro.One 0.1.2 20180217
 * release to CRAN to fix error in tests
