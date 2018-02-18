@@ -1,5 +1,16 @@
+## petro.One 0.1.3 20180218
+* remove badge in README. Causing error.
+
 ## petro.One 0.1.2 20180217
 * release to CRAN to fix error in tests
+* returned by CRAN because a WARNING:
+
+> * checking DESCRIPTION meta-information ... OK
+* checking top-level files ... WARNING
+Conversion of 'README.md' failed:
+pandoc.exe: Could not fetch man/figures/README-unnamed-chunk-7-1.png
+man/figures/README-unnamed-chunk-7-1.png: openBinaryFile: does not exist (No such file or directory)
+* checking for left-over files ... OK
 
 ## petro.One 0.1.1.9000 
 * `200817`
