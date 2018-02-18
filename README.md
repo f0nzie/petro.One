@@ -3,7 +3,7 @@
 petro.One
 =========
 
-[![Travis-CI Build Status](https://travis-ci.org/f0nzie/petro.One.svg?branch=master)](https://travis-ci.org/f0nzie/petro.One) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/petro.One)](https://cran.r-project.org/package=petro.One) [![codecov](https://codecov.io/gh/f0nzie/petro.One/branch/master/graph/badge.svg)](https://codecov.io/gh/f0nzie/petro.One)
+[![Travis-CI Build Status](https://travis-ci.org/f0nzie/petro.One.svg?branch=master)](https://travis-ci.org/f0nzie/petro.One) [![codecov](https://codecov.io/gh/f0nzie/petro.One/branch/master/graph/badge.svg)](https://codecov.io/gh/f0nzie/petro.One)
 
 The goal of **petro.One** is providing a reproducible platform for acquiring and analyzing metadata while searching papers on oil and gas in the OnePetro website.
 
@@ -132,11 +132,11 @@ df
 #>  1 Deconvolution Us~ "        ~ "      ~ "     ~  1996 Essenreiter, Rober~
 #>  2 Neural Network S~ "        ~ "      ~ "     ~  1992 Schmidt, Jumndyr, ~
 #>  3 Neural Networks ~ "        ~ "      ~ "     ~  1995 Leggett, Miles, Br~
-#>  4 Seismic Principa~ "        ~ "      ~ "     ~  1996 Huang, Kou-Yuan, N~
-#>  5 First Break Pick~ "        ~ "      ~ "     ~  1990 Wagner, D.E., Amoc~
-#>  6 Drill-Bit Diagno~ "        ~ "      ~ "     ~  1990 Arehart, R.A., Exx~
+#>  4 Drill-Bit Diagno~ "        ~ "      ~ "     ~  1990 Arehart, R.A., Exx~
+#>  5 Seismic Principa~ "        ~ "      ~ "     ~  1996 Huang, Kou-Yuan, N~
+#>  6 Artificial Intel~ "        ~ "      ~ "     ~  1992 Guo, Yi, Center fo~
 #>  7 Inversion of Sei~ "        ~ "      ~ "     ~  1992 Ro&uml;th, Gunter,~
-#>  8 Artificial Intel~ "        ~ "      ~ "     ~  1992 Guo, Yi, Center fo~
+#>  8 First Break Pick~ "        ~ "      ~ "     ~  1990 Wagner, D.E., Amoc~
 #>  9 Neural Networks ~ "        ~ "      ~ "     ~  1991 McCormack, Michael~
 #> 10 Reservoir Charac~ "        ~ "      ~ "     ~  1993 An, P., University~
 ```
@@ -187,18 +187,18 @@ get_papers_count(my_url)
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 1,000 x 6
-#>    title_data       paper_id   source   type     year author1_data        
-#>    <chr>            <chr>      <chr>    <chr>   <int> <chr>               
-#>  1 Deconvolution U~ "        ~ "      ~ "     ~  1996 Essenreiter, Robert~
-#>  2 Neural Networks~ "        ~ "      ~ "     ~  2002 Russell, Brian, Ham~
-#>  3 Neural Network ~ "        ~ "      ~ "     ~  1992 Schmidt, Jumndyr, P~
-#>  4 Neural Networks~ "        ~ "      ~ "     ~  1995 Leggett, Miles, Bri~
-#>  5 Estimation of W~ "        ~ "      ~ "     ~  2008 Okumoto, Yasuhisa, ~
-#>  6 Seismic Princip~ "        ~ "      ~ "     ~  1996 Huang, Kou-Yuan, Na~
-#>  7 Predicting Wax ~ "        ~ "      ~ "     ~  2012 Adeyemi, B.J., Univ~
-#>  8 First Break Pic~ "        ~ "      ~ "     ~  1990 Wagner, D.E., Amoco~
-#>  9 Dynamic Neural ~ "        ~ "      ~ "     ~  2003 Schultz, R.L., Hall~
-#> 10 Seismic Velocit~ "        ~ "      ~ "     ~  2015 Huang, Kou-Yuan, Na~
+#>    title_data        paper_id    source  type     year author1_data       
+#>    <chr>             <chr>       <chr>   <chr>   <int> <chr>              
+#>  1 Deconvolution Us~ "         ~ "     ~ "     ~  1996 Essenreiter, Rober~
+#>  2 Neural Networks ~ "         ~ "     ~ "     ~  2002 Russell, Brian, Ha~
+#>  3 Neural Network S~ "         ~ "     ~ "     ~  1992 Schmidt, Jumndyr, ~
+#>  4 Neural Networks ~ "         ~ "     ~ "     ~  1995 Leggett, Miles, Br~
+#>  5 Seismic Principa~ "         ~ "     ~ "     ~  1996 Huang, Kou-Yuan, N~
+#>  6 Predicting Wax F~ "         ~ "     ~ "     ~  2012 Adeyemi, B.J., Uni~
+#>  7 Seismic Velocity~ "         ~ "     ~ "     ~  2015 Huang, Kou-Yuan, N~
+#>  8 Artificial Intel~ "         ~ "     ~ "     ~  1992 Guo, Yi, Center fo~
+#>  9 Inversion of Sei~ "         ~ "     ~ "     ~  1992 Ro&uml;th, Gunter,~
+#> 10 Dynamic Neural N~ "         ~ "     ~ "     ~  2003 Schultz, R.L., Hal~
 #> # ... with 990 more rows
 ```
 
@@ -229,15 +229,15 @@ df
 #> # A tibble: 313 x 6
 #>    title_data          paper_id    source  type     year author1_data     
 #>    <chr>               <chr>       <chr>   <chr>   <int> <chr>            
-#>  1 Implicit Approxima~ "         ~ "     ~ "     ~  2009 Li, Dao-lun, Uni~
-#>  2 Artificial Neural ~ "         ~ "     ~ "     ~  2000 Denney, Dennis, ~
-#>  3 Drill-Bit Diagnosi~ "         ~ "     ~ "     ~  1990 Arehart, R.A., E~
+#>  1 Artificial Neural ~ "         ~ "     ~ "     ~  2000 Denney, Dennis, ~
+#>  2 Drill-Bit Diagnosi~ "         ~ "     ~ "     ~  1990 Arehart, R.A., E~
+#>  3 Implicit Approxima~ "         ~ "     ~ "     ~  2009 Li, Dao-lun, Uni~
 #>  4 Application of Art~ "         ~ "     ~ "     ~  1994 Nazi, G.M., Will~
-#>  5 Application of Art~ "         ~ "     ~ "     ~  2009 Hegeman, Peter S~
-#>  6 Pseudodensity Log ~ "         ~ "     ~ "     ~  2017 Carpenter, Chris~
-#>  7 Neural Networks fo~ "         ~ "     ~ "     ~  1999 Denney, Dennis, ~
-#>  8 An Artificial Neur~ "         ~ "     ~ "     ~  2003 Guler, B., Dell ~
-#>  9 Characterize Subma~ "         ~ "     ~ "     ~  2002 Denney, Dennis, ~
+#>  5 Neural Networks fo~ "         ~ "     ~ "     ~  1999 Denney, Dennis, ~
+#>  6 Characterize Subma~ "         ~ "     ~ "     ~  2002 Denney, Dennis, ~
+#>  7 Application of Art~ "         ~ "     ~ "     ~  2009 Hegeman, Peter S~
+#>  8 Neural Network App~ "         ~ "     ~ "     ~  2003 Al-Fattah, S.M.,~
+#>  9 Pseudodensity Log ~ "         ~ "     ~ "     ~  2017 Carpenter, Chris~
 #> 10 Characterizing Par~ "         ~ "     ~ "     ~  2003 Denney, Dennis, ~
 #> # ... with 303 more rows
 ```
@@ -267,20 +267,20 @@ get_papers_count(my_url)
 df <- read_multidoc(my_url)
 
 term_frequency(df)
-#> # A tibble: 9,917 x 2
+#> # A tibble: 9,920 x 2
 #>    word        freq
 #>    <chr>      <int>
-#>  1 reservoir   1846
+#>  1 reservoir   1845
 #>  2 well        1694
-#>  3 gas         1462
+#>  3 gas         1461
 #>  4 field       1307
 #>  5 production  1120
-#>  6 analysis    1053
+#>  6 analysis    1050
 #>  7 pressure     952
-#>  8 reservoirs   906
-#>  9 wells        893
-#> 10 data         834
-#> # ... with 9,907 more rows
+#>  8 reservoirs   907
+#>  9 wells        892
+#> 10 data         832
+#> # ... with 9,910 more rows
 ```
 
 #### Most frequent terms in *well test*
@@ -467,7 +467,7 @@ by_doctype
 | Chapter          |     60|
 | Conference paper |  88724|
 | General          |    933|
-| Journal paper    |  15998|
+| Journal paper    |  16000|
 | Media            |     10|
 | Other            |     21|
 | Presentation     |    265|
@@ -479,7 +479,7 @@ In this example we get the total number of papers by document type.
 
 ``` r
 sum(by_doctype$value)
-#> [1] 106106
+#> [1] 106108
 ```
 
 Or use the R base function `summary` to give us a quick statistics of the papers:
@@ -491,7 +491,7 @@ summary(by_doctype)
 #>  Length:8           Min.   :   10.00  
 #>  Class :character   1st Qu.:   50.25  
 #>  Mode  :character   Median :  180.00  
-#>                     Mean   :13263.25  
-#>                     3rd Qu.: 4699.25  
+#>                     Mean   :13263.50  
+#>                     3rd Qu.: 4699.75  
 #>                     Max.   :88724.00
 ```

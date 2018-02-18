@@ -14,9 +14,7 @@ knitr::opts_chunk$set(
 
 # petro.One
 [![Travis-CI Build Status](https://travis-ci.org/f0nzie/petro.One.svg?branch=master)](https://travis-ci.org/f0nzie/petro.One)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/petro.One)](https://cran.r-project.org/package=petro.One)
 [![codecov](https://codecov.io/gh/f0nzie/petro.One/branch/master/graph/badge.svg)](https://codecov.io/gh/f0nzie/petro.One)
-
 
 The goal of **petro.One** is providing a reproducible platform for acquiring and analyzing metadata while searching papers on oil and gas in the OnePetro website.
 
@@ -169,7 +167,6 @@ df
 ```{r fig.height=9, fig.width=6}
 plot_wordcloud(df, max.words = 100, min.freq = 10)
 ```
-
 
 #### Journal papers (`journal-paper`)
 In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
@@ -348,4 +345,3 @@ Or use the R base function `summary` to give us a quick statistics of the papers
 # r-base function summary
 summary(by_doctype)
 ```
-
