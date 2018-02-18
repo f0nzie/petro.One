@@ -1,0 +1,118 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+We start by providing the keywords or words that are key for finding what we are searching.
+
+```{r}
+library(petro.One)
+url_any <- make_search_url(query = "Cantarell", how = "any")
+get_papers_count(url_any)
+```
+
+Papers that differ in how "cantarell" is spelled:
+
+```{r}
+url_any <- make_search_url(query = "Cantarel", how = "any")
+get_papers_count(url_any)
+```
+
+Only one paper with Cantarell and Optimization
+
+```{r}
+library(petro.One)
+url_any <- make_search_url(query = "Cantarell optimization", how = "all")
+get_papers_count(url_any)
+```
+
+UK english spelling of "optimization":
+
+```{r}
+library(petro.One)
+url_any <- make_search_url(query = "Cantarell optimisation", how = "all")
+get_papers_count(url_any)
+```
+
+Any keywords "network"
+
+```{r}
+library(petro.One)
+url_any <- make_search_url(query = "Cantarell network", how = "all")
+get_papers_count(url_any)
+```
+
+## Provide keywords
+In this example we provide a list of keywords as a text list - later converted to a dataframe-, that is used by petro.One to iterate through that list of keywords.
+
+
+```{r}
+library(petro.One)
+
+# provide the list of keywords
+keywords <- "    
+    Cantarell
+    Cantarell optimization
+    Cantarell optimisation
+    Cantarell modeling
+    Cantarell modelling
+    Cantarell network
+    Cantarell increase
+    Cantarell production
+    Cantarell IPM
+    Cantarell integrated
+    Cantarell gain
+    Cantarell pipesim
+"
+# convert the text to a dataframe
+#
+# keywords
+# read.table(text = keywords, header = FALSE, allowEscapes = FALSE)
+# read text table and split rows at carriage return
+kw_tbl <- read.table(text = keywords, header = FALSE, 
+                              sep = "\n", stringsAsFactors = FALSE, 
+                     strip.white = TRUE)
+kw_tbl
+```
+
+
+```{r rows.print = 20}
+rec <- vector("list")
+i <- 1
+for (k in kw_tbl$V1) {
+    url_all <- make_search_url(query = k, how = "all")
+    count <- get_papers_count(url_all)
+    rec[[i]] <- list(keyword = k, count = count)
+    cat(sprintf("%30s %5d \n", k, count))
+    i <-  i + 1
+    Sys.sleep(5)
+}
+data.table::rbindlist(rec)
+```
+
+
+
+
+
+```{r}
+library(petro.One)
+url <- make_search_url(query = "Cantarell production", how = "all")
+df1 <- onepetro_page_to_dataframe(url)
+df1
+```
+
+```{r}
+library(petro.One)
+url <- make_search_url(query = "Cantarell optimization", how = "all")
+df2 <- onepetro_page_to_dataframe(url)
+df2
+```
+
+## Another way to do it: by getting the list of all papers
+
+```{r}
+library(petro.One)
+url <- make_search_url(query = "Cantarell", how = "all", rows = 1000)
+df <- onepetro_page_to_dataframe(url)
+df
+```

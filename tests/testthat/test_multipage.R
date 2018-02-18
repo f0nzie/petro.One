@@ -11,14 +11,14 @@ test_that("when read_multidoc gets zero rows", {
     expect_equal(nrow(df), 0)
 })
 
-test_that("when read_multidoc gets almost 3000 rows", {
-    my_url <- make_search_url(query = "neural network",
-                              how = "all",
-                              dc_type = "conference-paper",
-                              rows = 1000)
-    df <- read_multidoc(my_url)
-    expect_gte(nrow(df), 2756)
-})
+# test_that("when read_multidoc gets almost 3000 rows", {
+#     my_url <- make_search_url(query = "neural network",
+#                               how = "all",
+#                               dc_type = "conference-paper",
+#                               rows = 1000)
+#     df <- read_multidoc(my_url)
+#     expect_gte(nrow(df), 2756)
+# })
 
 test_that("when read_multidoc with neural network gets almost 3000 rows", {
     my_url <- make_search_url(query = "neural network",
@@ -39,13 +39,13 @@ test_that("when read_multidoc search mechanistic performance", {
 # important!!! provide the type of paper in this test
 context("read_multipage providing one paper type at a time")
 
-test_that("when read_multipage conference-paper gets almost 3000 rows", {
-    my_url <- make_search_url(query = "neural network",
-                              dc_type = "conference-paper",
-                              how = "all")
-    df <- read_multipage(my_url)
-    expect_gte(nrow(df), 2756)
-})
+# test_that("when read_multipage conference-paper gets almost 3000 rows", {
+#     my_url <- make_search_url(query = "neural network",
+#                               dc_type = "conference-paper",
+#                               how = "all")
+#     df <- read_multipage(my_url)
+#     expect_gte(nrow(df), 2756)
+# })
 
 test_that("when read_multipage journal-paper gets almost 3000 rows", {
     my_url <- make_search_url(query = "neural network",
@@ -104,12 +104,12 @@ test_that("when read_multipage journal-paper only", {
     petro.One:::expect_equal_scale(nrow(df), 0, tolerance_pct = 0.01)
 })
 
-test_that("when read_multipage journal-paper only", {
-    my_url <- make_search_url(query = "neural network",
-                              how = "all")
-    df <- read_multipage(my_url, doctype = "conference-paper")
-    expect_gte(nrow(df), 2756)
-})
+# test_that("when read_multipage journal-paper only", {
+#     my_url <- make_search_url(query = "neural network",
+#                               how = "all")
+#     df <- read_multipage(my_url, doctype = "conference-paper")
+#     expect_gte(nrow(df), 2756)
+# })
 
 test_that("when read_multipage journal-paper only", {
     my_url <- make_search_url(query = "neural network",

@@ -1,3 +1,42 @@
+## petro.One 0.1.3 20180218
+* remove badge in README. Causing error.
+* accepted by CRAN on 20180218 at 12:26 PM Singapore time.
+
+## petro.One 0.1.2 20180217
+* release to CRAN to fix error in tests
+* returned by CRAN because a WARNING:
+
+> * checking DESCRIPTION meta-information ... OK
+* checking top-level files ... WARNING
+Conversion of 'README.md' failed:
+pandoc.exe: Could not fetch man/figures/README-unnamed-chunk-7-1.png
+man/figures/README-unnamed-chunk-7-1.png: openBinaryFile: does not exist (No such file or directory)
+* checking for left-over files ... OK
+
+## petro.One 0.1.1.9000 
+* `200817`
+* add vignette for joining keywords
+* add function `joining_keywords`
+* add function to convert graphic foreign character to spaces in `get_term_document_matrix`.
+* remove some tests to reduce test time.
+* `20180211`
+* notebook `water_injection_ml-9001.Rmd`advances the previous 9000, with a function that retrieves a dataframe of papers in addition to the paper count.
+* `20180208`
+* create function to join composite keywords (see water_injection_ml.Rmd)
+* add check.attributes to function expect_equal_scale() 
+* `20180207`
+* add notebook for water injection, waterflood, machine learning, AI
+* `20180124`
+* use code in `gas_lift` notebook for article in LinkedIn
+* add notebook that analyzes variation on the word gas lift.
+* add some comments to Cantarell.
+* `20180105`
+* adding notebook Cantarell to find best paper for productin optimization.
+* 20171102
+* Link to "Thousands of Papers to Dataframe" not working.
+* build site with pkgdown
+
+
 ## petro.One 0.1.1 20171102
 * released to CRAN to fix two errors with the paper count
 * using instead expect_equal to expect_gte in some unit tests that call for paper count.

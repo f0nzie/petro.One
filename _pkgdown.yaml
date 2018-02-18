@@ -12,6 +12,7 @@ reference:
     - make_search_url
     - onepetro_page_to_dataframe
     - read_multipage
+    - join_keywords
   - title: Papers Summary
     contents:
     - papers_by_type
@@ -36,4 +37,7 @@ articles:
   - title: "Improving the word cloud with custom stopwords"
     contents:
     - make_wordcloud_02
+  - title: "Reducing paper results by joining keywords"
+    contents:
+    - joining_keywords
 

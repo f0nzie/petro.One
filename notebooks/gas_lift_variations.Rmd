@@ -1,0 +1,49 @@
+---
+title: "Gas Lift keyword variations"
+output: html_notebook
+---
+
+Article LinkedIn: https://www.linkedin.com/pulse/paper-research-petroleum-engineering-do-you-know-how-spell-reyes/
+
+## We try the same technique with "gas lift temperature"
+
+```{r}
+library(petro.One)
+
+# provide the list of keywords
+keywords <- "    
+    gas lift
+    gas-lift
+    GasLift
+    gas-lifted
+    gas lifted
+    lift gas
+    lift-gas
+    gas.lift
+    gas_lift"
+# convert the text to a dataframe
+# read text table and split rows at carriage return
+kw_tbl <- read.table(text = keywords, header = FALSE, sep = "\n", 
+                     stringsAsFactors = FALSE, strip.white = TRUE, 
+                     col.names = "keyword")
+kw_tbl
+```
+
+
+
+## Build iteration loop
+
+```{r rows.print = 20}
+# iterate through the keywords dataframe
+rec <- vector("list")
+i <- 1
+for (k in kw_tbl$keyword) {
+    url_all  <- make_search_url(query = k, how = "all")    # create search query
+    count    <- get_papers_count(url_all)                  # paper count
+    rec[[i]] <- list(keyword = k, count = count)           # add observation
+    cat(sprintf("%30s %5d \n", k, count))                  # print it
+    i <-  i + 1                                            # increment counter
+    Sys.sleep(5)                          # do not bug OnePetro website too much
+}                                         # be a good internet citizen
+data.table::rbindlist(rec)                # final data table
+```

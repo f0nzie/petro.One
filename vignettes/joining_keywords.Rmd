@@ -1,0 +1,63 @@
+---
+title: "Reducing paper results by joining keywords"
+author: "Alfonso R. Reyes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This is a demonstration on how the number of papers can be reduced using additional keywords to control the number of results returned.
+
+```{r}
+library(petro.One)
+```
+
+
+## test #1
+```{r}
+# provide two different set of keywords to combine as vectors
+major  <- c("water injection", "water flooding")
+minor  <- c("machine-learning", "intelligent")
+lesser <- c("neural network", "SVM", "genetic", "algorithm")
+
+p.df <- join_keywords(major, minor, lesser, get_papers = TRUE)
+p.df
+```
+
+### test #2
+```{r rows.print=20}
+# provide two different set of keywords to combine as vectors
+m  <- c("water injection", "water flooding")
+n  <- c("machine-learning", "machine learning", "intelligent")
+p  <- c("neural network", "SVM", "genetic")
+q  <- c("algorithm")
+
+p.df <- join_keywords(m, n, p, q, get_papers = TRUE)
+p.df
+```
+
+
+
+## Reducing test 5.2
+
+```{r}
+# provide two different set of keywords to combine as vectors
+major   <- c("waterflooding")
+minor   <- c("machine-learning", "artificial intelligence")
+lesser  <- c("algorithm")
+another <- c("data-mining")
+more    <- c("data-driven")
+
+p.df <- join_keywords(major, minor, lesser, another, more, get_papers = TRUE)
+p.df
+```

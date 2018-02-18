@@ -21,5 +21,5 @@ unzip_this <- function(a_zip_file) {
 expect_equal_scale <- function(object, expected, ..., tolerance_pct) {
     tolerance <- tolerance_pct
     scale <- object
-    testthat::expect_equal(object, expected, tolerance, scale)
+    testthat::expect_equal(object, expected, tolerance, scale, check.attributes = TRUE)
 }

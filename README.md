@@ -3,7 +3,7 @@
 petro.One
 =========
 
-[![Travis-CI Build Status](https://travis-ci.org/f0nzie/petro.One.svg?branch=master)](https://travis-ci.org/f0nzie/petro.One) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/petro.One)](https://cran.r-project.org/package=petro.One) [![codecov](https://codecov.io/gh/f0nzie/petro.One/branch/master/graph/badge.svg)](https://codecov.io/gh/f0nzie/petro.One)
+[![Travis-CI Build Status](https://travis-ci.org/f0nzie/petro.One.svg?branch=master)](https://travis-ci.org/f0nzie/petro.One) [![codecov](https://codecov.io/gh/f0nzie/petro.One/branch/master/graph/badge.svg)](https://codecov.io/gh/f0nzie/petro.One)
 
 The goal of **petro.One** is providing a reproducible platform for acquiring and analyzing metadata while searching papers on oil and gas in the OnePetro website.
 
@@ -96,14 +96,14 @@ url_any <- make_search_url(query = "neural network", how = "any")
 url_any
 #> [1] "https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year="
 get_papers_count(url_any)
-#> [1] 3400
+#> [1] 3450
 
 # search for papers that have "neural" and "network" at the same time
 url_all <- make_search_url(query = "neural network", how = "all")
 url_all
 #> [1] "https://www.onepetro.org/search?q=\"neural+network\"&peer_reviewed=&published_between=&from_year=&to_year="
 get_papers_count(url_all)
-#> [1] 3111
+#> [1] 3158
 ```
 
 Read papers from *from\_year* to *to\_year*
@@ -127,20 +127,18 @@ my_url <- make_search_url(query = "neural network",
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 10 x 6
-#>                                                      title_data
-#>                                                           <chr>
-#>  1                          Deconvolution Using Neural Networks
-#>  2                     Neural Network Stacking Velocity Picking
-#>  3             Neural Networks And Paper Seismic Interpretation
-#>  4                     Drill-Bit Diagnosis With Neural Networks
-#>  5  Seismic Principal Components Analysis Using Neural Networks
-#>  6                    First Break Picking Using Neural Networks
-#>  7 Reservoir Characterization Using Feedforward Neural Networks
-#>  8          Seismic Attribute Calibration Using Neural Networks
-#>  9        Neural Networks For Primary Reflection Identification
-#> 10     Conductive fracture identification using neural networks
-#> # ... with 5 more variables: paper_id <chr>, source <chr>, type <chr>,
-#> #   year <int>, author1_data <chr>
+#>    title_data        paper_id   source   type     year author1_data       
+#>    <chr>             <chr>      <chr>    <chr>   <int> <chr>              
+#>  1 Deconvolution Us~ "        ~ "      ~ "     ~  1996 Essenreiter, Rober~
+#>  2 Neural Network S~ "        ~ "      ~ "     ~  1992 Schmidt, Jumndyr, ~
+#>  3 Neural Networks ~ "        ~ "      ~ "     ~  1995 Leggett, Miles, Br~
+#>  4 Drill-Bit Diagno~ "        ~ "      ~ "     ~  1990 Arehart, R.A., Exx~
+#>  5 Seismic Principa~ "        ~ "      ~ "     ~  1996 Huang, Kou-Yuan, N~
+#>  6 Artificial Intel~ "        ~ "      ~ "     ~  1992 Guo, Yi, Center fo~
+#>  7 Inversion of Sei~ "        ~ "      ~ "     ~  1992 Ro&uml;th, Gunter,~
+#>  8 First Break Pick~ "        ~ "      ~ "     ~  1990 Wagner, D.E., Amoc~
+#>  9 Neural Networks ~ "        ~ "      ~ "     ~  1991 McCormack, Michael~
+#> 10 Reservoir Charac~ "        ~ "      ~ "     ~  1993 An, P., University~
 ```
 
 And these are the terms that repeat more freqently:
@@ -148,18 +146,18 @@ And these are the terms that repeat more freqently:
 ``` r
 term_frequency(df)
 #> # A tibble: 26 x 2
-#>                word  freq
-#>               <chr> <int>
-#>  1           neural    10
-#>  2         networks     9
-#>  3          seismic     3
-#>  4   identification     2
-#>  5          picking     2
-#>  6         analysis     1
-#>  7        attribute     1
-#>  8            break     1
-#>  9      calibration     1
-#> 10 characterization     1
+#>    word              freq
+#>    <chr>            <int>
+#>  1 neural              10
+#>  2 networks             9
+#>  3 seismic              3
+#>  4 picking              2
+#>  5 analysis             1
+#>  6 artificial           1
+#>  7 break                1
+#>  8 characterization     1
+#>  9 components           1
+#> 10 deconvolution        1
 #> # ... with 16 more rows
 ```
 
@@ -185,24 +183,23 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 2770
+#> [1] 2811
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 1,000 x 6
-#>                                                         title_data
-#>                                                              <chr>
-#>  1                             Deconvolution Using Neural Networks
-#>  2                                         Neural Networks And AVO
-#>  3                        Neural Network Stacking Velocity Picking
-#>  4                Neural Networks And Paper Seismic Interpretation
-#>  5     Seismic Principal Components Analysis Using Neural Networks
-#>  6                Neural networks approach to spectral enhancement
-#>  7        Predicting Wax Formation Using Artificial Neural Network
-#>  8           Estimation of Welding Distortion Using Neural Network
-#>  9                       First Break Picking Using Neural Networks
-#> 10 Minimum-variance Deconvolution Using Artificial Neural Networks
-#> # ... with 990 more rows, and 5 more variables: paper_id <chr>,
-#> #   source <chr>, type <chr>, year <int>, author1_data <chr>
+#>    title_data        paper_id    source  type     year author1_data       
+#>    <chr>             <chr>       <chr>   <chr>   <int> <chr>              
+#>  1 Deconvolution Us~ "         ~ "     ~ "     ~  1996 Essenreiter, Rober~
+#>  2 Neural Networks ~ "         ~ "     ~ "     ~  2002 Russell, Brian, Ha~
+#>  3 Neural Network S~ "         ~ "     ~ "     ~  1992 Schmidt, Jumndyr, ~
+#>  4 Neural Networks ~ "         ~ "     ~ "     ~  1995 Leggett, Miles, Br~
+#>  5 Seismic Principa~ "         ~ "     ~ "     ~  1996 Huang, Kou-Yuan, N~
+#>  6 Predicting Wax F~ "         ~ "     ~ "     ~  2012 Adeyemi, B.J., Uni~
+#>  7 Seismic Velocity~ "         ~ "     ~ "     ~  2015 Huang, Kou-Yuan, N~
+#>  8 Artificial Intel~ "         ~ "     ~ "     ~  1992 Guo, Yi, Center fo~
+#>  9 Inversion of Sei~ "         ~ "     ~ "     ~  1992 Ro&uml;th, Gunter,~
+#> 10 Dynamic Neural N~ "         ~ "     ~ "     ~  2003 Schultz, R.L., Hal~
+#> # ... with 990 more rows
 ```
 
 #### Word cloud for journal papers
@@ -226,24 +223,23 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 307
+#> [1] 313
 df <- onepetro_page_to_dataframe(my_url)
 df
-#> # A tibble: 307 x 6
-#>                                                                     title_data
-#>                                                                          <chr>
-#>  1                                    Drill-Bit Diagnosis With Neural Networks
-#>  2                Artificial Neural Networks Identify Restimulation Candidates
-#>  3                   Implicit Approximation of Neural Network and Applications
-#>  4             Application of Artificial Neural Network to Pump Card Diagnosis
-#>  5        Application of Artificial Neural Networks to Downhole Fluid Analysis
-#>  6           Pseudodensity Log Generation by Use of Artificial Neural Networks
-#>  7                 Neural Networks for Predictive Control of Drilling Dynamics
-#>  8                Neural Network Approach Predicts U.S. Natural Gas Production
-#>  9          An Artificial Neural Network Based Relative Permeability Predictor
-#> 10 Characterize Submarine Channel Reservoirs: A Neural- Network-Based Approach
-#> # ... with 297 more rows, and 5 more variables: paper_id <chr>,
-#> #   source <chr>, type <chr>, year <int>, author1_data <chr>
+#> # A tibble: 313 x 6
+#>    title_data          paper_id    source  type     year author1_data     
+#>    <chr>               <chr>       <chr>   <chr>   <int> <chr>            
+#>  1 Artificial Neural ~ "         ~ "     ~ "     ~  2000 Denney, Dennis, ~
+#>  2 Drill-Bit Diagnosi~ "         ~ "     ~ "     ~  1990 Arehart, R.A., E~
+#>  3 Implicit Approxima~ "         ~ "     ~ "     ~  2009 Li, Dao-lun, Uni~
+#>  4 Application of Art~ "         ~ "     ~ "     ~  1994 Nazi, G.M., Will~
+#>  5 Neural Networks fo~ "         ~ "     ~ "     ~  1999 Denney, Dennis, ~
+#>  6 Characterize Subma~ "         ~ "     ~ "     ~  2002 Denney, Dennis, ~
+#>  7 Application of Art~ "         ~ "     ~ "     ~  2009 Hegeman, Peter S~
+#>  8 Neural Network App~ "         ~ "     ~ "     ~  2003 Al-Fattah, S.M.,~
+#>  9 Pseudodensity Log ~ "         ~ "     ~ "     ~  2017 Carpenter, Chris~
+#> 10 Characterizing Par~ "         ~ "     ~ "     ~  2003 Denney, Dennis, ~
+#> # ... with 303 more rows
 ```
 
 #### Word cloud for journal papers
@@ -267,24 +263,24 @@ my_url <- make_search_url(query = "well test",
                           how = "all")
 
 get_papers_count(my_url)
-#> [1] 9440
+#> [1] 9569
 df <- read_multidoc(my_url)
 
 term_frequency(df)
-#> # A tibble: 9,871 x 2
-#>          word  freq
-#>         <chr> <int>
-#>  1  reservoir  1817
-#>  2       well  1667
-#>  3        gas  1447
-#>  4      field  1289
-#>  5 production  1101
-#>  6   analysis  1042
-#>  7   pressure   947
-#>  8 reservoirs   894
-#>  9      wells   881
-#> 10       data   825
-#> # ... with 9,861 more rows
+#> # A tibble: 9,920 x 2
+#>    word        freq
+#>    <chr>      <int>
+#>  1 reservoir   1845
+#>  2 well        1694
+#>  3 gas         1461
+#>  4 field       1307
+#>  5 production  1120
+#>  6 analysis    1050
+#>  7 pressure     952
+#>  8 reservoirs   907
+#>  9 wells        892
+#> 10 data         832
+#> # ... with 9,910 more rows
 ```
 
 #### Most frequent terms in *well test*
@@ -321,24 +317,24 @@ my_url <- make_search_url(query = "well test permeability",
                           how = "all")
 
 get_papers_count(my_url)
-#> [1] 190
+#> [1] 194
 df <- read_multidoc(my_url)
 
 term_frequency(df)
-#> # A tibble: 697 x 2
-#>            word  freq
-#>           <chr> <int>
-#>  1    reservoir    86
-#>  2 permeability    42
-#>  3         well    38
-#>  4        field    32
-#>  5    carbonate    31
-#>  6    fractured    27
-#>  7   integrated    21
-#>  8     modeling    21
-#>  9   simulation    21
-#> 10   reservoirs    20
-#> # ... with 687 more rows
+#> # A tibble: 717 x 2
+#>    word          freq
+#>    <chr>        <int>
+#>  1 reservoir       87
+#>  2 permeability    43
+#>  3 well            38
+#>  4 carbonate       33
+#>  5 field           33
+#>  6 fractured       27
+#>  7 modeling        22
+#>  8 integrated      21
+#>  9 simulation      21
+#> 10 reservoirs      20
+#> # ... with 707 more rows
 plot_bars(df, min.freq = 10)
 ```
 
@@ -384,9 +380,9 @@ papers_by_type(my_url)
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |      8|
-| Conference paper |   9440|
+| Conference paper |   9569|
 | General          |    193|
-| Journal paper    |   2536|
+| Journal paper    |   2553|
 | Media            |      5|
 | Other            |      8|
 | Presentation     |     25|
@@ -401,14 +397,14 @@ papers_by_publisher(my_url)
 |:--------------------------------------------------------------|------:|
 | American Petroleum Institute                                  |     42|
 | American Rock Mechanics Association                           |     64|
-| BHR Group                                                     |     10|
+| BHR Group                                                     |     13|
 | Carbon Management Technology Conference                       |      1|
 | International Petroleum Technology Conference                 |    364|
-| International Society for Rock Mechanics                      |     34|
-| International Society for Rock Mechanics and Rock Engineering |      5|
+| International Society for Rock Mechanics and Rock Engineering |     39|
 | International Society of Offshore and Polar Engineers         |     15|
 | NACE International                                            |     45|
 | National Energy Technology Laboratory                         |      8|
+| Offshore Mediterranean Conference                             |     44|
 
 ### By publication source
 
@@ -437,16 +433,16 @@ papers_by_year(my_url)
 
 | name       |  value|
 |:-----------|------:|
-| Since 2017 |    496|
-| Since 2016 |   1062|
-| Since 2015 |   1611|
-| Since 2014 |   2168|
-| Since 2013 |   2679|
-| Since 2012 |   3193|
-| Since 2011 |   3646|
-| Since 2010 |   4172|
-| Since 2009 |   4603|
-| Since 2008 |   5014|
+| Since 2018 |     34|
+| Since 2017 |    637|
+| Since 2016 |   1202|
+| Since 2015 |   1751|
+| Since 2014 |   2310|
+| Since 2013 |   2821|
+| Since 2012 |   3335|
+| Since 2011 |   3788|
+| Since 2010 |   4315|
+| Since 2009 |   4747|
 
 Search for **any** word
 -----------------------
@@ -469,10 +465,10 @@ by_doctype
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |     60|
-| Conference paper |  87790|
-| General          |    932|
-| Journal paper    |  15860|
-| Media            |      9|
+| Conference paper |  88724|
+| General          |    933|
+| Journal paper    |  16000|
+| Media            |     10|
 | Other            |     21|
 | Presentation     |    265|
 | Standard         |     95|
@@ -483,7 +479,7 @@ In this example we get the total number of papers by document type.
 
 ``` r
 sum(by_doctype$value)
-#> [1] 105032
+#> [1] 106108
 ```
 
 Or use the R base function `summary` to give us a quick statistics of the papers:
@@ -492,10 +488,10 @@ Or use the R base function `summary` to give us a quick statistics of the papers
 # r-base function summary
 summary(by_doctype)
 #>      name               value         
-#>  Length:8           Min.   :    9.00  
+#>  Length:8           Min.   :   10.00  
 #>  Class :character   1st Qu.:   50.25  
 #>  Mode  :character   Median :  180.00  
-#>                     Mean   :13129.00  
-#>                     3rd Qu.: 4664.00  
-#>                     Max.   :87790.00
+#>                     Mean   :13263.50  
+#>                     3rd Qu.: 4699.75  
+#>                     Max.   :88724.00
 ```
