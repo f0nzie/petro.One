@@ -1,0 +1,118 @@
+---
+title: "why "
+output: html_notebook
+---
+
+This is with:
+
+```
+get_papers = FALSE
+```
+
+```{r}
+# data driven is the same as data-driven
+library(petro.One)
+
+
+top <- c("data driven")
+discipline <- c("reservoir", "production", "surface facilities", "metering")
+
+by.discipline.dd <- join_keywords(top, discipline, 
+                                   get_papers = FALSE, sleep = 3)
+by.discipline.dd
+```
+
+with:
+
+```
+get_papers = TRUE
+```
+
+This causes the creation of a dataframe for papers
+
+```{r}
+library(petro.One)
+
+top <- c("data driven")
+discipline <- c("reservoir", "production", "surface facilities", "metering")
+
+by.discipline.dd <- join_keywords(top, discipline, 
+                                   get_papers = TRUE, sleep = 3)
+by.discipline.dd
+```
+
+```{r}
+table(by.discipline.dd$papers$keyword)
+```
+
+
+> The app crashes with more than 1000 papers
+
+
+```{r}
+my.url <- by.discipline.dd$keywords$url[3]
+my.url
+get_papers_count(my.url)
+# onepetro_page_to_dataframe(my.url)
+
+```
+```{r}
+onepetro_page_to_dataframe(my.url)
+```
+
+
+```{r}
+# using onepetro_page_to_dataframe()
+recno <- 3
+my.sf <- by.discipline.dd$keywords$sf[recno]
+url.1 <- make_search_url(my.sf, how = "all")
+url.1
+paper_count <- get_papers_count(url.1)
+paper_count
+url.2 <- make_search_url(my.sf, how = "all", rows = paper_count)
+url.2
+papers.df <- onepetro_page_to_dataframe(url.2)
+```
+
+```{r}
+# "conference-paper" are the main category of papersa
+library(petro.One)
+
+recno <- 2
+my.sf <- by.discipline.dd$keywords$sf[recno]
+url.1 <- make_search_url(my.sf, how = "all")
+url.1
+paper_count <- get_papers_count(url.1)
+paper_count
+url.2 <- make_search_url(my.sf, how = "all", rows = paper_count)
+url.2
+papers.df.j <- read_multipage(url.2, doctype = "journal-paper")
+papers.df.c <- read_multipage(url.2, doctype = "conference-paper")
+papers.df.p <- read_multipage(url.2, doctype = "presentation")
+
+papers.df <- rbind(papers.df.c, papers.df.j, papers.df.p)
+papers.df
+```
+
+```{r}
+library(petro.One)
+my_url <- make_search_url(query = "neural network",
+                          how = "all")
+df <- read_multidoc(my_url)
+dim(df)
+```
+
+
+
+```{r}
+recno <- 1
+my.sf <- by.discipline.dd$keywords$sf[recno]
+url.1 <- make_search_url(my.sf, how = "all")
+url.1
+papers_by_type(url.1)
+```
+
+```{r}
+
+```
+
