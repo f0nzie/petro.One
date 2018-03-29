@@ -42,9 +42,13 @@ join_keywords <- function(...,
         rec[[i]] <- list(paper_count = paper_count, sf  = sf, url = url.1)
 
         # create a dataframe of papers based on the paper count
-        if (get_papers) {
-            url.2 <- make_search_url(sf, how = "all", rows = paper_count)
-            papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
+        if ((get_papers) && (paper_count > 0)) {  # do this only if we have papers
+            # url.2 <- make_search_url(sf, how = "all", rows = paper_count)
+            url.2 <- make_search_url(sf, how = "all")
+            # papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
+            # # get multipages > 1000 papers
+            papers.df <- read_multipage(url.2, doctype = "conference-paper")
+            # cat(dim(papers.df), "\n")
             papers.df$keyword <- sf                           # add columns
             papers.df.k <- rbind(papers.df, papers.df.k)      # cumulative dataframe
         }
