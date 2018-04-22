@@ -1,0 +1,154 @@
+
+
+# Analysis
+
+```{r}
+library(dplyr)
+
+# get data file from package folder
+results_loc <- system.file("results", package = "petro.One")
+load(file = paste(results_loc, "ml_technique_4.rda", sep = "/"))
+
+# get dataframes
+keywords.5 <- by.ml_technique.4$keywords
+papers.5   <- by.ml_technique.4$papers
+
+# sort and sum most used algos
+keywords.5 %>%
+    group_by(Var3) %>%
+    summarize(papers=sum(paper_count)) %>%
+    rename(algorithm = Var3) %>% 
+    arrange(desc(papers))
+
+```
+
+> Note. The resulting papers in the summary does not consider there are duplicate papers.
+
+### Create a unique `uid` for all the papers
+This step will allow us to distinguish between duplicate papers.
+Note that the total number of papers is above 8600.
+
+```{r}
+# papers with three columns only
+new.papers.5 <- papers.5 %>% 
+    select(title_data, keyword, year, paper_id, source) %>% 
+    mutate(id = trimws(paste0(trimws(source), trimws(paper_id))))
+
+new.papers.5
+```
+
+### non duplicate papers
+
+
+```{r}
+# how many duplicate papers
+new.papers.5 %>% 
+    distinct(id, title_data)
+
+# with id only was 744
+```
+
+
+### split the keyword variable
+
+
+
+
+
+```{r}
+# split keyword at AND word
+res <- strsplit(new.papers.5$keyword, "AND")
+res[[1]]
+
+# replace extraneous chars by blank and space in str string vectors 
+res.la.1 <- lapply(res, function(x) gsub("\\+", " ", x))
+res.la.2 <- lapply(res.la.1, function(x) gsub("'", "", x))
+res.la.2[[1]]
+
+# convert list of string vectors to dataframe
+keyword.cols <- as.data.frame(do.call(rbind, res.la.2), stringsAsFactors = FALSE)
+keyword.cols
+
+# merge columns
+mod.papers.5 <- cbind(new.papers.5, keyword.cols)
+mod.papers.5
+```
+
+
+```{r}
+# save dataframe to development results
+devres_loc <- "../inst/results"
+write.csv(mod.papers.5, file = paste(devres_loc, "ml_papers_5.csv", sep = "/"))
+```
+
+
+```{r}
+baseline <- ""
+recno <- 1
+for (i in mod.papers.5$id) {
+    
+    #cat(recno, baseline, i, "\n")
+    if (i != baseline) {
+        cat(recno, i, baseline, "\n")
+        Sys.sleep(3)
+        
+    }
+    baseline <- mod.papers.5$id[recno]
+    recno <- recno + 1
+}
+```
+
+
+```{r}
+library(dplyr)
+mod.papers.5 %>%
+    distinct(title_data, id)
+```
+
+```{r}
+names(mod.papers.5)
+```
+
+```{r}
+# get row index number for non-duplicated rows
+nodup.papers.5 <- mod.papers.5[!duplicated(mod.papers.5[6]),]
+nodups.papers.5 <- nodup.papers.5 %>% 
+    select(-c(keyword, paper_id, source, V1))
+```
+
+```{r}
+# save dataframe to development results
+devres_loc <- "../inst/results"
+write.csv(nodups.papers.5, file = paste(devres_loc, "ml_nodups_papers_5.csv", sep = "/"))
+```
+
+
+
+## Read Excel file with Petroleum Engineering applications
+The Excel file has been manually modified by the user to enter which petroleum engineering discipline the paper belongs to. This is a very tiring activity since the user has to go paper by paper and find whichdiscipline falls into.
+
+```{r}
+# read the user modified Excel file with PE discipline assignment
+devres_loc <- "../inst/results"
+xls.nodups.papers.4 <- readxl::read_xlsx(paste(devres_loc, "ml_nodups_papers_4.xlsx", sep = "/"), sheet = 1)
+xls.nodups.papers.4
+```
+
+```{r}
+# unique PE applications
+unique(xls.nodups.papers.4$pe_app)
+```
+
+
+```{r}
+library(dplyr)
+
+# group by application and algorithm
+grouped.5 <- xls.nodups.papers.4 %>% 
+    select(-c(X__1)) %>% 
+    group_by(pe_app, V3) %>% 
+    summarize(avg_count = n()) %>% 
+    arrange(desc(V3)) %>% 
+    print
+```
+

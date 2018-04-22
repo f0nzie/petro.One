@@ -1,0 +1,130 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "IPR viscosity", how = "all")
+page.01 <- xml2::read_html(my_url)
+
+my_url <- make_search_url(query = "IPR neural", how = "all")
+page.02 <- xml2::read_html(my_url)
+
+# page.01
+# page.02
+
+page.li <- list(page.01 = page.01, page.02 = page.02)
+page.li
+
+test_save_loc  <- paste(PROJHOME, "inst/testdata", sep = "/")
+test_save_file <- paste(test_save_loc, "pbt.rda", sep = "/")
+save(page.li, file = test_save_file)
+
+```
+
+
+
+```{r}
+roundtrip <- function(obj) {
+  tf <- tempfile()
+  con <- file(tf, "wb")
+  on.exit(unlink(tf))
+
+  xml_serialize(obj, con)
+  close(con)
+  con <- file(tf, "rb")
+  on.exit(close(con), add = TRUE)
+  xml_unserialize(con)
+}
+```
+
+
+```{r}
+page.1
+```
+
+```{r}
+roundtrip(page.1, )
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "mechanistic performance",
+                          how = "all")
+
+    #load(file = paste(test_loc, "pagexml.rda", sep = "/"))
+    #print(page.1)
+    page.1 <- xml2::read_html(my_url)
+    expect_false(petro.One:::is_dctype_enabled(page.1))
+```
+
+
+```{r}
+xml2::write_html(page.1, file = "page_1.html")
+```
+
+
+```{r}
+webpage <- xml2::read_html("page_1.html")
+```
+
+
+```{r}
+expect_false(petro.One:::is_dctype_enabled(webpage))
+expect_true(petro.One:::is_dctype_enabled(webpage))
+```
+
+## Persisting HTML documents to disk
+https://stackoverflow.com/a/36024318/5270873
+
+```{r}
+library(xml2)
+library(httr)
+
+str_url <- "https://www.holidayhouses.co.nz/Browse/List.aspx?page=1"
+str_url.1 <- make_search_url(query = "IPR viscosity", how = "all")
+str_url.2 <- make_search_url(query = "IPR neural", how = "all")
+
+# use `GET` to make the request, and pull out the html with `content`; returns text string
+x.1 <- content(GET(str_url.1), as = 'text')
+x.2 <- content(GET(str_url.2), as = 'text')
+
+# make a list of html documents to save
+list_xs <- list(x.1. = x.1, x.2 = x.2)
+
+# save list with `saveRDS`
+saveRDS(list_xs, 'test.rds')
+save(list_xs, file = 'test.rda')
+
+rm(list_xs, x.1, x.2)
+```
+
+```{r}
+# read in rds file we saved
+saved_html <- readRDS('test.rds')
+load(file = 'test.rda')
+
+# parse the second element in it with `xml2::read_html`
+saved_x_parsed.1 <- read_html(saved_html[[1]])
+saved_x_parsed.2 <- read_html(saved_html[[2]])
+
+identical(saved_x_parsed.1, saved_x_parsed.1) # must be true
+identical(saved_x_parsed.2, saved_x_parsed.2) # must be true
+identical(saved_x_parsed.1, saved_x_parsed.2) # must be false
+all.equal(saved_x_parsed.1, saved_x_parsed.2) # must be false
+
+cat("2nd comparison \n")
+identical(saved_x_parsed.2, read_html(list_xs$x.2)) # must be true
+identical(saved_x_parsed.1, read_html(list_xs$x.1)) # must be true
+all.equal(saved_x_parsed.2, read_html(list_xs$x.2)) # must be true
+all.equal(saved_x_parsed.1, read_html(list_xs$x.1)) # must be true
+all.equal(saved_x_parsed.1, read_html(list_xs$x.2)) # must be false
+
+# and let's see...
+saved_x_parsed.2
+```
+

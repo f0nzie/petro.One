@@ -1,0 +1,440 @@
+
+
+```{r}
+library(petro.One)
+
+
+major <- c("machine learning")
+minor <- c("reservoir", "production", "logging", "completion", "intervention",
+           "drilling", "geology", "seismic", "petrophysics", "geophysics", 
+           "economics")
+lesser <- c("data", "algorithm")
+
+prod.df <- join_keywords(major, minor, lesser, get_papers = TRUE, sleep = 4)
+prod.df
+```
+
+
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+keywords <- prod.df$keywords    # get the keywords from the list
+
+# data only
+keywords %>%
+    filter(Var3 == "data") %>%
+    ggplot(aes(x=reorder(Var2, paper_count), y=paper_count)) +
+   coord_flip()+
+geom_bar(stat="identity")
+
+
+```
+
+```{r}
+# algorithm only
+keywords %>%
+    filter(Var3 == "algorithm") %>%
+    ggplot(aes(x=reorder(Var2, paper_count), y=paper_count)) +
+   coord_flip()+
+    geom_bar(stat="identity")
+```
+
+## plotting using `magrittr
+
+```{r}
+library(magrittr)
+library(dplyr)
+
+keywords.1 <- prod.df %>% 
+    # extract2("keywords") %>%
+    `[[`("keywords") %>%
+    filter(Var3 == "data")
+
+keywords.1 %>%
+    ggplot(aes(x=reorder(Var2, paper_count), y=paper_count)) +
+    coord_flip()+
+    geom_bar(stat="identity")
+```
+
+```{r}
+
+keywords.2 <- prod.df %>% 
+    # extract2("keywords") %>%
+    `[[`("keywords") %>%
+    filter(Var3 == "algorithm")
+
+keywords.2 %>%
+    ggplot(aes(x=reorder(Var2, paper_count), y=paper_count)) +
+    coord_flip()+
+    geom_bar(stat="identity")
+```
+
+
+
+
+
+replace `well construction`1 by `drilling`
+
+```{r}
+# replace `well construction`1 by `drilling`
+keywords.2 <- prod.df %>% 
+    # extract2("keywords") %>%
+    `[[`("keywords") %>%
+    filter(Var3 == "algorithm") %>%
+    mutate(paper_count = ifelse(Var2 == "well construction",, paper_count))
+    # mutate(Var2 = ifelse(Var2 == "well construction", "drilling", Var2))
+
+keywords.2 %>%
+    ggplot(aes(x = reorder(Var2, paper_count), y=paper_count)) +
+    coord_flip()+
+    geom_bar(stat="identity")
+
+```
+
+
+```{r}
+library(petro.One)
+
+
+major <- c("machine learning")
+discipline <- c("reservoir", "production", "logging", "completion", "intervention",
+           "drilling", "geology", "seismic", "petrophysics", "geophysics", 
+           "economics")
+learning <- c("supervised learning", "unsupervised learning")
+
+by.learning <- join_keywords(major, discipline, learning, get_papers = TRUE, sleep = 3)
+
+```
+
+
+
+```{r}
+library(petro.One)
+
+
+major <- c("machine learning")
+discipline <- c("reservoir", "production", "logging", "completion", "intervention",
+           "drilling", "geology", "seismic", "petrophysics", "geophysics", 
+           "economics")
+learning <- c("supervised learning", "unsupervised learning")
+
+tech_class <- c("clustering", "classification", "regression")
+
+by.learning <- join_keywords(major, discipline, learning, tech_class,
+                             get_papers = TRUE, sleep = 3)
+
+```
+
+## by reference in papers: ML techniques
+
+```{r}
+library(petro.One)
+
+
+major <- c("machine learning")
+minor <- c("reservoir", "production", "logging", "completion", "intervention",
+           "drilling", "geology", "seismic", "petrophysics", "geophysics", 
+           "economics")
+
+ml_technique <- c("SVM", "Support Vector Machine",  "Genetic algorithm", "neural network", 
+                  "fuzzy logic", "decision tree", "k-means", "boosting", 
+                  "deep learning", "PCA", "principal component analysis",
+                  "logistic regression", "kernel density estimation", 
+                  "nearest neighbors", "reinforcement learning")
+
+by.ml_technique <- join_keywords(major, minor, ml_technique, get_papers = TRUE, sleep = 3)
+by.ml_technique
+```
+
+### SVM = Support Vector Machine
+Replace the long-SVM by SVM
+
+```{r}
+var3.str.1 <- "SVM"
+var3.str.2 <- "Support Vector Machine"
+
+not.svm.only <- by.ml_technique %>%
+    `[[`("keywords") %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 != var3.str.1 & Var3 != var3.str.2) %>% 
+    as.data.frame() %>% 
+    print
+```
+
+
+```{r rows.print=25}
+var3.str.1 <- "SVM"
+var3.str.2 <- "Support Vector Machine"
+
+svm.only <- by.ml_technique %>%
+    `[[`("keywords") %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 == var3.str.1 | Var3 == var3.str.2) %>% 
+    mutate(Var3 = ifelse(Var3 == var3.str.2, var3.str.1, Var3)) %>% 
+    group_by(Var1, Var2, Var3) %>% 
+    summarize(paper_count = sum(paper_count)) %>% 
+    as.data.frame() %>% 
+    print
+
+```
+
+```{r}
+# binding both dataframes
+keywords.new <- rbind(not.svm.only, svm.only)
+keywords.new
+```
+### PCA
+
+```{r}
+var3.str.1 <- "PCA"
+var3.str.2 <- "principal component analysis"
+
+not.pca.only <- keywords.new %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 != var3.str.1 & Var3 != var3.str.2) %>%
+    as.data.frame() %>% 
+    print
+```
+
+```{r rows.print=25}
+var3.str.1 <- "PCA"
+var3.str.2 <- "principal component analysis"
+
+pca.only <- keywords.new %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 == var3.str.1 | Var3 == var3.str.2) %>% 
+    mutate(Var3 = ifelse(Var3 == var3.str.2, var3.str.1, Var3)) %>% 
+    group_by(Var1, Var2, Var3) %>% 
+    summarize(paper_count = sum(paper_count)) %>% 
+    as.data.frame() %>% 
+    print
+
+```
+
+```{r}
+keywords.new.2 <- rbind(not.pca.only, pca.only)
+keywords.new.2
+```
+
+## add new ML techniques
+* naive bayes
+* "GPR", " Gaussian Processes Regression",
+* "gaussian mixture", "hidden markov"
+* "deep learning", "convolutional network", "Boltzman machine",
+
+```{r}
+library(petro.One)
+
+
+major <- c("machine learning")
+minor <- c("reservoir", "production", "logging", "completion", "intervention", "workover",
+           "drilling", "geology", "seismic", "petrophysics", "geophysics", 
+           "economics", "surface facilities")
+
+ml_technique.2 <- c("SVM", "Support Vector Machine", "discriminant analysis", 
+                    "logistic regression",
+                    "naive bayes", "nearest neighbor",
+                     "linear regression", "SVR", "Support Vector Regressor", 
+                    "GPR", " Gaussian Processes Regression",
+                    "decision tree", "neural network", "neural nets",  
+                     "k-means", "c-means", "hierarchical", "gaussian mixture", "hidden markov",
+                    
+                    "deep learning", "convolutional network", "Boltzman machine",
+                    
+                   "Genetic algorithm", "fuzzy logic", "boosting", 
+                  "PCA", "principal component analysis",
+                  "kernel density estimation", 
+                   "reinforcement learning")
+
+by.ml_technique.2 <- join_keywords(major, minor, ml_technique.2, get_papers = TRUE, sleep = 3)
+by.ml_technique.2
+
+save(by.ml_technique.2, file = "ml_technique_2.rda")  # just in case
+```
+
+```{r}
+# load(file = "ml_technique_2.rda") 
+load("R:/github-oilgains/petro.One/ml_technique_2.rda")
+```
+
+
+
+```{r}
+by.ml_technique.2$keywords
+```
+
+
+```{r}
+library(dplyr)
+
+var3.str.1 <- "SVM"
+var3.str.2 <- "Support Vector Machine"
+
+not.svm.only <- by.ml_technique.2 %>%
+    `[[`("keywords") %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 != var3.str.1 & Var3 != var3.str.2) %>% 
+    as.data.frame() %>% 
+    print
+
+var3.str.1 <- "SVM"
+var3.str.2 <- "Support Vector Machine"
+
+svm.only <- by.ml_technique.2 %>%
+    `[[`("keywords") %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 == var3.str.1 | Var3 == var3.str.2) %>% 
+    mutate(Var3 = ifelse(Var3 == var3.str.2, var3.str.1, Var3)) %>% 
+    group_by(Var1, Var2, Var3) %>% 
+    summarize(paper_count = sum(paper_count)) %>% 
+    as.data.frame() %>% 
+    print
+
+# binding both dataframes
+keywords.new <- rbind(not.svm.only, svm.only)
+keywords.new
+```
+
+
+```{r}
+var3.str.1 <- "PCA"
+var3.str.2 <- "principal component analysis"
+
+not.pca.only <- keywords.new %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 != var3.str.1 & Var3 != var3.str.2) %>%
+    as.data.frame() %>% 
+    print
+
+
+pca.only <- keywords.new %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 == var3.str.1 | Var3 == var3.str.2) %>% 
+    mutate(Var3 = ifelse(Var3 == var3.str.2, var3.str.1, Var3)) %>% 
+    group_by(Var1, Var2, Var3) %>% 
+    summarize(paper_count = sum(paper_count)) %>% 
+    as.data.frame() %>% 
+    print
+
+keywords.new.2 <- rbind(not.pca.only, pca.only)
+keywords.new.2
+
+```
+
+```{r}
+var3.str.1 <- "neural network"
+var3.str.2 <- "neural nets"
+
+not.nnet.only <- keywords.new.2 %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 != var3.str.1 & Var3 != var3.str.2) %>%
+    as.data.frame() %>% 
+    print
+
+
+nnet.only <- keywords.new.2 %>%
+    select(Var1, Var2, Var3, paper_count) %>% 
+    filter(Var3 == var3.str.1 | Var3 == var3.str.2) %>% 
+    mutate(Var3 = ifelse(Var3 == var3.str.2, var3.str.1, Var3)) %>% 
+    group_by(Var1, Var2, Var3) %>% 
+    summarize(paper_count = sum(paper_count)) %>% 
+    as.data.frame() %>% 
+    print
+
+keywords.new.3 <- rbind(not.nnet.only, nnet.only)
+keywords.new.3
+
+```
+
+## 
+
+```{r}
+library(petro.One)
+
+
+major <- c("machine learning")
+minor <- c("reservoir", "production", "logging", "completion", "intervention", "workover",
+           "drilling", "geology", "seismic", "petrophysics", "geophysics", 
+           "economics", "surface facilities")
+
+ml_technique.3 <- c("SVR", "Support Vector Regression", 
+                    "GPR", " Gaussian Process Regression"
+                  )
+
+by.ml_technique.3 <- join_keywords(major, minor, ml_technique.3, get_papers = TRUE, sleep = 3)
+by.ml_technique.3
+
+# save(by.ml_technique.2, file = "ml_technique_2.rda")  # just in case
+```
+
+
+
+
+
+
+
+## ML techniques organized by supervised and unspervised
+
+```{r}
+library(petro.One)
+
+
+major <- c("machine learning")
+minor <- c("reservoir", "production", "surface facilities", "metering",
+           "logging", 
+           "completion", "intervention", "workover", "drilling", 
+           "geology", "petrophysics", "geophysics", "seismic",
+           "economics")
+
+ml_technique.4 <- c("boosting", 
+                    "discriminant analysis", 
+                    "kernel approximation",
+                    "genetic algorithm",
+                    "SVM", "Support Vector Machine", 
+                    "nearest neighbor", "k-nearest neighbor",
+                    "deep learning", 
+                    "convolutional network", "convolutional neural",
+                    "kernel density estimation",
+                    "naive bayes", 
+                    "logistic regression",
+                    "neural network", "neural nets", 
+                    "decision tree",
+                    "Gradient Boosting Tree",
+                    "linear regression", 
+                    "random forest",
+                    "GPR", " Gaussian Process Regression",
+                    
+                    "PCA", "principal component analysis",
+                    "SVD", "Singular Value Decomposition",
+                    "c-means", "fuzzy c-means",
+                     "k-means",  
+                    "gaussian mixture", "gaussian mixture model",
+                    
+                    "reinforcement learning",
+                    "hierarchical", "hierarchical clustering",
+                    
+                    "fuzzy logic", 
+                    "hidden markov",
+                  
+                    "SVR", "Support Vector Regression"
+                   )
+
+by.ml_technique.4 <- join_keywords(major, minor, ml_technique.4, get_papers = TRUE, sleep = 3)
+by.ml_technique.4
+
+save(by.ml_technique.4, file = "ml_technique_4.rda")  # just in case
+```
+
+
+```{r}
+write.csv(by.ml_technique.4, file = "ml_technique_4.csv")  # just in case
+```
+
+
+```{r}
+ml.keywords.4 <- by.ml_technique.4$keywords
+ml.papers.4 <- by.ml_technique.4$papers
+```
+

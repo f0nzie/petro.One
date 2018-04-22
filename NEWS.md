@@ -1,3 +1,8 @@
+## petro.One 0.1.3.9000
+* `20180227`
+* fixing error when paper count is zero in function join_keywords().
+
+
 ## petro.One 0.1.3 20180218
 * remove badge in README. Causing error.
 * accepted by CRAN on 20180218 at 12:26 PM Singapore time.
