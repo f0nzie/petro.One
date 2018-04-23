@@ -1,5 +1,5 @@
 ---
-title: "why "
+title: "why crashes with more than 1000 papers"
 output: html_notebook
 ---
 
@@ -40,6 +40,23 @@ by.discipline.dd <- join_keywords(top, discipline,
                                    get_papers = TRUE, sleep = 3)
 by.discipline.dd
 ```
+
+We try this other one with `1300+` papers.
+
+
+
+```{r cache=TRUE}
+library(petro.One)
+
+major <- c("artificial intelligence")
+minor <- c("drilling")
+
+# the returning data structure is a a list
+# the list contains two dataframes: one for the keywords and a second for the papers
+prod.li <- join_keywords(major, minor, get_papers = TRUE, sleep = 3)
+prod.li
+```
+
 
 ```{r}
 table(by.discipline.dd$papers$keyword)
