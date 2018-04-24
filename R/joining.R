@@ -38,7 +38,7 @@ join_keywords <- function(...,
 
         if (verbose) cat(sprintf("%3d %5d %-60s \n", i, paper_count, sf))
 
-        # build a record of results
+        # build a record of results that willbe used for dataframe
         rec[[i]] <- list(paper_count = paper_count, sf  = sf, url = url.1)
 
         # create a dataframe of papers based on the paper count

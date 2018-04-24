@@ -1,0 +1,66 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## Problem with keyword combination
+
+```
+Error in open.connection(x, "rb") : HTTP error 500.
+Warning in .Internal(exists(x, envir, mode, inherits)) :
+  closing unused connection 3 (https://www.onepetro.org/search?q="machine+learning"AND"economics"AND"GPR"&peer_reviewed=&published_between=&from_year=&to_year=&dc_type=conference-paper&start=-1000&rows=1000)
+```  
+
+```
+30     1 'machine+learning'AND'economics'AND'GPR'  
+Error in open.connection(x, "rb") : HTTP error 500.
+12.open.connection(x, "rb")
+11.open(x, "rb")
+10.read_xml.connection(con, encoding = encoding, ..., as_html = as_html, base_url = x, options = options)
+9.read_xml.character(x, encoding = encoding, ..., as_html = TRUE, options = options)
+8.read_xml(x, encoding = encoding, ..., as_html = TRUE, options = options)
+7.withCallingHandlers(expr, warning = function(w) invokeRestart("muffleWarning"))
+6.suppressWarnings(read_xml(x, encoding = encoding, ..., as_html = TRUE, options = options))
+5.read_html.default(url)
+4.read_html(url) at papers_to_dataframe.R#17
+3.onepetro_page_to_dataframe(url) at multipage.R#65
+2.read_multipage(url.2, doctype = "conference-paper") at joining.R#50
+1.join_keywords(major, discipline, ml_technique.1, get_papers = TRUE, sleep = 3)
+```
+
+```
+Warning in delayedAssign("value", get(var, frame, inherits = FALSE), assign.env = value) :
+  closing unused connection 3 (https://www.onepetro.org/search?q="machine+learning"AND"economics"AND"GPR"&peer_reviewed=&published_between=&from_year=&to_year=&dc_type=conference-paper&start=-1000&rows=1000)
+ Show Traceback
+Error in open.connection(x, "rb") : HTTP error 500.
+```
+
+```{r}
+library(petro.One)
+
+major <- c("machine learning")
+discipline <- c("economics")
+ml_technique.1 <- c("GPR", "Gaussian Process Regression",
+                    "PCA", "principal component analysis"
+                                        )
+by.ml_technique.1 <- join_keywords(major, discipline, ml_technique.1, 
+                                   get_papers = TRUE, sleep = 3, verbose = TRUE)
+
+by.ml_technique.1
+```
+
+### Go closer to the source of the error
+
+```{r}
+url <- 'https://www.onepetro.org/search?q="machine+learning"AND"economics"AND"GPR"&peer_reviewed=&published_between=&from_year=&to_year=&dc_type=conference-paper&start=-1000&rows=1000'
+get_papers_count(url)
+```
+
+
+
+
+
+
+
+
+

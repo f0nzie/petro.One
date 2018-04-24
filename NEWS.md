@@ -1,3 +1,7 @@
+## petro.One 0.1.3.9001
+* troubleshooting combination of machine learning, economics, GPR
+* add 999-troubleshooting.Rmd
+
 ## petro.One 0.1.3.9000
 * `20180227`
 * fixing error when paper count is zero in function join_keywords().
