@@ -36,7 +36,7 @@ join_keywords <- function(...,
         url.1 <- make_search_url(sf, how = "all")      # search in OnePetro
         paper_count <- get_papers_count(url.1)         # paper count
 
-        if (verbose) cat(sprintf("%3d %5d %-60s \n", i, paper_count, sf))
+        # if (verbose) cat(sprintf("%3d %5d %-60s \n", i, paper_count, sf))
 
         # build a record of results that willbe used for dataframe
         rec[[i]] <- list(paper_count = paper_count, sf  = sf, url = url.1)
@@ -47,6 +47,7 @@ join_keywords <- function(...,
             url.2 <- make_search_url(sf, how = "all")
             # papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
             # # get multipages > 1000 papers
+            if (verbose) cat(sprintf("%3d %5d %-60s\n%s", i, paper_count, sf, url.2))
             papers.df <- read_multipage(url.2, doctype = "conference-paper")
             # cat(dim(papers.df), "\n")
             papers.df$keyword <- sf                           # add columns
