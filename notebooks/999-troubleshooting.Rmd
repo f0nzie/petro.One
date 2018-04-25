@@ -44,19 +44,31 @@ ml_technique.1 <- c("GPR", "Gaussian Process Regression",
                     "PCA", "principal component analysis"
                                         )
 by.ml_technique.1 <- join_keywords(major, discipline, ml_technique.1, 
-                                   get_papers = TRUE, sleep = 3, verbose = TRUE)
+                                   get_papers = TRUE, sleep = 3, 
+                                   verbose = TRUE)
 
 by.ml_technique.1
 ```
 
 ### Go closer to the source of the error
 
+
 ```{r}
-url <- 'https://www.onepetro.org/search?q="machine+learning"AND"economics"AND"GPR"&peer_reviewed=&published_between=&from_year=&to_year=&dc_type=conference-paper&start=-1000&rows=1000'
+url <- 'https://www.onepetro.org/search?q="machine+learning"AND"economics"AND"GPR"&peer_reviewed=&published_between=&from_year=&to_year=&dc_type=conference-paper&start=1000&rows=1000'
 get_papers_count(url)
+onepetro_page_to_dataframe(url)
 ```
 
+```{r}
+url <- "https://www.onepetro.org/search?q=\"machine+learning\"AND\"economics\"AND\"GPR\"&peer_reviewed=&published_between=&from_year=&to_year="
 
+get_papers_count(url)
+onepetro_page_to_dataframe(url)
+```
+
+```{r}
+papers.df <- read_multipage(url, doctype = "conference-paper")
+```
 
 
 
