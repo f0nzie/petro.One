@@ -107,6 +107,23 @@ my_url <- make_search_url(query = "deepwater",
 onepetro_page_to_dataframe(my_url)
 ```
 
+### *Other* papers for *deepwater*
 
+```{r}
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "other")
+
+onepetro_page_to_dataframe(my_url)
+```
+
+### *Other* papers for *deepwater*
+
+```{r}
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "media")
+
+get_papers_count(my_url)
+onepetro_page_to_dataframe(my_url)
+```
 
 
