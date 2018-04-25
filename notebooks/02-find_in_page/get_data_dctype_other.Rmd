@@ -1,0 +1,286 @@
+---
+title: "Get data for dc-type=other"
+output: html_notebook
+---
+
+
+```{r}
+# for dc-type="conference-paper"
+library(petro.One)
+
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "conference-paper"
+                          )
+
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-link')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+title_data
+df <- onepetro_page_to_dataframe(my_url)
+df
+names(df)
+```
+
+### Column names for dc-type="conference-paper"
+[1] "title_data"   "paper_id"     "source"       "type"         "year"        
+[6] "author1_data"
+
+
+```{r}
+# for dc-type="media"
+library(petro.One)
+
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "media",
+                          rows= 100
+                          )
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+
+remove_last_of_list <- function(x) {
+    x[-c(length(x))]
+}
+
+Lrmbll <- remove_last_of_list(Lrmb)
+sapply(Lrmbll, length)
+```
+
+
+
+
+```{r}
+# for dc-type="media"
+# query = "machine learning"
+
+library(petro.One)
+
+my_url <- make_search_url(query = "machine learning", 
+                          dc_type = "media",
+                          rows = 100
+                          )
+
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+
+Lrmbll <- remove_last_of_list(Lrmb)
+sapply(Lrmbll, length)
+```
+
+
+
+```{r}
+# for dc-type="media"
+# query = "data driven"
+
+library(petro.One)
+
+my_url <- make_search_url(query = "data driven", 
+                          dc_type = "media",
+                          rows = 100
+                          )
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+
+Lrmbll <- remove_last_of_list(Lrmb)
+sapply(Lrmbll, length)
+```
+
+
+```{r}
+# for dc-type="media"
+library(petro.One)
+
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "media",
+                          rows= 100
+                          )
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+
+Lrmbll <- remove_last_of_list(Lrmb)
+sapply(Lrmbll, length)
+```
+
+
+
+
+```{r}
+# for dc-type="media"
+# query = "machine learning"
+
+library(petro.One)
+
+my_url <- make_search_url(query = "machine learning", 
+                          dc_type = "media",
+                          rows = 100
+                          )
+
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+
+Lrmbll <- remove_last_of_list(Lrmb)
+sapply(Lrmbll, length)
+```
+
+
+
+```{r}
+# for dc-type="media"
+# query = "data driven"
+
+library(petro.One)
+
+my_url <- make_search_url(query = "reservoir", 
+                          dc_type = "media",
+                          rows = 300
+                          )
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+
+Lrmbll <- remove_last_of_list(Lrmb)
+
+# index of members with less than 7 parts
+which(sapply(Lrmbll, length) < 7)
+Lrmbll[[103]]
+```
+
+```{r}
+# for dc-type="media"
+# query = "data driven"
+
+library(petro.One)
+
+my_url <- make_search_url(query = "temperature", 
+                          dc_type = "media",
+                          rows = 300
+                          )
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+
+Lrmbll <- remove_last_of_list(Lrmb)
+
+# index of members with less than 7 parts
+Lrmbll[which(sapply(Lrmbll, length) < 7)]
+```
+
+```{r}
+Lrmbll[which(sapply(Lrmbll, length) < 7)]
+```
+
+## Columns for `dc-type=other`
+
+[1] "title_data"   "paper_id"     "source"       "type"         "year"        
+[6] "author1_data"
+
+Columns:
+    paper_id
+    type_description
+    title_data:article
+    conference
+    date_str[optional]
+    location[optional]
+    
+    
+```{r}
+source_data <- data.frame(paper_id = as.character(source_data[, 2]),
+                                  source   = as.character(source_data[, 3]),
+                                  type     = as.character(source_data[, 4]),
+                                  year     = as.character(source_data[, 5]),
+                                  stringsAsFactors = FALSE)
+```
+
+
+```{r}
+remove_last_of_list <- function(x) {
+    x[-c(length(x))]
+}
+
+remove_last_of_list(Lrmb)
+```
+
