@@ -143,11 +143,11 @@ term_frequency(df)
 We can also get paper by the type of document. In OnePetro it is called `dc_type`.
 
 #### Conference papers (`conference-paper`)
-In this example we are requesting only `conference-paper` type.
+In this example we are requesting only the `conference-paper` type. Then, we add the parameter `dc_type` to `make_search_url`.
 
-Here we add to `make_search_url` the parameter `dc_type`.
+Note also that we are adding another parameter `rows` to get 1000 rows instead of 10, 50 or 100 as the browser only allows.
 
-Note also that we are adding another parameter `rows` to get 1000 rows instead of 10, 50 or 100 as the browser allows.
+> Note. the maximum number of rows that can be retrieved at a time from OnePetro is `1000`.
 
 ```{r}
 # specify document type = "conference-paper", rows = 1000
@@ -162,14 +162,15 @@ df <- onepetro_page_to_dataframe(my_url)
 df
 ```
 
-#### Word cloud for journal papers
+#### Word cloud for conference papers
+We plot the dataframe that was obtained above.
 
 ```{r fig.height=9, fig.width=6}
 plot_wordcloud(df, max.words = 100, min.freq = 10)
 ```
 
 #### Journal papers (`journal-paper`)
-In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
+In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: `1000`.
 
 ```{r}
 # specify document type = "journal-paper", rows = 1000
@@ -190,7 +191,7 @@ df
 plot_wordcloud(df, max.words = 100, min.freq = 50)
 ```
 
-## Finding the most freqent terms in *well test*
+## Finding the most frequent terms in *well test*
 For this example we want to know about conference papers where the words *well* and *test* are found together in the papers.
 
 ```{r}
@@ -213,6 +214,7 @@ term_frequency(df)
 plot_bars(df, min.freq = 400)
 ```
 
+
 ## How do the most frequent terms relate each other
 Now, it is not enough for us to know what terms are the more repeating but how those freqent terms relate to each other.
 
@@ -222,7 +224,7 @@ In the following plot you will see that the strength of the relationship between
 plot_relationships(df, min.freq = 400, threshold = 0.075)
 ```
 
-We can see that *wells* and *well* are connected stringly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
+We can see that *wells* and *well* are connected strongly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
 
 For instance, if you are looking for papers that have stronger relationship between of *well test* and *permeability*, it would wise to add that term to the search.
 
@@ -231,10 +233,11 @@ library(petro.One)
 
 my_url <- make_search_url(query = "well test permeability", 
                           dc_type = "conference-paper",
-                          how = "all")
+                          how = "all"
+                          )
 
 get_papers_count(my_url)
-df <- read_multidoc(my_url)
+df <- read_multidoc(my_url, verbose = TRUE)
 
 term_frequency(df)
 plot_bars(df, min.freq = 10)
@@ -259,7 +262,6 @@ The summary functions allow us to group the papers by a preferred group:
 
 This will give you a summary of the count not the papers themselves.
 
-
 Here is an example of summaries. In this case, we want papers that contain the exact words "well test".
 
 ```{r}
@@ -267,10 +269,6 @@ library(petro.One)
 
 my_url <- make_search_url(query = "well test", 
                           how = "all")
-```
-
-```{r eval=FALSE}
-papers_by_type(my_url)
 ```
 
 
@@ -312,7 +310,7 @@ knitr::kable(head(papers_by_year(my_url), 10))
 
 
 ## Search for **any** word
-In this other example, we want papers that containg the word "well" or "test".
+In this other example, we want papers that contain the word "well" or "test".
 
 ```{r}
 library(petro.One)
