@@ -1,0 +1,30 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+source_data_html <- rvest::html_nodes(webpage, '.result-item-source')
+
+author1_data_html <- rvest::html_nodes(webpage, '.result-item-author:nth-child(1)')
+
+title_data_html <- html_nodes(webpage, '.result-link')
+source_data_html <- html_nodes(webpage, '.result-item-source')
+
+
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn")
+    
+
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn") %>% 
+    html_attr("data-p13n")    
+    
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn") %>% 
+    html_attr("data-p13n-title") %>% 
+    head
+    
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn") %>% 
+    html_attr("data-p13n-uri")    

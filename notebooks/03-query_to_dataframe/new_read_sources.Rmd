@@ -1,0 +1,95 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## the old get_item_source()
+
+```{r}
+get_item_source <- function(webpage) {
+    # Using CSS selectors to scrap the rankings section
+    # source_data_html <- html_nodes(webpage, '.result-item-source')
+    source_data_html <- rvest:::html_nodes(webpage, '.result-item-actions')
+
+    # Converting the ranking data to text
+    rvest:::html_text(source_data_html)
+}
+```
+
+
+### applied to dc_type = "other"
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "conference-paper",
+                          # dc_type = "journal-paper",
+                          # dc_type = "media",
+                          dc_type = "other",
+                          rows = 100
+                          )
+# get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+data_html <- rvest:::html_nodes(webpage, '.result-item-actions')[1]
+strsplit(as.character(data_html), '\n', fixed=TRUE)
+```
+
+```{r}
+html_nodes(webpage, '.result-item-actions') %>% 
+    as.character %>% 
+    strsplit('\n', fixed=TRUE) %>% 
+    head
+
+```
+
+```{r}
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes("a")
+```
+
+```{r}
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn")
+```
+
+## get attribute `data-p13n` from class `save-item-btn`
+
+```{r}
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn") %>% 
+    html_attr("data-p13n")
+```
+
+```{r}
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn") %>% 
+    html_attr("data-p13n-title") %>% 
+    head
+```
+```{r}
+html_nodes(webpage, '.result-item-actions') %>% 
+    html_nodes(".save-item-btn") %>% 
+    html_attr("data-p13n-uri")
+```
+
+
+
+
+```{r}
+library(rvest)
+
+html_nodes(webpage, xpath = ".result-item-stars") %>%
+    html_attr('span:data-p13n-rating-type')
+# data_html_node  <- rvest:::html_node(data_html_nodes, '.data-p13n-rating-type')
+# data_html_node
+#strsplit(as.character(data_html_node), '\n', fixed=TRUE)
+```
+
+```{r}
+library(rvest)
+
+data_html <- html_nodes(webpage, css = ".result-item") 
+html_nodes(data_html, "data-type")
+    # html_nodes(".data-type")
+```

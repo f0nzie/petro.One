@@ -3,26 +3,14 @@ title: "Get data for dc-type=other"
 output: html_notebook
 ---
 
-## these document types have a different structure
-do_not_read <- c("media", "standard", "other")
-
-```{r}
-library(petro.One)
-
-my_url <- make_search_url(query = "pressure", 
-                          how = "any")
-
-by_doctype <- papers_by_type(my_url)
-by_doctype
-```
-
 
 ```{r}
 # for dc-type="conference-paper"
 library(petro.One)
 
 my_url <- make_search_url(query = "deepwater", 
-                          dc_type = "conference-paper"
+                          dc_type = "conference-paper",
+                          rows = 100
                           )
 
 webpage <- xml2::read_html(my_url)
@@ -46,7 +34,7 @@ names(df)
 library(petro.One)
 
 my_url <- make_search_url(query = "deepwater", 
-                          dc_type = "other",
+                          dc_type = "media",
                           rows= 100
                           )
 get_papers_count(my_url)
@@ -70,9 +58,8 @@ remove_last_of_list <- function(x) {
 
 Lrmbll <- remove_last_of_list(Lrmb)
 sapply(Lrmbll, length)
-Lrmbll
+Lrmbll[1]
 ```
-</div>
 
 
 
@@ -83,8 +70,8 @@ Lrmbll
 
 library(petro.One)
 
-my_url <- make_search_url(query = "pressure", 
-                          dc_type = "other",
+my_url <- make_search_url(query = "machine learning", 
+                          dc_type = "media",
                           rows = 100
                           )
 
@@ -104,8 +91,7 @@ L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
 Lrmb <- lapply(L, function(x) x[!x %in% ""])
 
 Lrmbll <- remove_last_of_list(Lrmb)
-# sapply(Lrmbll, length)
-Lrmbll
+sapply(Lrmbll, length)
 ```
 
 
@@ -240,7 +226,7 @@ Lrmbll[[103]]
 
 library(petro.One)
 
-my_url <- make_search_url(query = "temperature", 
+my_url <- make_search_url(query = "pressure", 
                           dc_type = "media",
                           rows = 300
                           )
@@ -258,12 +244,18 @@ L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
 
 # remove blank elements from list
 Lrmb <- lapply(L, function(x) x[!x %in% ""])
+Lrmb <- lapply(Lrmb, function(x) x[!x %in% "Conference:"])
 
 Lrmbll <- remove_last_of_list(Lrmb)
 
-# index of members with less than 7 parts
-Lrmbll[which(sapply(Lrmbll, length) < 7)]
+
 ```
+
+```{r}
+# index of members with less than 6 parts
+Lrmbll[which(sapply(Lrmbll, length) < 6)]
+```
+
 
 ```{r}
 Lrmbll[which(sapply(Lrmbll, length) < 7)]
@@ -324,7 +316,7 @@ title_data <- trimws(gsub("\n", "",title_data_txt))
 # strsplit(as.character(title_data_txt), '\n', fixed=TRUE)
 
 # remove whitespaces
-L <- lapply(strsplit(as.character(title_data_txt), '\nl', fixed=TRUE), trimws)
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
 
 # remove blank elements from list
 Lrmb <- lapply(L, function(x) x[!x %in% ""])

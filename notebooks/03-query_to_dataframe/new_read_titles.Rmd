@@ -1,0 +1,118 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+onepetro_page_to_dataframe <- function(url) {
+    webpage    <- read_html(url)
+    df_titles  <- read_titles(webpage, url)
+    df_sources <- read_sources(webpage, url)
+    df_author  <- read_author(webpage, url)
+
+    # ensure that all dataframes have the same number of rows
+    if (all(dim(df_titles)[1]  == dim(df_sources)[1],
+            dim(df_sources)[1] == dim(df_author)[1],
+            dim(df_author)[1]  == dim(df_titles)[1]
+    ))
+        df <- cbind(df_titles, df_sources, df_author)
+    else
+        stop("Dataframe sizes different")  # otherwise, stop
+
+    return(tibble::as.tibble(df))
+}
+```
+
+
+```{r}
+get_result_link <- function(webpage) {
+    # applicable to dc-type in c("conference-paper", "journal-paper", "presentation",
+    #                            "standard", "chapter", "general")
+    # Using CSS selectors to scrap the rankings section
+    title_data_html <- rvest::html_nodes(webpage, '.result-link')
+    # Converting the ranking data to text
+    title_data_txt <- rvest::html_text(title_data_html)
+    # remove blanks
+    trimws(gsub("\n", "", title_data_txt))
+}
+
+get_result_item <- function(webpage, url) {
+    # applicable to dc-type in c("media", "other")
+    title_data_html <- rvest::html_nodes(webpage, '.result-item')
+    title_data_txt <- rvest:::html_text(title_data_html)
+    # remove whitespaces
+    L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+    # remove (rm) blank (b) elements from list
+    Lrmb <- lapply(L, function(x) x[!x %in% ""])
+    # remove "Conference:" (c) because it has empty row
+    Lrmb <- lapply(Lrmb, function(x) x[!x %in% "Conference:"])
+    # remove last member of list (ll) because it is empty
+    Lrmbll <- petro.One:::remove_last_of_list(Lrmb)
+    
+    dc_type <- urltools::param_get(url, "dc_type")
+    
+    if (dc_type == "media") {
+        # pick the third element of list because contains the title
+        Lrmbll3 <- lapply(Lrmbll, function(x) x[3])
+        title <- gsub(pattern = "Article: ", "", Lrmbll3)
+    } else {
+        # dc-type="other": pick the first element of the list
+        title <- lapply(Lrmbll, function(x) x[1])
+    }
+    return(title)
+}
+
+read_titles <- function(webpage, url) {
+    # define empty dataframe
+    title_data <- data.frame(title_data = character())
+    
+    dc_type <- urltools::param_get(url, "dc_type")
+    
+    if (dc_type == "media" | dc_type == "other") {
+        print(dc_type)
+        title_data_txt <- get_result_item(webpage, url)
+    } else {
+        title_data_txt <- get_result_link(webpage)
+    }
+    
+    if (length(title_data_txt) != 0 ) {
+    # data pre-processing
+    title_data <- data.frame(title_data = as.character(title_data_txt),
+                             stringsAsFactors = FALSE)
+    }      
+    return(title_data)
+}
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "conference-paper",
+                          # dc_type = "journal-paper",
+                          dc_type = "media",
+                          # dc_type = "other",
+                          rows = 100
+                          )
+# get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+read_titles(webpage, my_url)
+```
+
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          dc_type = "media",
+                          rows = 100
+                          )
+get_papers_count(my_url)
+webpage <- xml2::read_html(my_url)
+read_titles(webpage)
+```

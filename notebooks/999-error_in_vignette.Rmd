@@ -1,0 +1,32 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This error occurs when running vignette `document_types_of_papers.Rmd`.
+It is related to documents of type `other`.
+
+This is a piece of code where it fails:
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "deepwater", 
+                          dc_type = "other")
+
+onepetro_page_to_dataframe(my_url)
+```
+
+
+```
+* checking DESCRIPTION meta-information ... OK
+* installing the package to build vignettes
+* creating vignettes ... ERROR
+Quitting from lines 113-117 (document_types_of_papers.Rmd) 
+Error: processing vignette 'document_types_of_papers.Rmd' failed with diagnostics:
+undefined columns selected
+Execution halted
+Error: Command failed (1)
+Execution halted
+```
+

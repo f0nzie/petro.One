@@ -1,0 +1,200 @@
+---
+title: "dc-type to dataframes"
+output: html_notebook
+---
+
+## these document types have a different structure
+do_not_read <- c("media", "standard", "other")
+
+> Note. **standard** type documents seem to be working under the common dataframe structure.
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          how = "any")
+
+by_doctype <- papers_by_type(my_url)
+by_doctype
+```
+
+## dc-type=chapter 
+regular dataframe works!
+
+```{r}
+# for dc-type="conference-paper"
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          dc_type = "chapter",
+                          rows = 100
+                          )
+
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-link')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+title_data
+df <- onepetro_page_to_dataframe(my_url)
+df
+names(df)
+```
+
+
+## dc-type=conference-paper 
+regular dataframe works!
+
+```{r}
+# for dc-type="conference-paper"
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          dc_type = "conference-paper",
+                          rows = 1000
+                          )
+
+webpage <- xml2::read_html(my_url)
+
+# title_data
+title_data_html <- rvest:::html_nodes(webpage, '.result-link')
+title_data_txt <- rvest:::html_text(title_data_html)
+title_data <- trimws(gsub("\n", "",title_data_txt))
+title_data
+
+df <- onepetro_page_to_dataframe(my_url)
+df
+names(df)
+```
+
+## dc-type=general
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          dc_type = "general",
+                          rows = 1000
+                          )
+
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-link')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+title_data
+df <- onepetro_page_to_dataframe(my_url)
+df
+names(df)
+```
+
+## dc-type="journal-paper"
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          dc_type = "journal-paper",
+                          rows = 1000
+                          )
+
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-link')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+title_data
+df <- onepetro_page_to_dataframe(my_url)
+df
+names(df)
+```
+
+
+## dc-type="presentation"
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          dc_type = "presentation",
+                          rows = 1000
+                          )
+
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-link')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+title_data
+df <- onepetro_page_to_dataframe(my_url)
+df
+names(df)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          dc_type = "media",
+                          rows = 1000
+                          )
+
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-item')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+
+# remove whitespaces
+L <- lapply(strsplit(as.character(title_data_txt), '\n', fixed=TRUE), trimws)
+
+# remove blank elements from list. remove "Conference:"
+Lrmb <- lapply(L, function(x) x[!x %in% ""])
+Lrmb <- lapply(Lrmb, function(x) x[!x %in% ","])
+Lrmb <- lapply(Lrmb, function(x) x[!x %in% "Visit External Site"])
+Lrmb <- lapply(Lrmb, function(x) x[!x %in% "Conference:"])
+
+remove_last_of_list <- function(x) {
+    x[-c(length(x))]
+}
+
+Lrmbll <- remove_last_of_list(Lrmb)
+sapply(Lrmbll, length)
+Lrmbll[1:30]
+```
+
+## dc-type="standard"
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "safety", 
+                          dc_type = "standard",
+                          rows = 1000
+                          )
+
+webpage <- xml2::read_html(my_url)
+title_data_html <- rvest:::html_nodes(webpage, '.result-link')
+title_data_txt <- rvest:::html_text(title_data_html)
+
+title_data <- trimws(gsub("\n", "",title_data_txt))
+title_data
+df <- onepetro_page_to_dataframe(my_url)
+df
+names(df)
+```
+
+
+
+
+
+
+
+
+
+
+
+### Column names for dc-type="media"
+[1] "title_data"   "paper_id"     "source"       "type"         "year"        
+[6] "author1_data"
+
