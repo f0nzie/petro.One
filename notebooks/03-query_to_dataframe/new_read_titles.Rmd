@@ -114,5 +114,5 @@ my_url <- make_search_url(query = "pressure",
                           )
 get_papers_count(my_url)
 webpage <- xml2::read_html(my_url)
-read_titles(webpage)
+read_titles(webpage, my_url)
 ```
