@@ -148,3 +148,10 @@ generate_offline_data <- function() {
          gtesb.df.13, gtesb.df.14,
          file = test_save_file)
 }
+
+#' Remove last member of a list.
+#' Apply in  lists that return from reading dc-type="media"
+#' The last element of the list in these cases is empty.
+remove_last_of_list <- function(x) {
+    x[-c(length(x))]
+}
