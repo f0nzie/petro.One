@@ -16,11 +16,8 @@
 onepetro_page_to_dataframe <- function(url) {
     webpage <- read_html(url)
     df_titles  <- read_titles(webpage)
-    # print(df_titles)
     df_sources <- read_sources(webpage)
-    # print(df_sources)
     df_author  <- read_author(webpage)
-    # print(df_author)
 
     # ensure that all dataframes have the same number of rows
     if (all(dim(df_titles)[1]  == dim(df_sources)[1],
@@ -62,7 +59,7 @@ read_titles <- function(webpage) {
     # define empty dataframe
     title_data <- data.frame(title_data = character())
 
-    #Using CSS selectors to scrap the rankings section
+    # Using CSS selectors to scrap the rankings section
     title_data_html <- html_nodes(webpage, '.result-link')
 
     # Converting the ranking data to text
@@ -95,10 +92,13 @@ read_sources <- function(webpage) {
     # .result-item-source
 
     # initialize an empty dataframe
-    source_data <- data.frame(paper_id = character(),
+    source_data <- data.frame(
+                     paper_id = character(),
                      source = character(),
                      type = character(),
-                     year = integer()
+                     year = integer(),
+                     day  = character(),
+                     location = character()
     )
 
     source_data_txt <- get_item_source(webpage)
@@ -116,6 +116,8 @@ read_sources <- function(webpage) {
                                   source   = as.character(source_data[, 3]),
                                   type     = as.character(source_data[, 4]),
                                   year     = as.character(source_data[, 5]),
+                                  day      = as.character(rep("", nrow(source_data))),
+                                  location = as.character(rep("", nrow(source_data))),
                                   stringsAsFactors = FALSE)
         # remove dash from year
         source_data$year <- as.integer(gsub("-", "", source_data$year))
@@ -130,7 +132,8 @@ read_author <- function(webpage) {
     author1_data <- data.frame(author1_data = character())
 
     #Using CSS selectors to scrap the rankings section
-    author1_data_html <- html_nodes(webpage, '.result-item-author:nth-child(1)')
+    #author1_data_html <- html_nodes(webpage, '.result-item-author:nth-child(1)')
+    author1_data_html <- html_nodes(webpage, '.result-item-authors')
 
     #Converting the ranking data to text
     author1_data_txt <- html_text(author1_data_html)
