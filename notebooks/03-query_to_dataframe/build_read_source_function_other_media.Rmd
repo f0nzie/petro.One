@@ -6,6 +6,16 @@ output: html_notebook
 ```{r}
 library(petro.One)
 
+my_url <- make_search_url(query = "pressure"
+                          )
+
+papers_by_type(my_url)
+```
+
+
+```{r}
+library(petro.One)
+
 my_url <- make_search_url(query = "pressure", 
                           # dc_type = "journal-paper",
                           dc_type = "other",
