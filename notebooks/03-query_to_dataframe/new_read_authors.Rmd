@@ -32,6 +32,8 @@ author3_data <- trimws(gsub("\n", "", author3_data_txt))
 author3_data
 ```
 
+## get all authors
+
 ```{r}
 library(petro.One)
 
