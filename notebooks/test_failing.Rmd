@@ -7,7 +7,7 @@ output: html_notebook
 The types `other` and `media` data is not retrieved at the moment of the query return.
 
 ```{r}
-library(petroOne)
+library(petro.One)
 my_url <- make_search_url(query = "deepwater", 
                           dc_type = "other")
 
@@ -16,7 +16,7 @@ onepetro_page_to_dataframe(my_url)
 
 
 ```{r}
-library(petroOne)
+library(petro.One)
 
 my_url <- make_search_url(query = "deepwater", dc_type = 'media')
 
@@ -25,7 +25,8 @@ onepetro_page_to_dataframe(my_url)
 ```
 
 ```{r}
-library(petroOne)
+library(petro.One)
+
 my_url <- make_search_url(query = "deepwater", 
                           dc_type = "other")
 webpage <- read_html(my_url)
@@ -33,7 +34,7 @@ petroOne:::read_titles(webpage)
 ```
 
 ```{r}
-library(petroOne)
+library(petro.One)
 my_url <- make_search_url(query = "deepwater", 
                           dc_type = "media")
 webpage <- read_html(my_url)
