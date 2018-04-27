@@ -3,7 +3,6 @@
 ```{r}
 library(petro.One)
 
-
 major <- c("machine learning")
 minor <- c("reservoir", "production", "logging", "completion", "intervention",
            "drilling", "geology", "seismic", "petrophysics", "geophysics", 
@@ -14,6 +13,19 @@ prod.df <- join_keywords(major, minor, lesser, get_papers = TRUE, sleep = 4)
 prod.df
 ```
 
+```{r}
+url <- 'https://www.onepetro.org/search?q="machine+learning"AND"reservoir"AND"data"&peer_reviewed=&published_between=&from_year=&to_year='
+
+get_papers_count(url)
+papers_by_type(url)
+```
+
+```{r}
+url <- 'https://www.onepetro.org/search?q="machine+learning"AND"logging"AND"data"&peer_reviewed=&published_between=&from_year=&to_year='
+
+get_papers_count(url)
+papers_by_type(url)
+```
 
 
 ```{r}
