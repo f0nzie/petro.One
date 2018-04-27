@@ -150,6 +150,9 @@ get_result_item_source <- function(webpage, url) {
     dc_type <- urltools::param_get(url, "dc_type")
     result_item <- get_result_item(webpage, url)
 
+    if (is.na(dc_type)) {    # no dc-type has been provided in the url
+    }
+
     if (dc_type == "media") {
         if (length(which(sapply(result_item, length) < 6)) > 0) {
             # find rows that have less than six elements
@@ -157,7 +160,7 @@ get_result_item_source <- function(webpage, url) {
             # make the new 6th element equal to blank
             lapply(index_rows, function(x) result_item[[x]][6] <<- "")
         }
-    } else {   # dc-type="other"
+    } else {   # dc-type="other" and the rest
         if (length(which(sapply(result_item, length) < 2)) > 0) {
             # when the list only has one member. it should have title and authors
             index_rows <- which(sapply(result_item, length) < 2)
@@ -194,7 +197,7 @@ read_sources <- function(webpage, url) {
     # dc_type will bring us to right function to parse
     dc_type <- urltools::param_get(url, "dc_type")
 
-    if (is.na(dc_type)) {
+    if (is.na(dc_type)) {    # no dc-type has been provided in the url
         source_data_txt <- get_item_source(webpage)
     } else {
         if (dc_type == "media" | dc_type == "other") {
