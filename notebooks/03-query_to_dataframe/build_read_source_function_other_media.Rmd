@@ -1,0 +1,269 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          dc_type = "other",
+                          #dc_type = "media",
+                          rows = 25
+                          )
+
+webpage <- xml2::read_html(my_url)
+source_data_txt <- petro.One:::get_item_source(webpage)
+# source_data_txt
+# source_data <- strsplit(as.character(source_data_txt), '\n', fixed=TRUE)
+data.frame(do.call('rbind', strsplit(as.character(source_data_txt),
+                                                                '\n', fixed=TRUE)),
+                                      stringsAsFactors = FALSE)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          dc_type = "other",
+                          rows = 25
+                          )
+onepetro_page_to_dataframe(my_url)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          dc_type = "other",
+                          #dc_type = "media",
+                          rows = 25
+                          )
+webpage <- xml2::read_html(my_url)
+petro.One:::get_result_item(webpage, my_url)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          # dc_type = "other",
+                          dc_type = "media",
+                          rows = 25
+                          )
+webpage <- xml2::read_html(my_url)
+petro.One:::get_result_item_title(webpage, my_url)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          # dc_type = "other",
+                          dc_type = "media",
+                          rows = 100
+                          )
+webpage <- xml2::read_html(my_url)
+result_item <- petro.One:::get_result_item(webpage, my_url)
+sapply(result_item, length)
+
+```
+
+
+```{r}
+index_rows <- which(sapply(result_item, length) < 6)
+index_rows
+```
+
+```{r}
+for (i in index_rows) {
+    cat(result_item[[i]][5], "\n")
+    result_item[[i]][6] <- "x"
+}
+sapply(result_item, length)
+```
+
+
+```{r}
+# using lapply instead of for-loop
+lapply(index_rows, function(x) result_item[[x]][6] <<- "")
+```
+
+
+```{r}
+result_item[index_rows]
+```
+
+```{r}
+lapply(result_item[which(sapply(result_item, length) < 6)], function(x) x[6] <- " ")
+sapply(result_item, length)
+```
+
+
+```{r}
+result_item[[63]][6] <- ""
+result_item[[63]]
+```
+
+```{r}
+lapply(result_item[which(sapply(result_item, length) < 6)], function(x) x[7])
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          dc_type = "other",
+                          # dc_type = "media",
+                          rows = 100
+                          )
+webpage <- xml2::read_html(my_url)
+result_item <- petro.One:::get_result_item(webpage, my_url)
+sapply(result_item, length)
+#result_item
+```
+
+```{r}
+if (length(which(sapply(result_item, length) < 6)) > 0) {
+            # find rows that have less than six elements
+            index_rows <- which(sapply(result_item, length) < 6)
+            # make the new 6th element equal to blank
+            lapply(index_rows, function(x) result_item[[x]][6] <<- "")
+}
+#result_item
+sapply(result_item, length)
+```
+
+```{r}
+if (length(which(sapply(result_item, length) < 2)) > 0) {
+            # when the list only has one member. it should have title and authors
+            index_rows <- which(sapply(result_item, length) < 2)
+            item_source <- lapply(index_rows, function(x) result_item[[x]][2] <<- "")
+} 
+if (length(which(sapply(result_item, length) > 2)) > 0) {
+            # when the list has many authors put them in the 2nd member
+            index_rows <- which(sapply(result_item, length) > 2)
+            item_source <- lapply(index_rows, function(x) 
+                result_item[[x]] <<- result_item[[x]][c(1, 2)])
+}
+sapply(result_item, length)
+sapply(item_source, length)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          #dc_type = "other",
+                          dc_type = "media",
+                          rows = 50
+                          )
+webpage <- xml2::read_html(my_url)
+source_data_txt <- petro.One:::get_result_item_source(webpage, my_url)
+sapply(source_data_txt, length)
+```
+
+```{r}
+source_data <- data.frame(do.call('rbind', source_data_txt),
+                                      stringsAsFactors = FALSE)
+source_data
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          # dc_type = "journal-paper",
+                          #dc_type = "other",
+                          dc_type = "media",
+                          rows = 50
+                          )
+webpage <- xml2::read_html(my_url)
+petro.One:::read_sources(webpage, my_url)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          #dc_type = "journal-paper",
+                          #dc_type = "other",
+                          dc_type = "media",
+                          rows = 50
+                          )
+webpage <- xml2::read_html(my_url)
+petro.One:::read_sources(webpage, my_url)
+```
+
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          #dc_type = "journal-paper",
+                          #dc_type = "other",
+                          dc_type = "media",
+                          rows = 10
+                          )
+webpage <- xml2::read_html(my_url)
+# petro.One:::read_titles(webpage, my_url)
+# petro.One:::get_result_item_title(webpage, my_url)
+petro.One:::get_result_item(webpage, my_url)
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure", 
+                          #dc_type = "journal-paper",
+                          #dc_type = "other",
+                          dc_type = "media",
+                          rows = 10
+                          )
+webpage <- xml2::read_html(my_url)
+# petro.One:::read_titles(webpage, my_url)
+petro.One:::read_titles(webpage, my_url)
+```
+```{r}
+library(petro.One)
+# dc-type = "media" doesn't have authors. fill with blanks
+
+my_url <- make_search_url(query = "pressure", 
+                          #dc_type = "journal-paper",
+                          #dc_type = "other",
+                          dc_type = "media",
+                          rows = 20
+                          )
+webpage <- xml2::read_html(my_url)
+# petro.One:::read_titles(webpage, my_url)
+petro.One:::read_author(webpage, my_url)
+```
+
+```{r}
+library(petro.One)
+# dc-type = "media" doesn't have authors. fill with blanks
+
+url <- make_search_url(query = "pressure", 
+                          dc_type = "journal-paper",
+                          #dc_type = "other",
+                          #dc_type = "media",
+                          rows = 1000
+                          )
+
+onepetro_page_to_dataframe(url)
+# unique(onepetro_page_to_dataframe(url)["type"])
+```
+
+```{r}
+
+```
+
