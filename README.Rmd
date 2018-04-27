@@ -129,8 +129,8 @@ my_url <- make_search_url(query = "neural network",
                           how = "all")
 
 papers_by_type(my_url)
-#df <- onepetro_page_to_dataframe(my_url)
-#df
+df <- onepetro_page_to_dataframe(my_url)
+df
 ```
 
 And these are the terms that repeat more freqently:
