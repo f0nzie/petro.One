@@ -83,9 +83,12 @@ sum(.Last.value$count)
 ```{r titles_do_not_match_dc-type}
 df.titles <- petro.One:::read_titles(webpage)
 dim(df.titles)
-# [1] 573   1
+# 600 573   1
+# 100  97   1
 
 ```
+
+This will give error because columns are different
 
 ```{r}
 df.sources <- petro.One:::read_sources(webpage)
@@ -115,7 +118,7 @@ It they match, ther shouldn't be any error
 ```{r form_book_title, rows.print=25}
 dc_type <- get_dc_type(100)
 book_title <- get_book_title(webpage)
-cbind(book_title, dc_type)
+tibble::as.tibble(cbind(book_title, dc_type))
 ```
 
 ## Get the authors
