@@ -38,7 +38,7 @@ get_dc_type <- function(page_size) {
     
     # number of columns of result is not a multiple of vector length (arg 154)
     # cbind(dc_type, result_item_source)
-    cbind(dc_type_0, dc_type)
+    tibble::as.tibble(cbind(dc_type_0, dc_type))
 }
 ```
 
