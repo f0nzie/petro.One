@@ -169,7 +169,7 @@ plot_wordcloud(df, max.words = 100, min.freq = 10)
 ```
 
 #### Journal papers (`journal-paper`)
-In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
+In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits per page: 1000. Of course, this value is not shown in the rows by page selector which maxes out at 100. It is understandable because loading 1000-row page would take too long.
 
 ```{r}
 # specify document type = "journal-paper", rows = 1000
@@ -222,9 +222,9 @@ In the following plot you will see that the strength of the relationship between
 plot_relationships(df, min.freq = 400, threshold = 0.075)
 ```
 
-We can see that *wells* and *well* are connected stringly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
+We can see that *wells* and *well* are connected strongly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
 
-For instance, if you are looking for papers that have stronger relationship between of *well test* and *permeability*, it would wise to add that term to the search.
+For instance, if you are looking for papers that have stronger relationship between *well test* and *permeability*, it would wise to add that term to the search.
 
 ```{r}
 library(petro.One)

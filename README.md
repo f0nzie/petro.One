@@ -96,14 +96,14 @@ url_any <- make_search_url(query = "neural network", how = "any")
 url_any
 #> [1] "https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year="
 get_papers_count(url_any)
-#> [1] 3450
+#> [1] 3536
 
 # search for papers that have "neural" and "network" at the same time
 url_all <- make_search_url(query = "neural network", how = "all")
 url_all
 #> [1] "https://www.onepetro.org/search?q=\"neural+network\"&peer_reviewed=&published_between=&from_year=&to_year="
 get_papers_count(url_all)
-#> [1] 3158
+#> [1] 3238
 ```
 
 Read papers from *from\_year* to *to\_year*
@@ -129,16 +129,16 @@ df
 #> # A tibble: 10 x 6
 #>    title_data        paper_id   source   type     year author1_data       
 #>    <chr>             <chr>      <chr>    <chr>   <int> <chr>              
-#>  1 Deconvolution Us~ "        ~ "      ~ "     ~  1996 Essenreiter, Rober~
-#>  2 Neural Network S~ "        ~ "      ~ "     ~  1992 Schmidt, Jumndyr, ~
-#>  3 Neural Networks ~ "        ~ "      ~ "     ~  1995 Leggett, Miles, Br~
-#>  4 Drill-Bit Diagno~ "        ~ "      ~ "     ~  1990 Arehart, R.A., Exx~
-#>  5 Seismic Principa~ "        ~ "      ~ "     ~  1996 Huang, Kou-Yuan, N~
-#>  6 Artificial Intel~ "        ~ "      ~ "     ~  1992 Guo, Yi, Center fo~
-#>  7 Inversion of Sei~ "        ~ "      ~ "     ~  1992 Ro&uml;th, Gunter,~
-#>  8 First Break Pick~ "        ~ "      ~ "     ~  1990 Wagner, D.E., Amoc~
-#>  9 Neural Networks ~ "        ~ "      ~ "     ~  1991 McCormack, Michael~
-#> 10 Reservoir Charac~ "        ~ "      ~ "     ~  1993 An, P., University~
+#>  1 Deconvolution Us… "        … "      … "     …  1996 Essenreiter, Rober…
+#>  2 Neural Network S… "        … "      … "     …  1992 Schmidt, Jumndyr, …
+#>  3 Neural Networks … "        … "      … "     …  1991 McCormack, Michael…
+#>  4 Seismic Principa… "        … "      … "     …  1996 Huang, Kou-Yuan, N…
+#>  5 Neural Networks … "        … "      … "     …  1995 Leggett, Miles, Br…
+#>  6 Drill-Bit Diagno… "        … "      … "     …  1990 Arehart, R.A., Exx…
+#>  7 First Break Pick… "        … "      … "     …  1990 Wagner, D.E., Amoc…
+#>  8 Artificial Intel… "        … "      … "     …  1992 Guo, Yi, Center fo…
+#>  9 Inversion of Sei… "        … "      … "     …  1992 Ro&uml;th, Gunter,…
+#> 10 Reservoir Charac… "        … "      … "     …  1993 An, P., University…
 ```
 
 And these are the terms that repeat more freqently:
@@ -183,22 +183,22 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 2811
+#> [1] 2881
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 1,000 x 6
-#>    title_data        paper_id    source  type     year author1_data       
-#>    <chr>             <chr>       <chr>   <chr>   <int> <chr>              
-#>  1 Deconvolution Us~ "         ~ "     ~ "     ~  1996 Essenreiter, Rober~
-#>  2 Neural Networks ~ "         ~ "     ~ "     ~  2002 Russell, Brian, Ha~
-#>  3 Neural Network S~ "         ~ "     ~ "     ~  1992 Schmidt, Jumndyr, ~
-#>  4 Neural Networks ~ "         ~ "     ~ "     ~  1995 Leggett, Miles, Br~
-#>  5 Seismic Principa~ "         ~ "     ~ "     ~  1996 Huang, Kou-Yuan, N~
-#>  6 Predicting Wax F~ "         ~ "     ~ "     ~  2012 Adeyemi, B.J., Uni~
-#>  7 Seismic Velocity~ "         ~ "     ~ "     ~  2015 Huang, Kou-Yuan, N~
-#>  8 Artificial Intel~ "         ~ "     ~ "     ~  1992 Guo, Yi, Center fo~
-#>  9 Inversion of Sei~ "         ~ "     ~ "     ~  1992 Ro&uml;th, Gunter,~
-#> 10 Dynamic Neural N~ "         ~ "     ~ "     ~  2003 Schultz, R.L., Hal~
+#>    title_data       paper_id   source   type     year author1_data        
+#>    <chr>            <chr>      <chr>    <chr>   <int> <chr>               
+#>  1 Deconvolution U… "        … "      … "     …  1996 Essenreiter, Robert…
+#>  2 Neural Networks… "        … "      … "     …  2002 Russell, Brian, Ham…
+#>  3 Neural Network … "        … "      … "     …  1992 Schmidt, Jumndyr, P…
+#>  4 Dynamic Neural … "        … "      … "     …  2003 Schultz, R.L., Hall…
+#>  5 Estimation of W… "        … "      … "     …  2008 Okumoto, Yasuhisa, …
+#>  6 Neural Networks… "        … "      … "     …  1991 McCormack, Michael …
+#>  7 APPLYING NEURAL… "        … "      … "     …  2002 Silva, M., Petróleo…
+#>  8 Artificial Neur… "        … "      … "     …  2014 Lind, Yuliya B., Ba…
+#>  9 Seismic Princip… "        … "      … "     …  1996 Huang, Kou-Yuan, Na…
+#> 10 Neural Networks… "        … "      … "     …  1995 Leggett, Miles, Bri…
 #> # ... with 990 more rows
 ```
 
@@ -223,23 +223,23 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 313
+#> [1] 323
 df <- onepetro_page_to_dataframe(my_url)
 df
-#> # A tibble: 313 x 6
+#> # A tibble: 323 x 6
 #>    title_data          paper_id    source  type     year author1_data     
 #>    <chr>               <chr>       <chr>   <chr>   <int> <chr>            
-#>  1 Artificial Neural ~ "         ~ "     ~ "     ~  2000 Denney, Dennis, ~
-#>  2 Drill-Bit Diagnosi~ "         ~ "     ~ "     ~  1990 Arehart, R.A., E~
-#>  3 Implicit Approxima~ "         ~ "     ~ "     ~  2009 Li, Dao-lun, Uni~
-#>  4 Application of Art~ "         ~ "     ~ "     ~  1994 Nazi, G.M., Will~
-#>  5 Neural Networks fo~ "         ~ "     ~ "     ~  1999 Denney, Dennis, ~
-#>  6 Characterize Subma~ "         ~ "     ~ "     ~  2002 Denney, Dennis, ~
-#>  7 Application of Art~ "         ~ "     ~ "     ~  2009 Hegeman, Peter S~
-#>  8 Neural Network App~ "         ~ "     ~ "     ~  2003 Al-Fattah, S.M.,~
-#>  9 Pseudodensity Log ~ "         ~ "     ~ "     ~  2017 Carpenter, Chris~
-#> 10 Characterizing Par~ "         ~ "     ~ "     ~  2003 Denney, Dennis, ~
-#> # ... with 303 more rows
+#>  1 Implicit Approxima… "         … "     … "     …  2009 Li, Dao-lun, Uni…
+#>  2 Artificial Neural … "         … "     … "     …  2000 Denney, Dennis, …
+#>  3 Drill-Bit Diagnosi… "         … "     … "     …  1990 Arehart, R.A., E…
+#>  4 Neural Networks fo… "         … "     … "     …  1999 Denney, Dennis, …
+#>  5 Pseudodensity Log … "         … "     … "     …  2017 Carpenter, Chris…
+#>  6 Characterizing Par… "         … "     … "     …  2003 Denney, Dennis, …
+#>  7 Application of Art… "         … "     … "     …  2009 Hegeman, Peter S…
+#>  8 Application of Art… "         … "     … "     …  1994 Nazi, G.M., Will…
+#>  9 Neural Network App… "         … "     … "     …  2003 Al-Fattah, S.M.,…
+#> 10 Characterize Subma… "         … "     … "     …  2002 Denney, Dennis, …
+#> # ... with 313 more rows
 ```
 
 #### Word cloud for journal papers
@@ -263,24 +263,24 @@ my_url <- make_search_url(query = "well test",
                           how = "all")
 
 get_papers_count(my_url)
-#> [1] 9569
+#> [1] 9654
 df <- read_multidoc(my_url)
 
 term_frequency(df)
-#> # A tibble: 9,920 x 2
+#> # A tibble: 10,026 x 2
 #>    word        freq
 #>    <chr>      <int>
-#>  1 reservoir   1845
-#>  2 well        1694
-#>  3 gas         1461
-#>  4 field       1307
-#>  5 production  1120
-#>  6 analysis    1050
-#>  7 pressure     952
-#>  8 reservoirs   907
-#>  9 wells        892
-#> 10 data         832
-#> # ... with 9,910 more rows
+#>  1 reservoir   1860
+#>  2 well        1703
+#>  3 gas         1477
+#>  4 field       1322
+#>  5 production  1127
+#>  6 analysis    1062
+#>  7 pressure     957
+#>  8 reservoirs   912
+#>  9 wells        899
+#> 10 data         839
+#> # ... with 10,016 more rows
 ```
 
 #### Most frequent terms in *well test*
@@ -321,7 +321,7 @@ get_papers_count(my_url)
 df <- read_multidoc(my_url)
 
 term_frequency(df)
-#> # A tibble: 717 x 2
+#> # A tibble: 716 x 2
 #>    word          freq
 #>    <chr>        <int>
 #>  1 reservoir       87
@@ -332,9 +332,9 @@ term_frequency(df)
 #>  6 fractured       27
 #>  7 modeling        22
 #>  8 integrated      21
-#>  9 simulation      21
+#>  9 data            20
 #> 10 reservoirs      20
-#> # ... with 707 more rows
+#> # ... with 706 more rows
 plot_bars(df, min.freq = 10)
 ```
 
@@ -380,9 +380,9 @@ papers_by_type(my_url)
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |      8|
-| Conference paper |   9569|
+| Conference paper |   9654|
 | General          |    193|
-| Journal paper    |   2553|
+| Journal paper    |   2568|
 | Media            |      5|
 | Other            |      8|
 | Presentation     |     25|
@@ -433,16 +433,16 @@ papers_by_year(my_url)
 
 | name       |  value|
 |:-----------|------:|
-| Since 2018 |     34|
-| Since 2017 |    637|
-| Since 2016 |   1202|
-| Since 2015 |   1751|
-| Since 2014 |   2310|
-| Since 2013 |   2821|
-| Since 2012 |   3335|
-| Since 2011 |   3788|
-| Since 2010 |   4315|
-| Since 2009 |   4747|
+| Since 2018 |    120|
+| Since 2017 |    726|
+| Since 2016 |   1291|
+| Since 2015 |   1840|
+| Since 2014 |   2399|
+| Since 2013 |   2910|
+| Since 2012 |   3424|
+| Since 2011 |   3877|
+| Since 2010 |   4404|
+| Since 2009 |   4836|
 
 Search for **any** word
 -----------------------
@@ -465,9 +465,9 @@ by_doctype
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |     60|
-| Conference paper |  88724|
-| General          |    933|
-| Journal paper    |  16000|
+| Conference paper |  89803|
+| General          |    936|
+| Journal paper    |  16116|
 | Media            |     10|
 | Other            |     21|
 | Presentation     |    265|
@@ -479,7 +479,7 @@ In this example we get the total number of papers by document type.
 
 ``` r
 sum(by_doctype$value)
-#> [1] 106108
+#> [1] 107306
 ```
 
 Or use the R base function `summary` to give us a quick statistics of the papers:
@@ -491,7 +491,7 @@ summary(by_doctype)
 #>  Length:8           Min.   :   10.00  
 #>  Class :character   1st Qu.:   50.25  
 #>  Mode  :character   Median :  180.00  
-#>                     Mean   :13263.50  
-#>                     3rd Qu.: 4699.75  
-#>                     Max.   :88724.00
+#>                     Mean   :13413.25  
+#>                     3rd Qu.: 4731.00  
+#>                     Max.   :89803.00
 ```
