@@ -220,7 +220,7 @@ authors
 ```{r form_authors_title_dc-type, rows.print=25}
 dc_type <- get_dc_type(100)
 book_title <- get_book_title(webpage)
-cbind(book_title, dc_type, authors)
+tibble::as.tibble(cbind(book_title, dc_type, authors))
 ```
 
 ```{r}
