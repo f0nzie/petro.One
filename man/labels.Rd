@@ -4,9 +4,8 @@
 \name{labels}
 \alias{labels}
 \title{Discipline and Subject  labels dataset}
-\format{An object of class \code{data.frame} with 254 rows and 2 columns.}
 \usage{
-labels
+labels(object, ...)
 }
 \description{
 dataset containing disciplines and subjects.
@@ -15,4 +14,3 @@ OnePetro does not supply keywords or any sort of categorization.
 File:  disciplines.rda
 Class: data.frame
 }
-\keyword{datasets}
