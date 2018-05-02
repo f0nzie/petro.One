@@ -35,6 +35,8 @@ write_test_html <- function(my_url, page) {
     xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, page, sep = "/"))
 }
 
+#' Generate data for offline testing
+#' Mockup test data
 #' @export
 generate_offline_data <- function() {
     test_save_loc  <- "./inst/testdata"
