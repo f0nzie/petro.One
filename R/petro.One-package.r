@@ -17,6 +17,8 @@ NULL
 #' @docType data
 "labels"
 
+
+
 #' @title Default custom stop words
 #' @description This is a minimal dataset of custom stopwords.
 #' You can supply your own stopwords by editing the file stopwords.txt under
@@ -31,16 +33,17 @@ NULL
 #' @docType data
 "custom_stopwords"
 
+
 #' @title Default synonyms
 #' @description Synonyms dataset to prevent repetition of equivalent words
 #' during classification. Example: 2D/2-D, cased hole/cased-hole,
 #' deep water/deepwater, etc.
 #' The first column is for the original word; the second column is for the
-#' replacement or standard word.
 #'
 #' Dataset: synonyms.rda
+#' replacement or standard word.
 #'
 #' Source:  synonyms.txt
 #'
 #' @docType data
-"custom_synonyms"
+# 'custom_synonyms'
