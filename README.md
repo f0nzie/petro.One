@@ -129,16 +129,16 @@ df
 #> # A tibble: 10 x 6
 #>    title_data        paper_id   source   type     year author1_data       
 #>    <chr>             <chr>      <chr>    <chr>   <int> <chr>              
-#>  1 Deconvolution Us… "        … "      … "     …  1996 Essenreiter, Rober…
-#>  2 Neural Network S… "        … "      … "     …  1992 Schmidt, Jumndyr, …
-#>  3 Neural Networks … "        … "      … "     …  1991 McCormack, Michael…
-#>  4 Seismic Principa… "        … "      … "     …  1996 Huang, Kou-Yuan, N…
-#>  5 Neural Networks … "        … "      … "     …  1995 Leggett, Miles, Br…
-#>  6 Drill-Bit Diagno… "        … "      … "     …  1990 Arehart, R.A., Exx…
-#>  7 First Break Pick… "        … "      … "     …  1990 Wagner, D.E., Amoc…
-#>  8 Artificial Intel… "        … "      … "     …  1992 Guo, Yi, Center fo…
-#>  9 Inversion of Sei… "        … "      … "     …  1992 Ro&uml;th, Gunter,…
-#> 10 Reservoir Charac… "        … "      … "     …  1993 An, P., University…
+#>  1 Deconvolution Us~ "        ~ "      ~ "     ~  1996 Essenreiter, Rober~
+#>  2 Neural Network S~ "        ~ "      ~ "     ~  1992 Schmidt, Jumndyr, ~
+#>  3 Seismic Principa~ "        ~ "      ~ "     ~  1996 Huang, Kou-Yuan, N~
+#>  4 Neural Networks ~ "        ~ "      ~ "     ~  1995 Leggett, Miles, Br~
+#>  5 First Break Pick~ "        ~ "      ~ "     ~  1990 Wagner, D.E., Amoc~
+#>  6 Drill-Bit Diagno~ "        ~ "      ~ "     ~  1990 Arehart, R.A., Exx~
+#>  7 Artificial Intel~ "        ~ "      ~ "     ~  1992 Guo, Yi, Center fo~
+#>  8 Neural Networks ~ "        ~ "      ~ "     ~  1991 McCormack, Michael~
+#>  9 Inversion of Sei~ "        ~ "      ~ "     ~  1992 Ro&uml;th, Gunter,~
+#> 10 Conductive fract~ "        ~ "      ~ "     ~  1995 Thomas, Andrew L.,~
 ```
 
 And these are the terms that repeat more freqently:
@@ -146,18 +146,18 @@ And these are the terms that repeat more freqently:
 ``` r
 term_frequency(df)
 #> # A tibble: 26 x 2
-#>    word              freq
-#>    <chr>            <int>
-#>  1 neural              10
-#>  2 networks             9
-#>  3 seismic              3
-#>  4 picking              2
-#>  5 analysis             1
-#>  6 artificial           1
-#>  7 break                1
-#>  8 characterization     1
-#>  9 components           1
-#> 10 deconvolution        1
+#>    word           freq
+#>    <chr>         <int>
+#>  1 neural           10
+#>  2 networks          9
+#>  3 seismic           3
+#>  4 picking           2
+#>  5 analysis          1
+#>  6 artificial        1
+#>  7 break             1
+#>  8 components        1
+#>  9 conductive        1
+#> 10 deconvolution     1
 #> # ... with 16 more rows
 ```
 
@@ -187,18 +187,18 @@ get_papers_count(my_url)
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 1,000 x 6
-#>    title_data       paper_id   source   type     year author1_data        
-#>    <chr>            <chr>      <chr>    <chr>   <int> <chr>               
-#>  1 Deconvolution U… "        … "      … "     …  1996 Essenreiter, Robert…
-#>  2 Neural Networks… "        … "      … "     …  2002 Russell, Brian, Ham…
-#>  3 Neural Network … "        … "      … "     …  1992 Schmidt, Jumndyr, P…
-#>  4 Dynamic Neural … "        … "      … "     …  2003 Schultz, R.L., Hall…
-#>  5 Estimation of W… "        … "      … "     …  2008 Okumoto, Yasuhisa, …
-#>  6 Neural Networks… "        … "      … "     …  1991 McCormack, Michael …
-#>  7 APPLYING NEURAL… "        … "      … "     …  2002 Silva, M., Petróleo…
-#>  8 Artificial Neur… "        … "      … "     …  2014 Lind, Yuliya B., Ba…
-#>  9 Seismic Princip… "        … "      … "     …  1996 Huang, Kou-Yuan, Na…
-#> 10 Neural Networks… "        … "      … "     …  1995 Leggett, Miles, Bri…
+#>    title_data        paper_id    source  type     year author1_data       
+#>    <chr>             <chr>       <chr>   <chr>   <int> <chr>              
+#>  1 Deconvolution Us~ "         ~ "     ~ "     ~  1996 Essenreiter, Rober~
+#>  2 Neural Networks ~ "         ~ "     ~ "     ~  2002 Russell, Brian, Ha~
+#>  3 Neural Network S~ "         ~ "     ~ "     ~  1992 Schmidt, Jumndyr, ~
+#>  4 Seismic Principa~ "         ~ "     ~ "     ~  1996 Huang, Kou-Yuan, N~
+#>  5 Neural Networks ~ "         ~ "     ~ "     ~  1995 Leggett, Miles, Br~
+#>  6 First Break Pick~ "         ~ "     ~ "     ~  1990 Wagner, D.E., Amoc~
+#>  7 Dynamic Neural N~ "         ~ "     ~ "     ~  2003 Schultz, R.L., Hal~
+#>  8 Predicting Wax F~ "         ~ "     ~ "     ~  2012 Adeyemi, B.J., Uni~
+#>  9 Seismic Velocity~ "         ~ "     ~ "     ~  2015 Huang, Kou-Yuan, N~
+#> 10 Artificial Intel~ "         ~ "     ~ "     ~  1992 Guo, Yi, Center fo~
 #> # ... with 990 more rows
 ```
 
@@ -212,7 +212,7 @@ plot_wordcloud(df, max.words = 100, min.freq = 10)
 
 #### Journal papers (`journal-paper`)
 
-In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
+In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits per page: 1000. Of course, this value is not shown in the rows by page selector which maxes out at 100. It is understandable because loading 1000-row page would take too long.
 
 ``` r
 # specify document type = "journal-paper", rows = 1000
@@ -229,16 +229,16 @@ df
 #> # A tibble: 323 x 6
 #>    title_data          paper_id    source  type     year author1_data     
 #>    <chr>               <chr>       <chr>   <chr>   <int> <chr>            
-#>  1 Implicit Approxima… "         … "     … "     …  2009 Li, Dao-lun, Uni…
-#>  2 Artificial Neural … "         … "     … "     …  2000 Denney, Dennis, …
-#>  3 Drill-Bit Diagnosi… "         … "     … "     …  1990 Arehart, R.A., E…
-#>  4 Neural Networks fo… "         … "     … "     …  1999 Denney, Dennis, …
-#>  5 Pseudodensity Log … "         … "     … "     …  2017 Carpenter, Chris…
-#>  6 Characterizing Par… "         … "     … "     …  2003 Denney, Dennis, …
-#>  7 Application of Art… "         … "     … "     …  2009 Hegeman, Peter S…
-#>  8 Application of Art… "         … "     … "     …  1994 Nazi, G.M., Will…
-#>  9 Neural Network App… "         … "     … "     …  2003 Al-Fattah, S.M.,…
-#> 10 Characterize Subma… "         … "     … "     …  2002 Denney, Dennis, …
+#>  1 Implicit Approxima~ "         ~ "     ~ "     ~  2009 Li, Dao-lun, Uni~
+#>  2 Artificial Neural ~ "         ~ "     ~ "     ~  2000 Denney, Dennis, ~
+#>  3 Drill-Bit Diagnosi~ "         ~ "     ~ "     ~  1990 Arehart, R.A., E~
+#>  4 Neural Networks fo~ "         ~ "     ~ "     ~  1999 Denney, Dennis, ~
+#>  5 Application of Art~ "         ~ "     ~ "     ~  2009 Hegeman, Peter S~
+#>  6 Application of Art~ "         ~ "     ~ "     ~  1994 Nazi, G.M., Will~
+#>  7 Pseudodensity Log ~ "         ~ "     ~ "     ~  2017 Carpenter, Chris~
+#>  8 Characterizing Par~ "         ~ "     ~ "     ~  2003 Denney, Dennis, ~
+#>  9 Characterize Subma~ "         ~ "     ~ "     ~  2002 Denney, Dennis, ~
+#> 10 An Artificial Neur~ "         ~ "     ~ "     ~  2003 Guler, B., Dell ~
 #> # ... with 313 more rows
 ```
 
@@ -267,20 +267,20 @@ get_papers_count(my_url)
 df <- read_multidoc(my_url)
 
 term_frequency(df)
-#> # A tibble: 10,026 x 2
+#> # A tibble: 9,973 x 2
 #>    word        freq
 #>    <chr>      <int>
-#>  1 reservoir   1860
-#>  2 well        1703
+#>  1 reservoir   1861
+#>  2 well        1705
 #>  3 gas         1477
-#>  4 field       1322
+#>  4 field       1323
 #>  5 production  1127
-#>  6 analysis    1062
-#>  7 pressure     957
-#>  8 reservoirs   912
-#>  9 wells        899
+#>  6 analysis    1063
+#>  7 pressure     958
+#>  8 reservoirs   915
+#>  9 wells        901
 #> 10 data         839
-#> # ... with 10,016 more rows
+#> # ... with 9,963 more rows
 ```
 
 #### Most frequent terms in *well test*
@@ -305,9 +305,9 @@ plot_relationships(df, min.freq = 400, threshold = 0.075)
 
 ![](man/figures/README-unnamed-chunk-12-1.png)
 
-We can see that *wells* and *well* are connected stringly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
+We can see that *wells* and *well* are connected strongly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
 
-For instance, if you are looking for papers that have stronger relationship between of *well test* and *permeability*, it would wise to add that term to the search.
+For instance, if you are looking for papers that have stronger relationship between *well test* and *permeability*, it would wise to add that term to the search.
 
 ``` r
 library(petro.One)
@@ -465,7 +465,7 @@ by_doctype
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |     60|
-| Conference paper |  89803|
+| Conference paper |  89804|
 | General          |    936|
 | Journal paper    |  16116|
 | Media            |     10|
@@ -479,7 +479,7 @@ In this example we get the total number of papers by document type.
 
 ``` r
 sum(by_doctype$value)
-#> [1] 107306
+#> [1] 107307
 ```
 
 Or use the R base function `summary` to give us a quick statistics of the papers:
@@ -491,7 +491,7 @@ summary(by_doctype)
 #>  Length:8           Min.   :   10.00  
 #>  Class :character   1st Qu.:   50.25  
 #>  Mode  :character   Median :  180.00  
-#>                     Mean   :13413.25  
+#>                     Mean   :13413.38  
 #>                     3rd Qu.: 4731.00  
-#>                     Max.   :89803.00
+#>                     Max.   :89804.00
 ```
