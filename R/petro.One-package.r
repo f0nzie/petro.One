@@ -46,4 +46,4 @@ NULL
 #' Source:  synonyms.txt
 #'
 #' @docType data
-# 'custom_synonyms'
+'custom_synonyms'
