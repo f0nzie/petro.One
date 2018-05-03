@@ -1,5 +1,7 @@
 library(testthat)
 
+context("test if rows return expected values")
+
 test_that("both dataframes return rows - test #5", {
     # provide two different set of keywords to combine as vectors
     major   <- c("waterflooding")
