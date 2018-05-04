@@ -30,23 +30,8 @@ generate_offline_data <- function() {
                               peer_reviewed = FALSE)
     test.df.2 <- onepetro_page_to_dataframe(my_url)
 
-    # is_dctype_enabled in summary.R
-    # 1st test
-    my_url <- make_search_url(query = "mechanistic performance", how = "all")
-    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_1.html", sep = "/"))
 
-    # 2nd test
-    my_url <- make_search_url(query = "bottomhole nodal", how = "all")
-    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_2.html", sep = "/"))
-
-    # 3rd test
-    my_url <- make_search_url(query = "mechanistic", how = "all")
-    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_3.html", sep = "/"))
-
-    # 4th test
-    my_url <- make_search_url(query = "mechanistic performance", how = "any")
-    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_4.html", sep = "/"))
-
+    gen_is_dctype_enabled(test_save_loc)
 
     # test_GTEsummary_by.R
     my_url <- make_search_url(query = "mechanistic performance",
@@ -126,3 +111,24 @@ generate_offline_data <- function() {
          gtesb.df.13, gtesb.df.14,
          file = test_save_file)
 }
+
+
+gen_is_dctype_enabled <- function(test_save_loc) {
+    # is_dctype_enabled in summary.R
+    # 1st test
+    my_url <- make_search_url(query = "mechanistic performance", how = "all")
+    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_1.html", sep = "/"))
+
+    # 2nd test
+    my_url <- make_search_url(query = "bottomhole nodal", how = "all")
+    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_2.html", sep = "/"))
+
+    # 3rd test
+    my_url <- make_search_url(query = "mechanistic", how = "all")
+    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_3.html", sep = "/"))
+
+    # 4th test
+    my_url <- make_search_url(query = "mechanistic performance", how = "any")
+    xml2::write_html(xml2::read_html(my_url), file = paste(test_save_loc, "idcto_4.html", sep = "/"))
+}
+

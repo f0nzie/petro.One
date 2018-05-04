@@ -1,11 +1,10 @@
 # offline unit test. using real data in HTML files
+# mock function: gen_is_dctype_enabled()
+
 library(testthat)
 library(mockery)
 
-context("is_dctype_enabled in summary.R")
-
-
-
+context("is_dctype_enabled, offline")
 m <- mock(FALSE, FALSE)
 test_loc <- system.file("testdata", package = "petro.One")
 
