@@ -48,7 +48,9 @@ read_multipage <- function(url, doctype = NULL) {
     }
     doc <- urltools::param_get(url, "dc_type")
 
+    # TO-DO: make it universal for all type of papers
     # if paper type belong to a non structured data
+
     if (any(grepl(doc, do_not_read, ignore.case = TRUE))) {
         return(df_cum)
     } else {

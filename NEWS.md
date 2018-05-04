@@ -13,6 +13,9 @@
 *test_GTEsummary_by-off.R*
 *test_onepetro_page_to_dataframe-off.R*
 * mark tests that are offline
+* 7:46 am - completing offline tests for read_multidoc().
+* spli offline tests for read_multidoc() and read_multipage()
+* Found discrepancies between numbers returned by the function and the values returned from OnePetro.
 
 
 
