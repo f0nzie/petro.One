@@ -1,6 +1,9 @@
 ## petro.One feature/result-item
 * this branch out of `develop`.
-* copy draft files from GDrive: notebbok, test file and script files to ./inst/result-item
+* copy draft files from GDrive: notebook, test file and script files to ./inst/result-item
+* 20180505
+* tested with R 3.4.4. passed with only one test enabled: test_multipage.R
+
 
 
 ## petro.One 0.1.3.9000
