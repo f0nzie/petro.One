@@ -6,6 +6,11 @@
 * *20180505*
 * tested with R 3.4.4. passed with only one test enabled. moved from gdrive to github-oilgains: `test_multipage.R`
 * add `mockery` to packages list.
+* only these tests doing `mock` tests with real data: 
+*test_is_dctype_enabled-off.R*
+*test_GTEsummary_by-off.R*
+*test_onepetro_page_to_dataframe-off.R*
+
 
 
 

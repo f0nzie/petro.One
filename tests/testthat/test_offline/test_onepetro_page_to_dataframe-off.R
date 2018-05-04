@@ -1,7 +1,8 @@
+# offline unit test. using real data in HTML files
 library(testthat)
 library(mockery)
 
-context("onepetro_page_to_dataframe paper_to_dataframe.R")
+context("onepetro_page_to_dataframe, paper_to_dataframe.R, offline")
 
 test_save_loc  <- "./inst/testdata"
 test_save_file <- paste(test_save_loc, "optd.rda", sep = "/")

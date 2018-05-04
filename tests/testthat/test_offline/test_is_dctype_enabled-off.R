@@ -1,3 +1,4 @@
+# offline unit test. using real data in HTML files
 library(testthat)
 library(mockery)
 
