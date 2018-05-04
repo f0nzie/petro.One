@@ -1,4 +1,4 @@
-install.packages(c("devtools", "testthat", "roxygen2"))
+install.packages(c("devtools", "testthat", "roxygen2", "knitr", "rmarkdown", "covr"))
 
 
 install.packages(c('xml2', 'rvest', 'tm', 'wordcloud', 'urltools', 'dplyr',
