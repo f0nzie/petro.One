@@ -1,15 +1,18 @@
 ## petro.One feature/result-item
+* branch: **feature/0.1.3.9001**
 * this branch out of `develop`.
 * copy draft files from GDrive: notebook, test file and script files to `./inst/result-item`
 * *20180504*
 * add script `install_packages.R` to document packages that need to be installed.
 * *20180505*
-* tested with R 3.4.4. passed with only one test enabled. moved from gdrive to github-oilgains: `test_multipage.R`
+* tested with R 3.4.4. passed with only one test enabled. moved from gdrive to github-oilgains: `test_multipage.R`. 
 * add `mockery` to packages list.
+* branch: **org-tests**
 * only these tests doing `mock` tests with real data: 
 *test_is_dctype_enabled-off.R*
 *test_GTEsummary_by-off.R*
 *test_onepetro_page_to_dataframe-off.R*
+* mark tests that are offline
 
 
 
