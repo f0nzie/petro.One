@@ -1,8 +1,11 @@
 ## petro.One feature/result-item
 * this branch out of `develop`.
-* copy draft files from GDrive: notebook, test file and script files to ./inst/result-item
-* 20180505
-* tested with R 3.4.4. passed with only one test enabled: test_multipage.R
+* copy draft files from GDrive: notebook, test file and script files to `./inst/result-item`
+* *20180504*
+* add script `install_packages.R` to document packages that need to be installed.
+* *20180505*
+* tested with R 3.4.4. passed with only one test enabled. moved from gdrive to github-oilgains: `test_multipage.R`
+* add `mockery` to packages list.
 
 
 

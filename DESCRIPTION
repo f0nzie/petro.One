@@ -15,9 +15,11 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Suggests: testthat,
+Suggests: testthat, 
+    mockery,
     knitr,
-    rmarkdown, covr
+    rmarkdown, 
+    covr
 Imports: rvest,
     xml2,
     magrittr, tibble, tm, wordcloud, urltools, dplyr, graph, 

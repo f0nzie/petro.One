@@ -2,7 +2,8 @@ install.packages(c("devtools", "testthat", "roxygen2", "knitr", "rmarkdown", "co
 
 
 install.packages(c('xml2', 'rvest', 'tm', 'wordcloud', 'urltools', 'dplyr',
-                   'ggplot2', 'RWeka', 'RColorBrewer', 'data.table'), type = 'source')
+                   'ggplot2', 'RWeka', 'RColorBrewer', 'data.table', 'mockery'),
+                 type = 'source')
 
 
 source("https://bioconductor.org/biocLite.R")
