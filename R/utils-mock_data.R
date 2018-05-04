@@ -32,7 +32,7 @@ generate_offline_data <- function() {
 
 
     gen_is_dctype_enabled(test_save_loc)
-    gen_multipage(test_save_loc)
+    gen_multidoc(test_save_loc)
 
     # test_GTEsummary_by.R
     my_url <- make_search_url(query = "mechanistic performance",
@@ -154,7 +154,7 @@ nn_from_to_year <- function(from, to) {
 
 
 
-gen_multipage <- function(test_save_loc) {
+gen_multidoc <- function(test_save_loc) {
     # my_url <- make_search_url(query = "neural network",
     #                           from_year = 1970,
     #                           to_year   = 1987,
@@ -167,7 +167,7 @@ gen_multipage <- function(test_save_loc) {
     df.7095 <- nn_from_to_year(1970, 1995)   # rows=159
     df.7020 <- nn_from_to_year(1970, 2000)   # rows=517
     nn_by_year <- list(y7087 = df.7087, y7088 = df.7088, y7090 = df.7090, y7095 = df.7095, y7020 = df.7020)
-    test_save_file <- paste(test_save_loc, "mpage_nn_by_year.rda", sep = "/")
+    test_save_file <- paste(test_save_loc, "mdoc_nn_by_year.rda", sep = "/")
     save(nn_by_year, file = test_save_file)
 }
 

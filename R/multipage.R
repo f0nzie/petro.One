@@ -20,7 +20,7 @@ read_multidoc <- function(my_url) {
     for (doc in sdc_df$name) {
         if (!any(grepl(doc, do_not_read, ignore.case = TRUE))) {
             my_url <- set_doctype(my_url, doc)
-            df <- read_multipage(my_url)
+            df <- read_multipage(my_url)       # read in groups of 1000 rows
             cum_df <- rbind(cum_df, df)
         }
     }
