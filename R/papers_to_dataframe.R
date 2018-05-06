@@ -29,29 +29,6 @@ onepetro_page_to_dataframe <- function(url) {
 
 
 
-onepetro_page_to_dataframe.0 <- function(url) {
-    webpage <- read_html(url)
-    df_titles  <- read_titles(webpage)
-    # print(df_titles)
-    df_sources <- read_sources(webpage)
-    # print(df_sources)
-    df_author  <- read_author(webpage)
-    # print(df_author)
-
-    # ensure that all dataframes have the same number of rows
-    if (all(dim(df_titles)[1]  == dim(df_sources)[1],
-            dim(df_sources)[1] == dim(df_author)[1],
-            dim(df_author)[1]  == dim(df_titles)[1]
-    ))
-        df <- cbind(df_titles, df_sources, df_author)
-    else
-        stop("Dataframe sizes different")  # otherwise, stop
-
-    return(tibble::as.tibble(df))
-}
-
-
-
 onepetro_allpages_to_dataframe <- function(url) {
     # webpage <- read_html(url)
     papers_count <- get_papers_count(url)
