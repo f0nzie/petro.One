@@ -1,7 +1,7 @@
 library(testthat)
 library(mockery)
 
-context("test document type, dc_type at url.R")
+context("test document type, dc_type at url.R, offline")
 
 m <- mock(303, 2687)
 

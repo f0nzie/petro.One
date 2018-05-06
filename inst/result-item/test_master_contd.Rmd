@@ -1,0 +1,304 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r make-the-function}
+library(rvest)
+library(dplyr)
+library(petro.One)
+
+get_dc_type <- function(page_size) {
+    url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows="
+    
+    url <- paste0(url, page_size)         # join the number of rows to the URL
+    webpage <<- xml2::read_html(url)
+    
+    dc_type_0 <- html_nodes(webpage, '.result-item') %>%
+     html_attr("data-type") %>% 
+    trimws %>% 
+    head(., -1)
+    
+    col2 <- html_nodes(webpage, '.result-item') %>%
+        html_attr("data-itemid") %>% 
+        gsub("data-cite-id=", "", .) %>% 
+        trimws %>% 
+        head(., -1)
+    
+    # col2_df <- data.frame(do.call(rbind, strsplit(col2, "/")), stringsAsFactors = FALSE)
+    col2_split <- strsplit(col2, "/")
+    col2_df <- data.frame(t(sapply(col2_split, '[', 1:max(sapply(col2_split, length)))),
+                          stringsAsFactors = FALSE)
+    
+    dc_type <- col2_df %>%
+        rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3, sup = X4) %>%
+        mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>%
+        mutate(dc_type = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1)) %>% 
+        mutate(dc_type = ifelse(dc_type_1 %in% "book", "chapter", dc_type))
+    
+    # number of columns of result is not a multiple of vector length (arg 154)
+    # cbind(dc_type, result_item_source)
+    tibble::as.tibble(cbind(dc_type_0, dc_type))
+}
+```
+
+
+
+```{r}
+dc_type <- get_dc_type(100)
+dc_type
+```
+
+```{r}
+unique(dc_type$dc_type)
+```
+
+
+## Get a glipmse of the number of paper by type
+* Pay special attention to papers of type: `media`, `chapter`, `other`
+* Also observe that the total number of papers must be the same as sum of all types.
+
+```{r dc_type_table_sum}
+dc_type <- get_dc_type(100)
+
+dc_type %>% 
+    group_by(dc_type) %>% 
+    summarise(count = n())
+
+sum(.Last.value$count)
+# page_size, media  chapter other
+#  100          1       0     2     100
+#  200          6       0           200
+#  300          6       0
+#  400          6       1           400
+#  500          6       1
+#  600          7       2   20       600
+#  700         12       2
+#  800         16       3
+# 1000         16       3
+```
+
+`Titles` are not the same size as `dc_type` above. Why?
+
+```{r titles_do_not_match_dc-type}
+df.titles <- petro.One:::read_titles(webpage)
+dim(df.titles)
+# 600 573   1
+# 100  97   1
+
+```
+
+This will give error because columns are different
+
+```{r}
+df.sources <- petro.One:::read_sources(webpage)
+unique(df$type)
+# error:
+# number of columns of result is not a multiple of vector length (arg 69)
+```
+
+## Let's try to get the titles in another way
+
+
+```{r function-get_book_title}
+get_book_title <- function(webpage) {
+    html_nodes(webpage, '.result-item') %>%
+        html_nodes(".book-title") %>% 
+        html_text %>% 
+        gsub("\n", "", .) %>% 
+        trimws
+}
+
+get_book_title(webpage)
+```
+
+### merge titles and dc_type
+It they match, ther shouldn't be any error
+
+```{r form_book_title, rows.print=25}
+dc_type <- get_dc_type(100)
+book_title <- get_book_title(webpage)
+tibble::as.tibble(cbind(book_title, dc_type))
+```
+
+## Get the authors
+
+```{r function-get_book_title}
+
+dc_type <- get_dc_type(100)
+# book_title <- get_book_title(webpage)
+# cbind(book_title, dc_type)
+
+get_result_item_authors <- function(webpage) {
+    html_nodes(webpage, '.result-item') %>%
+        # html_nodes(".result-item-authors")
+        html_nodes(".highlighted") %>% 
+        html_text %>% 
+        #gsub("\n", "", .) %>% 
+        trimws %>%     
+        strsplit("\n") %>% 
+        lapply(., trimws) %>% 
+        lapply(., function(x) x[!x %in% ""])  # remove a blank from a list
+    
+}
+
+item_authors <- get_result_item_authors(webpage)
+lapply(item_authors, function(x) x[1:2])
+```
+
+```{r}
+#item_authors
+#grepl("[,.]", item_authors[[1]][1])
+
+# is the first element of the list a name? Because it contains dot and commas
+sapply(1:100, function(x) grepl("[,.].", item_authors[[x]][1]))
+
+```
+
+```{r}
+# no comma
+item_authors[[5]]
+```
+
+```{r}
+# one comma stand-alone
+item_authors[[71]]
+```
+
+```{r}
+# one comma stand-alone
+item_authors[[70]]
+```
+
+```{r rows.print=30}
+get_authors <- function() {
+    data.frame(authors = sapply(1:100, join_authors), stringsAsFactors = FALSE)
+}
+
+
+#' @param x called by apply function
+join_authors <- function(x) {
+    nm1 <- if (grepl("[,.]", item_authors[[x]][1])) item_authors[[x]][1] else "NA"
+    nm2 <- if (grepl("[,.]", item_authors[[x]][2]) & nm1 != "NA") item_authors[[x]][2] else "NA"
+    nm3 <- if (grepl("[,.]", item_authors[[x]][3]) & nm2 != "NA") item_authors[[x]][3] else "NA"
+    nm4 <- if (grepl("[,.]", item_authors[[x]][4]) & nm3 != "NA") item_authors[[x]][4] else "NA"
+    nm5 <- if (grepl("[,.]", item_authors[[x]][5]) & nm4 != "NA") item_authors[[x]][5] else "NA"
+    nm6 <- if (grepl("[,.]", item_authors[[x]][6]) & nm5 != "NA") item_authors[[x]][6] else "NA"
+    nm7 <- if (grepl("[,.]", item_authors[[x]][7]) & nm6 != "NA") item_authors[[x]][7] else "NA"
+    nm8 <- if (grepl("[,.]", item_authors[[x]][8]) & nm7 != "NA") item_authors[[x]][8] else "NA"
+    authors <- paste(nm1, nm2, nm3, nm4, nm5, nm6, nm7, nm8, sep = "|")
+    authors <- strsplit(authors, "|", fixed = TRUE)
+    authors <- lapply(authors, function(x) x[!x %in% "NA"] )  # remove a blank from a list
+    authors <- sapply(authors, paste, collapse = " | ")
+    if (is_author(authors)) authors else "unknown"
+}
+
+
+
+# how many times a character repeats
+# we wantr to find only occurance of only one comma. It means it is not a name
+# and probably empty. Names have at least two commas
+character_repeats <- function(char_vector, the_char = ",") {
+    sapply(gregexpr(",", char_vector), function(x) length(x))
+}
+
+
+# logical. if the count os greater than one, it is a name.
+# if the count is one or zero, then
+is_author <- function(author_vector) {
+    stopifnot(!is.numeric(author_vector))
+    repeats <- character_repeats(author_vector)
+    ifelse(repeats > 1, TRUE, FALSE)
+}
+
+authors <- get_authors()
+authors
+```
+
+## Merge titles, dc-types and authors
+
+```{r form_authors_title_dc-type, rows.print=25}
+dc_type <- get_dc_type(100)
+book_title <- get_book_title(webpage)
+tibble::as.tibble(cbind(book_title, dc_type, authors))
+```
+
+```{r}
+item_authors[1:10]
+```
+
+Get all years from the list
+
+```{r}
+rapply(item_authors, grep, pattern = "- [0-9].", perl = TRUE, value= TRUE)
+```
+
+```{r}
+f <- function(x) {
+    if (!any(sapply(x, function(y) grepl(y, pattern = "- [0-9].", perl = TRUE))))
+        NA
+    else {
+        as.integer(trimws(gsub("-", "",grep(x, pattern = "- [0-9].", perl = TRUE, value = TRUE))))
+    }
+        
+}
+
+data.frame(year = sapply(item_authors, f))
+
+```
+
+## Merge titles, authors, dc-type, year
+
+```{r form_authors_title_dc-type, rows.print=25}
+dc_type <- get_dc_type(100)
+book_title <- get_book_title(webpage)
+year <- get_year(item_authors)
+cbind(book_title, dc_type, authors, year)
+```
+
+## get the source or publication
+
+```{r}
+item_authors[1:10]
+```
+
+
+
+```{r}
+f <- function(x) {
+    if (!any(sapply(x, function(y) grepl(y, pattern = "^[A-Z]+$", perl = TRUE))))
+        NA
+    else
+        grep(x, pattern = "^[A-Z]+$", perl = TRUE, value = TRUE)
+}
+
+sapply(item_authors, f)
+```
+
+
+## Merge titles, authors, year, dc-type, source
+
+```{r rows.print=30}
+dc_type <- get_dc_type(300)
+book_title <- get_book_title(webpage)
+item_authors <- get_result_item_authors(webpage)
+year <- get_year(item_authors)
+source <- get_source(item_authors)
+cbind(book_title, dc_type, authors, year, source)
+```
+
+## downloads
+
+```{r}
+# downloads
+dc_type <- get_dc_type(100)
+book_title <- get_book_title(webpage)
+
+pattern <- "[0-9.]+(?= downloads)"
+
+f <- function(x) {
+    sapply(x, function(y) grep(pattern, y, perl = TRUE))
+}
+
+sapply(item_authors, f)
+```

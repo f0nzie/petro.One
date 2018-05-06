@@ -1,5 +1,4 @@
-# offline unit test
-
+# offline unit test. using real data in HTML files
 library(testthat)
 
 test_load_loc  <- system.file("testdata", package = "petro.One")

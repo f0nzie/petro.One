@@ -1,6 +1,6 @@
 library(testthat)
 
-context("onepetro_page_to_dataframe paper_to_dataframe.R")
+context("onepetro_page_to_dataframe, paper_to_dataframe.R")
 
 test_that("when returning no results, expect dataframe", {
     my_url <- make_search_url(query = "downhole flowrate measurement",
@@ -8,8 +8,9 @@ test_that("when returning no results, expect dataframe", {
                               peer_reviewed = TRUE)
     df <- onepetro_page_to_dataframe(my_url)
     expect_is(df, "data.frame")
-    expect_true(all(names(df) == c("title_data", "paper_id", "source", "type", "year", "author1_data")))
-    expect_equal(dim(df)[1], 0, tolerance = 1)
+    expect_true(all(names(df) %in% c("book_title", "paper_id", "source",
+                                   "dc_type", "year", "authors")))
+    expect_equal(dim(df)[1], 0)
 })
 
 
@@ -19,6 +20,7 @@ test_that("when returning some results, expect dataframe", {
                               peer_reviewed = FALSE)
     df <- onepetro_page_to_dataframe(my_url)
     expect_is(df, "data.frame")
-    expect_true(all(names(df) == c("title_data", "paper_id", "source", "type", "year", "author1_data")))
-    expect_equal(dim(df)[1], 2, tolerance = 1)
+    expect_true(all(names(df) %in% c("book_title", "paper_id", "source",
+                                     "dc_type", "year", "authors")))
+    expect_equal(dim(df)[1], 2)
 })

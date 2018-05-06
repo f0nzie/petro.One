@@ -4,13 +4,10 @@
 \alias{read_multipage}
 \title{Reads metadata in groups of 1000 papers}
 \usage{
-read_multipage(url, doctype = NULL)
+read_multipage(url)
 }
 \arguments{
 \item{url}{A OnePetro query URL}
-
-\item{doctype}{a OnePetro paper type: conference-paper, journal-paper, general.
-presentation, chapter, etc.}
 }
 \description{
 This function will loop over and grab data from the OnePetro

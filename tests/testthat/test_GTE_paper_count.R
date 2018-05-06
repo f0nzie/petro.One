@@ -1,7 +1,6 @@
 library(testthat)
 
 context("paper_count multitest function")
-
 # test the following functions:
     # make_search_url
     # get_papers_count
@@ -9,7 +8,7 @@ context("paper_count multitest function")
 
 test_that("all queries match expected values", {
 
-    expected <- c(70, 2998, 4676, 871, 7876, 13577, 13577, 533, 1750, 4, 9, 0, 4, 0)
+    expected <- c(71, 3238, 4868, 896, 8096, 13958, 13958, 570, 1800, 4, 9, 0, 4, 0)
 
     all_tests <- list(
         test_1 = list(
@@ -130,8 +129,8 @@ test_that("all queries match expected values", {
         my_url <- make_search_url(query = t$keyword, how = t$how)
         # cat(t$how, my_url, "\n")
         cur_count <- get_papers_count(my_url)
-        # cat(ix, cur_count - t$x, "\n")
-        expect_gte(cur_count, t$x)
+        # cat(ix, cur_count, t$x, cur_count - t$x, "\n")
+        expect_equal(cur_count, t$x)
         ix <- ix + 1
     }
 
