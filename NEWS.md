@@ -1,3 +1,7 @@
+## petro.One 0.1.3.9002
+* merge *feature/result-item* with *develop*.
+* vignettes disabled for the moment.
+
 ## petro.One feature/result-item
 * this branch out of `develop`.
 * ignored branch: **feature/0.1.3.9001**
