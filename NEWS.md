@@ -1,6 +1,6 @@
 ## petro.One feature/result-item
-* branch: **feature/0.1.3.9001**
 * this branch out of `develop`.
+* ignored branch: **feature/0.1.3.9001**
 * copy draft files from GDrive: notebook, test file and script files to `./inst/result-item`
 * *20180504*
 * add script `install_packages.R` to document packages that need to be installed.
