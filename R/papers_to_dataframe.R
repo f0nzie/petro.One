@@ -15,6 +15,22 @@
 #' onepetro_page_to_dataframe(url_vlp)
 onepetro_page_to_dataframe <- function(url) {
     webpage <- read_html(url)
+    # titles
+    # sources
+    # author
+
+    dc_type    <- get_dc_type(webpage)
+    book_title <- get_book_title(webpage)
+    authors    <- get_authors(webpage)
+    year       <- get_year(webpage)
+    source     <- get_source(webpage)
+    return(tibble::as.tibble(cbind(book_title, dc_type, authors, year, source)))
+}
+
+
+
+onepetro_page_to_dataframe.0 <- function(url) {
+    webpage <- read_html(url)
     df_titles  <- read_titles(webpage)
     # print(df_titles)
     df_sources <- read_sources(webpage)
