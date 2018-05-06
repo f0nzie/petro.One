@@ -26,7 +26,9 @@
 * fix problem with functions `get_papers_count` and `papers_by_*` when the url has the parameter `rows` in it. Added new funtion `check_unlimited_rows()` to address that.
 * change variable name from "title_data" to "book_title". Build README.
 * using *skip("skip")* in some tests.
-
+*  Running 'testthat.R' [444s]
+   * R CMD check results
+   * 0 errors | 0 warnings | 0 notes
 
 
 ## petro.One 0.1.3.9000
