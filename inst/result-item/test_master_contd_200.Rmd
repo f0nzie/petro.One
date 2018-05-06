@@ -1,0 +1,396 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(rvest)
+library(dplyr)
+library(petro.One)
+```
+
+
+```{r}
+
+rows <- 250
+
+.url_pres <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows="
+
+url_100 <- function(url, page_size) {
+    paste0(url, page_size)         # join the number of rows to the URL
+}
+
+url_pres <- url_100(.url_pres, rows)
+
+make_webpage_of_size <- function(url, page_size) {
+    xml2::read_html(url_100(url, rows))
+}
+
+url_pres
+webpage_100 <- make_webpage_of_size(.url_pres, rows)
+webpage_pres <- webpage_100
+```
+
+
+
+
+```{r get_data_itemid}
+get_data_itemid <- function(webpage) {
+    data_itemid <- html_nodes(webpage, '.result-item') %>%
+    html_attr("data-itemid") %>%      # extract data-itemid
+    gsub("data-cite-id=", "", .) %>% 
+    trimws %>% 
+    head(., -1)
+    
+    data_itemid <- strsplit(data_itemid, "/")
+    data.frame(t(sapply(data_itemid, '[', 1:max(sapply(data_itemid, length)))), 
+               stringsAsFactors = FALSE)
+}
+
+
+get_data_itemid(webpage_pres)
+```
+
+```{r}
+url_nn <- make_search_url(query = "neural network",
+                          from_year = 1970,
+                          to_year   = 1999,
+                          how = "all",
+                          rows = rows)
+
+webpage_nn <- xml2::read_html(url_nn)
+get_data_itemid(webpage_nn)
+```
+
+
+
+
+```{r get_dc_type-p1}
+get_dc_type_raw <- function(webpage) {
+    
+    dc_type_0 <- html_nodes(webpage, '.result-item') %>%
+        html_attr("data-type") %>% 
+        trimws %>%         # remove blanks
+        head(., -1)        # discard last row
+    
+    data_itemid <- get_data_itemid(webpage)
+    
+    if (ncol(data_itemid) > 2) {
+        dc_type <- data_itemid %>%
+        rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3, sup = X4) %>%
+        mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>%
+        mutate(dc_type = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1)) %>% 
+        mutate(dc_type = ifelse(dc_type_1 %in% "book", "chapter", dc_type))
+    } else {
+        dc_type <- data_itemid %>%
+           rename(dc_type = X1, paper_id = X2) 
+    }
+    
+    
+    # number of columns of result is not a multiple of vector length (arg 154)
+    tibble::as.tibble(cbind(dc_type_0, dc_type))
+}
+
+dc_type_raw_pres <- get_dc_type_raw(webpage_pres)
+dc_type_raw_pres
+```
+
+```{r}
+dc_type_raw_nn <- get_dc_type_raw(webpage_nn)
+dc_type_raw_nn
+```
+
+
+```{r get_dc_type}
+get_dc_type <- function(webpage) {
+    dc_type_raw <- get_dc_type_raw(webpage)
+    dc_type_raw$dc_type
+}
+
+dc_type_pres <- get_dc_type(webpage_pres)
+dc_type_pres
+table(dc_type_pres)
+```
+
+
+```{r}
+dc_type_nn <- get_dc_type(webpage_nn)
+dc_type_nn
+table(dc_type_nn)
+```
+
+
+
+```{r}
+unique(dc_type_pres)
+unique(dc_type_nn)
+```
+
+
+## Get a glipmse of the number of paper by type
+* Pay special attention to papers of type: `media`, `chapter`, `other`
+* Also observe that the total number of papers must be the same as sum of all types.
+
+```{r dc_type_table_sum}
+dc_type <- data.frame(dc_type = get_dc_type(webpage_pres))
+
+dc_type %>% 
+    group_by(dc_type) %>% 
+    summarise(count = n())
+
+sum(.Last.value$count)
+# page_size, media  chapter other
+#  100          1       0     2     100
+#  200          6       0           200
+#  300          6       0
+#  400          6       1           400
+#  500          6       1
+#  600          7       2   20       600
+#  700         12       2
+#  800         16       3
+# 1000         16       3
+```
+
+```{r}
+dc_type <- data.frame(dc_type = get_dc_type(webpage_nn))
+
+dc_type %>% 
+    group_by(dc_type) %>% 
+    summarise(count = n())
+
+sum(.Last.value$count)
+```
+
+
+## Titles
+
+`Titles` are not the same size as `dc_type` above. Why?
+
+```{r titles_do_not_match_dc-type}
+df.titles <- petro.One:::read_titles(webpage_pres)
+dim(df.titles)
+# 100  97   1
+# 600 573   1
+# 100  97   1
+
+```
+
+This will give error because columns are different
+
+```{r}
+df.sources <- petro.One:::read_sources(webpage)
+unique(df$type)
+# error:
+# number of columns of result is not a multiple of vector length (arg 69)
+```
+
+### Let's try to get the titles in another way
+
+```{r function-get_book_title}
+get_book_title <- function(webpage) {
+    html_nodes(webpage, '.result-item') %>%
+        html_nodes(".book-title") %>% 
+        html_text %>% 
+        gsub("\n", "", .) %>% 
+        trimws
+}
+
+get_book_title(webpage_pres)
+```
+
+```{r}
+get_book_title(webpage_nn)
+```
+
+### merge titles and dc_type
+It they match, ther shouldn't be any error
+
+```{r merge-book_title-dc_type, rows.print=25}
+dc_type    <- get_dc_type(webpage_pres)
+book_title <- get_book_title(webpage_pres)
+tibble::as.tibble(cbind(book_title, dc_type))
+```
+
+```{r merge-book_title-dc_type, rows.print=25}
+dc_type    <- get_dc_type(webpage_nn)
+book_title <- get_book_title(webpage_nn)
+tibble::as.tibble(cbind(book_title, dc_type))
+```
+
+## Authors
+
+```{r function-get_authors, , rows.print=25}
+
+get_result_item_authors <- function(webpage) {
+    html_nodes(webpage, '.result-item') %>%
+        # html_nodes(".result-item-authors")
+        html_nodes(".highlighted") %>% 
+        html_text %>% 
+        #gsub("\n", "", .) %>% 
+        trimws %>%     
+        strsplit("\n") %>% 
+        lapply(., trimws) %>% 
+        lapply(., function(x) x[!x %in% ""])  # remove a blank from a list
+    
+}
+
+
+get_authors <- function(webpage) {
+    #' @param x called by apply function
+    join_authors <- function(x, y) {
+        nm1 <- if (grepl("[,.]", y[[x]][1])) y[[x]][1] else "NA"
+        nm2 <- if (grepl("[,.]", y[[x]][2]) & nm1 != "NA") y[[x]][2] else "NA"
+        nm3 <- if (grepl("[,.]", y[[x]][3]) & nm2 != "NA") y[[x]][3] else "NA"
+        nm4 <- if (grepl("[,.]", y[[x]][4]) & nm3 != "NA") y[[x]][4] else "NA"
+        nm5 <- if (grepl("[,.]", y[[x]][5]) & nm4 != "NA") y[[x]][5] else "NA"
+        nm6 <- if (grepl("[,.]", y[[x]][6]) & nm5 != "NA") y[[x]][6] else "NA"
+        nm7 <- if (grepl("[,.]", y[[x]][7]) & nm6 != "NA") y[[x]][7] else "NA"
+        nm8 <- if (grepl("[,.]", y[[x]][8]) & nm7 != "NA") y[[x]][8] else "NA"
+        authors <- paste(nm1, nm2, nm3, nm4, nm5, nm6, nm7, nm8, sep = "|")
+        authors <- strsplit(authors, "|", fixed = TRUE)
+        authors <- lapply(authors, function(x) x[!x %in% "NA"] )  # remove a blank from a list
+        authors <- sapply(authors, paste, collapse = " | ")
+        #if (is_author(authors)) authors else "unknown"
+    }
+    
+    item_authors <- get_result_item_authors(webpage)
+    data.frame(authors = sapply(seq_along(item_authors), join_authors, item_authors),
+               stringsAsFactors = FALSE)
+}
+
+get_authors(webpage_pres)
+```
+
+```{r , rows.print=25}
+get_authors(webpage_nn)
+```
+
+
+```{r merge-dc_type-book_title-authors, rows.print=25}
+dc_type    <- get_dc_type(webpage_pres)
+book_title <- get_book_title(webpage_pres)
+authors    <- get_authors(webpage_pres)
+tibble::as.tibble(cbind(book_title, dc_type, authors))
+```
+
+```{r merge-dc_type-book_title-authors, rows.print=25}
+dc_type    <- get_dc_type(webpage_nn)
+book_title <- get_book_title(webpage_nn)
+authors    <- get_authors(webpage_nn)
+tibble::as.tibble(cbind(book_title, dc_type, authors))
+```
+
+## Year
+
+```{r get_year}
+
+get_year <- function(webpage) {
+    f <- function(x) {
+        if (!any(sapply(x, function(y) grepl(y, pattern = "- [0-9].", perl = TRUE))))
+            NA
+        else {
+            as.integer(trimws(gsub("-", "",grep(x, pattern = "- [0-9].", perl = TRUE, value = TRUE))))
+        }
+
+    }
+    item_authors <- get_result_item_authors(webpage)
+    data.frame(year = sapply(item_authors, f))
+}
+
+
+get_year(webpage_pres)
+
+```
+
+```{r}
+get_year(webpage_nn)
+```
+
+
+## Sources
+
+```{r get_source}
+get_source <- function(webpage) {
+    f <- function(x) {
+        if (!any(sapply(x, function(y) grepl(y, pattern = "^[A-Z]+$", perl = TRUE))))
+            NA
+        else
+            grep(x, pattern = "^[A-Z]+$", perl = TRUE, value = TRUE)
+    }
+    item_authors <- get_result_item_authors(webpage)
+    sapply(item_authors, f)
+}
+
+
+table(get_source(webpage_pres))
+```
+
+```{r}
+table(get_source(webpage_nn))
+```
+
+
+## Merge all
+
+```{r rows.print=25, merge-dc_type-book_title-authors-year-source}
+dc_type    <- get_dc_type(webpage_pres)
+book_title <- get_book_title(webpage_pres)
+authors    <- get_authors(webpage_pres)
+year       <- get_year(webpage_pres)
+source     <- get_source(webpage_pres)
+
+all_pres <- tibble::as.tibble(cbind(book_title, dc_type, authors, year, source))
+all_pres
+```
+
+
+```{r rows.print=25, merge-dc_type-book_title-authors-year-source}
+dc_type    <- get_dc_type(webpage_nn)
+book_title <- get_book_title(webpage_nn)
+authors    <- get_authors(webpage_nn)
+year       <- get_year(webpage_nn)
+source     <- get_source(webpage_nn)
+
+all_nn <- tibble::as.tibble(cbind(book_title, dc_type, authors, year, source))
+all_nn
+```
+
+
+```{r}
+table(all_pres$dc_type)
+```
+
+```{r}
+table(all_nn$dc_type)
+```
+
+
+```{r, rows.print=25}
+get_papers_from_result_item <- function(url) {
+    webpage <- xml2::read_html(url)
+
+    dc_type    <- get_dc_type(webpage)
+    book_title <- get_book_title(webpage)
+    authors    <- get_authors(webpage)
+    year       <- get_year(webpage)
+    source     <- get_source(webpage)
+    tibble::as.tibble(cbind(book_title, dc_type, authors, year, source))
+}
+
+get_papers_from_result_item(url_pres)
+
+```
+
+```{r, rows.print=25}
+get_papers_from_result_item(url_nn)
+```
+
+
+
+
+
+
+
+
+
+

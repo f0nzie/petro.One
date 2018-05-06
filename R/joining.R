@@ -11,7 +11,7 @@ join_keywords <- function(...,
                           get_papers = TRUE,
                           bool_op = "AND",
                           sleep = 3,
-                          verbose = TRUE) {
+                          verbose = FALSE) {
     rec <- vector("list")
     papers.df.k <- data.frame()
 
@@ -47,7 +47,8 @@ join_keywords <- function(...,
             url.2 <- make_search_url(sf, how = "all")
             # papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
             # # get multipages > 1000 papers
-            papers.df <- read_multipage(url.2, doctype = "conference-paper")
+            # papers.df <- read_multipage(url.2, doctype = "conference-paper")
+            papers.df <- read_multipage(url.2)
             # cat(dim(papers.df), "\n")
             papers.df$keyword <- sf                           # add columns
             papers.df.k <- rbind(papers.df, papers.df.k)      # cumulative dataframe

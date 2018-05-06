@@ -11,7 +11,7 @@ custom_stopwords <- NULL
 #' @importFrom utils data
 #' @export
 get_term_document_matrix <- function(df) {
-    vdocs <- VCorpus(VectorSource(df$title_data))
+    vdocs <- VCorpus(VectorSource(df$book_title))
     # vdocs <- tm_map(vdocs, content_transformer(enc2utf8))
     # vdocs <- tm_map(vcorpus, PlainTextDocument)
     #Create the toSpace content transformer
@@ -72,7 +72,7 @@ plot_wordcloud <- function(df, ..., max.words = 200, min.freq = 50) {
 #' @importFrom utils data
 #' @export
 term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2) {
-    vdocs <- VCorpus(VectorSource(df$title_data))
+    vdocs <- VCorpus(VectorSource(df$book_title))
     vdocs <- tm_map(vdocs, content_transformer(tolower))
     vdocs <- tm_map(vdocs, removeWords, stopwords("english"))
 

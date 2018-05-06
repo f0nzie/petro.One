@@ -16,6 +16,7 @@ papers_by_type <- function(url) {
     if (get_papers_count(url) == 0) {   # return empty dataframe
         return(data.frame(type=as.character(), value = as.integer()))}
 
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
 
     if (is_dctype_enabled(page)) {
@@ -102,6 +103,7 @@ break_by_pattern <- function(x, pattern) {
 #' my_url <- make_search_url(query = "shale gas", how = "all")
 #' papers_by_publisher(my_url)
 papers_by_publisher <- function(url) {
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
     x <- publication_result_right(page)
     pub_vector <- get_dc_publisher(x)
@@ -144,6 +146,7 @@ summary_by_publisher <- function(result) {
 #' my_url <- make_search_url(query = "production automation", how = "all")
 #' papers_by_year(my_url)
 papers_by_year <- function(url) {
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
     x <- publication_result_left(page)
     pub_vector <- get_dc_issued_year(x)
@@ -185,6 +188,7 @@ summary_by_dates <- function(result) {
 #' my_url <- make_search_url(query = "industrial drilling", how = "all")
 #' papers_by_publication(my_url)
 papers_by_publication <- function(url) {
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
     x <- publication_result_left(page)
     pub_vector <- get_s2_parent_title(x)

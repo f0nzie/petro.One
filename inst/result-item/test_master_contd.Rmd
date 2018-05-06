@@ -11,7 +11,7 @@ library(petro.One)
 get_dc_type <- function(page_size) {
     url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows="
     
-    url <- paste0(url, page_size)
+    url <- paste0(url, page_size)         # join the number of rows to the URL
     webpage <<- xml2::read_html(url)
     
     dc_type_0 <- html_nodes(webpage, '.result-item') %>%

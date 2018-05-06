@@ -67,6 +67,7 @@ my_url <- make_search_url(query = "unconventional",
 
 get_papers_count(my_url)
 # 16359
+# 17843
 papers_by_type(my_url)
 onepetro_page_to_dataframe(my_url)
 # Error in onepetro_page_to_dataframe(my_url) : Dataframe sizes different
@@ -82,9 +83,9 @@ library(petro.One)
 my_url <- make_search_url(query = "shale oil", 
                           how = "all", 
                           dc_type = "conference-paper",
-                          rows = 1022)
+                          rows = 1000)
 
-# get_papers_count(my_url)
+get_papers_count(my_url)
 papers_by_type(my_url)
 # 2578, dc_type = NULL
 # 2578, dc_type = "conference-paper"

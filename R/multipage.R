@@ -34,10 +34,39 @@ read_multidoc <- function(my_url) {
 #' OnePetro limits the number of papers to view to 1000 papers and the query in
 #' this function automatically sets the start counter to read them in groups.
 #' @param url A OnePetro query URL
-#' @param doctype a OnePetro paper type: conference-paper, journal-paper, general.
-#' presentation, chapter, etc.
 #' @export
-read_multipage <- function(url, doctype = NULL) {
+read_multipage <- function(url) {
+    df_cum <- data.frame()
+    #
+    if (is.na(urltools::param_get(url, "rows"))) {
+        paper_count <- get_papers_count(url)
+    } else {
+        rows <- as.numeric(urltools::param_get(url, "rows"))
+        if (rows > 1000) {
+            paper_count <- rows
+        } else {
+            paper_count <- get_papers_count(url)
+        }
+    }
+
+    if (paper_count > 0) {
+        pages <- paper_count %/% 1000 + ifelse((paper_count %% 1000) > 0, 1, 0)
+        # read page by page in thousands size
+        for (page in 1:pages) {
+            url <- urltools::param_set(url, "start", 1000 * page - 1000)
+            url <- urltools::param_set(url, "rows", 1000)
+            # cat(page, 1000 * page - 1000, get_papers_count(url), "\n")
+            df <- onepetro_page_to_dataframe(url)
+            # print(df[1, ])   # print first row of dataframe
+            df_cum <- rbind(df_cum, df)  # accumulate dataframes
+        }
+    }
+    df_cum
+}
+
+
+
+read_multipage.0 <- function(url, doctype = NULL) {
     df_cum <- data.frame()
     doc <- urltools::param_get(url, "dc_type")
     if (is.null(doctype) && is.na (doc)) stop("must provide paper type")
@@ -71,7 +100,6 @@ read_multipage <- function(url, doctype = NULL) {
     }
     df_cum
 }
-
 
 
 
