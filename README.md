@@ -127,18 +127,18 @@ my_url <- make_search_url(query = "neural network",
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 10 x 6
-#>    title_data        paper_id   source   type     year author1_data       
-#>    <chr>             <chr>      <chr>    <chr>   <int> <chr>              
-#>  1 Deconvolution Us~ "        ~ "      ~ "     ~  1996 Essenreiter, Rober~
-#>  2 Neural Network S~ "        ~ "      ~ "     ~  1992 Schmidt, Jumndyr, ~
-#>  3 Seismic Principa~ "        ~ "      ~ "     ~  1996 Huang, Kou-Yuan, N~
-#>  4 Neural Networks ~ "        ~ "      ~ "     ~  1995 Leggett, Miles, Br~
-#>  5 First Break Pick~ "        ~ "      ~ "     ~  1990 Wagner, D.E., Amoc~
-#>  6 Drill-Bit Diagno~ "        ~ "      ~ "     ~  1990 Arehart, R.A., Exx~
-#>  7 Artificial Intel~ "        ~ "      ~ "     ~  1992 Guo, Yi, Center fo~
-#>  8 Neural Networks ~ "        ~ "      ~ "     ~  1991 McCormack, Michael~
-#>  9 Inversion of Sei~ "        ~ "      ~ "     ~  1992 Ro&uml;th, Gunter,~
-#> 10 Conductive fract~ "        ~ "      ~ "     ~  1995 Thomas, Andrew L.,~
+#>    book_title      paper_id  dc_type authors                   year source
+#>    <fct>           <fct>     <fct>   <chr>                    <int> <fct> 
+#>  1 Deconvolution ~ SEG-1996~ confer~ Essenreiter, Robert, Ka~  1996 SEG   
+#>  2 Neural Network~ SEG-1992~ confer~ Schmidt, Jumndyr, Petro~  1992 SEG   
+#>  3 First Break Pi~ SEG-1990~ confer~ Wagner, D.E., Amoco Pro~  1990 SEG   
+#>  4 Neural Network~ SEG-1995~ confer~ Leggett, Miles, British~  1995 SEG   
+#>  5 Seismic Princi~ SEG-1996~ confer~ Huang, Kou-Yuan, Nation~  1996 SEG   
+#>  6 Drill-Bit Diag~ SPE-1955~ journa~ Arehart, R.A., Exxon Pr~  1990 SPE   
+#>  7 Artificial Int~ SEG-1992~ confer~ Guo, Yi, Center for Pot~  1992 SEG   
+#>  8 Inversion of S~ SEG-1992~ confer~ Ro&uml;th, Gunter, Inst~  1992 SEG   
+#>  9 Neural Network~ SEG-1991~ confer~ McCormack, Michael P., ~  1991 SEG   
+#> 10 Reservoir Char~ SEG-1993~ confer~ An, P., University of M~  1993 SEG
 ```
 
 And these are the terms that repeat more freqently:
@@ -146,18 +146,18 @@ And these are the terms that repeat more freqently:
 ``` r
 term_frequency(df)
 #> # A tibble: 26 x 2
-#>    word           freq
-#>    <chr>         <int>
-#>  1 neural           10
-#>  2 networks          9
-#>  3 seismic           3
-#>  4 picking           2
-#>  5 analysis          1
-#>  6 artificial        1
-#>  7 break             1
-#>  8 components        1
-#>  9 conductive        1
-#> 10 deconvolution     1
+#>    word              freq
+#>    <chr>            <int>
+#>  1 neural              10
+#>  2 networks             9
+#>  3 seismic              3
+#>  4 picking              2
+#>  5 analysis             1
+#>  6 artificial           1
+#>  7 break                1
+#>  8 characterization     1
+#>  9 components           1
+#> 10 deconvolution        1
 #> # ... with 16 more rows
 ```
 
@@ -183,22 +183,22 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 2881
+#> [1] 3238
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 1,000 x 6
-#>    title_data        paper_id    source  type     year author1_data       
-#>    <chr>             <chr>       <chr>   <chr>   <int> <chr>              
-#>  1 Deconvolution Us~ "         ~ "     ~ "     ~  1996 Essenreiter, Rober~
-#>  2 Neural Networks ~ "         ~ "     ~ "     ~  2002 Russell, Brian, Ha~
-#>  3 Neural Network S~ "         ~ "     ~ "     ~  1992 Schmidt, Jumndyr, ~
-#>  4 Seismic Principa~ "         ~ "     ~ "     ~  1996 Huang, Kou-Yuan, N~
-#>  5 Neural Networks ~ "         ~ "     ~ "     ~  1995 Leggett, Miles, Br~
-#>  6 First Break Pick~ "         ~ "     ~ "     ~  1990 Wagner, D.E., Amoc~
-#>  7 Dynamic Neural N~ "         ~ "     ~ "     ~  2003 Schultz, R.L., Hal~
-#>  8 Predicting Wax F~ "         ~ "     ~ "     ~  2012 Adeyemi, B.J., Uni~
-#>  9 Seismic Velocity~ "         ~ "     ~ "     ~  2015 Huang, Kou-Yuan, N~
-#> 10 Artificial Intel~ "         ~ "     ~ "     ~  1992 Guo, Yi, Center fo~
+#>    book_title       paper_id  dc_type authors                  year source
+#>    <fct>            <fct>     <fct>   <chr>                   <int> <fct> 
+#>  1 Deconvolution U~ SEG-1996~ confer~ Essenreiter, Robert, K~  1996 SEG   
+#>  2 Neural Networks~ SEG-2002~ confer~ Russell, Brian, Hampso~  2002 SEG   
+#>  3 Neural Network ~ SEG-1992~ confer~ Schmidt, Jumndyr, Petr~  1992 SEG   
+#>  4 First Break Pic~ SEG-1990~ confer~ Wagner, D.E., Amoco Pr~  1990 SEG   
+#>  5 Neural Networks~ SEG-1995~ confer~ Leggett, Miles, Britis~  1995 SEG   
+#>  6 Seismic Velocit~ SEG-2015~ confer~ Huang, Kou-Yuan, Natio~  2015 SEG   
+#>  7 Estimation of W~ ISOPE-I-~ confer~ Okumoto, Yasuhisa, Kin~  2008 ISOPE 
+#>  8 Seismic Princip~ SEG-1996~ confer~ Huang, Kou-Yuan, Natio~  1996 SEG   
+#>  9 Dynamic Neural ~ SPE-8438~ confer~ Schultz, R.L., Hallibu~  2003 SPE   
+#> 10 Minimum-varianc~ SEG-1988~ confer~ Zhao, Xiaofeng, Univer~  1988 SEG   
 #> # ... with 990 more rows
 ```
 
@@ -223,22 +223,22 @@ my_url <- make_search_url(query = "neural network",
                           rows = 1000)
 
 get_papers_count(my_url)
-#> [1] 323
+#> [1] 3238
 df <- onepetro_page_to_dataframe(my_url)
 df
 #> # A tibble: 323 x 6
-#>    title_data          paper_id    source  type     year author1_data     
-#>    <chr>               <chr>       <chr>   <chr>   <int> <chr>            
-#>  1 Implicit Approxima~ "         ~ "     ~ "     ~  2009 Li, Dao-lun, Uni~
-#>  2 Artificial Neural ~ "         ~ "     ~ "     ~  2000 Denney, Dennis, ~
-#>  3 Drill-Bit Diagnosi~ "         ~ "     ~ "     ~  1990 Arehart, R.A., E~
-#>  4 Neural Networks fo~ "         ~ "     ~ "     ~  1999 Denney, Dennis, ~
-#>  5 Application of Art~ "         ~ "     ~ "     ~  2009 Hegeman, Peter S~
-#>  6 Application of Art~ "         ~ "     ~ "     ~  1994 Nazi, G.M., Will~
-#>  7 Pseudodensity Log ~ "         ~ "     ~ "     ~  2017 Carpenter, Chris~
-#>  8 Characterizing Par~ "         ~ "     ~ "     ~  2003 Denney, Dennis, ~
-#>  9 Characterize Subma~ "         ~ "     ~ "     ~  2002 Denney, Dennis, ~
-#> 10 An Artificial Neur~ "         ~ "     ~ "     ~  2003 Guler, B., Dell ~
+#>    book_title       paper_id  dc_type  authors                 year source
+#>    <fct>            <fct>     <fct>    <chr>                  <int> <fct> 
+#>  1 Implicit Approx~ SPE-1143~ journal~ Li, Dao-lun, Universi~  2009 SPE   
+#>  2 Artificial Neur~ SPE-0200~ journal~ Denney, Dennis, JPT T~  2000 SPE   
+#>  3 Drill-Bit Diagn~ SPE-1955~ journal~ Arehart, R.A., Exxon ~  1990 SPE   
+#>  4 Application of ~ SPE-2542~ journal~ Nazi, G.M., Williams ~  1994 SPE   
+#>  5 Neural Network ~ SPE-8241~ journal~ Al-Fattah, S.M., Saud~  2003 SPE   
+#>  6 Neural Networks~ SPE-1099~ journal~ Denney, Dennis, JPT T~  1999 SPE   
+#>  7 Characterize Su~ SPE-0802~ journal~ Denney, Dennis, JPT T~  2002 SPE   
+#>  8 Pseudodensity L~ SPE-0517~ journal~ Carpenter, Chris, JPT~  2017 SPE   
+#>  9 Application of ~ SPE-1234~ journal~ Hegeman, Peter S., Sc~  2009 SPE   
+#> 10 An Artificial N~ PETSOC-0~ journal~ Guler, B., Dell Compu~  2003 PETSOC
 #> # ... with 313 more rows
 ```
 
@@ -465,7 +465,7 @@ by_doctype
 | name             |  value|
 |:-----------------|------:|
 | Chapter          |     60|
-| Conference paper |  89804|
+| Conference paper |  89805|
 | General          |    936|
 | Journal paper    |  16116|
 | Media            |     10|
@@ -479,7 +479,7 @@ In this example we get the total number of papers by document type.
 
 ``` r
 sum(by_doctype$value)
-#> [1] 107307
+#> [1] 107308
 ```
 
 Or use the R base function `summary` to give us a quick statistics of the papers:
@@ -491,7 +491,7 @@ summary(by_doctype)
 #>  Length:8           Min.   :   10.00  
 #>  Class :character   1st Qu.:   50.25  
 #>  Mode  :character   Median :  180.00  
-#>                     Mean   :13413.38  
+#>                     Mean   :13413.50  
 #>                     3rd Qu.: 4731.00  
-#>                     Max.   :89804.00
+#>                     Max.   :89805.00
 ```
