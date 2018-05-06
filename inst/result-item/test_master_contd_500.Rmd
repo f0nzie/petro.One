@@ -63,8 +63,6 @@ get_data_itemid(webpage_nn)
 ```
 
 
-
-
 ```{r get_dc_type-p1}
 get_dc_type_raw <- function(webpage) {
     

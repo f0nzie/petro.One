@@ -9,11 +9,17 @@ library(petro.One)
 my_url <- make_search_url(query = "neural network", how = "all")
 my_url
 
+# "https://www.onepetro.org/search?q=\"neural+network\"&peer_reviewed=&published_between=&from_year=&to_year="
+
 grepl("\x91", my_url)
 grepl("\x92", my_url)
 
-# get_papers_count(my_url)
+get_papers_count(my_url)
 
+
+```
+
+```{r}
 my_url <- gsub(pattern = "\x91", replacement = "'", my_url)
 my_url <- gsub(pattern = "\x92", replacement = "'", my_url)
 
@@ -23,3 +29,43 @@ grepl("\x92", my_url)
 get_papers_count(my_url)
 ```
 
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "neural network", how = "all")
+cat(my_url)
+cat("\n")
+
+# "https://www.onepetro.org/search?q=\"neural+network\"&peer_reviewed=&published_between=&from_year=&to_year="
+
+my_url.1 <- gsub('\\', "", my_url, fixed = TRUE) 
+cat(my_url.1)
+```
+
+
+This should return 3238 papers but instead returns 3,536 (same as in ANY) because of the backslash surrounding `q=\"neural+network\"`.
+
+In OnePetro it would work correctly (3238 papers), if the backslahes were removed.
+
+```{r}
+url_nn_all <- make_search_url(query = "neural network", how = "all")
+url_nn_all
+# Your search for "neural network" has returned 3,238 results.
+
+res <- "https://www.onepetro.org/search?q=\"neural+network\"&peer_reviewed=&published_between=&from_year=&to_year="
+
+url_nn_all == res
+# TRUE
+
+url_cat <- cat(res)
+url_cat
+
+url_nn_all == 'https://www.onepetro.org/search?q="neural+network"&peer_reviewed=&published_between=&from_year=&to_year='
+```
+
+```{r}
+url_nn_any <- make_search_url(query = "neural network", how = "any")
+url_nn_any
+# Your search for neural network has returned 3,536 results.
+```
