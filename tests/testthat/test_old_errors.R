@@ -7,7 +7,7 @@ test_that("", {
     my_url <- make_search_url(query = "deepwater",
                               dc_type = "other")
     expect_equal(get_papers_count(my_url), 12)
-    expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(10, 5))
+    expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(10, 6))
 })
 
 
@@ -16,7 +16,7 @@ test_that("", {
     my_url <- make_search_url(query = "deepwater", dc_type = 'media')
 
     expect_equal(get_papers_count(my_url), 69)
-    expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(10, 5))
+    expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(10, 6))
 })
 
 
@@ -28,7 +28,7 @@ test_that("", {
     expect_equal(get_papers_count(my_url), 17843)
     # 16359
     # 17843
-    expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(1000, 5))
+    expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(1000, 6))
     # Chapter	            1
     # Conference paper	14846
     # General	           42

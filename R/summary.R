@@ -16,6 +16,8 @@ papers_by_type <- function(url) {
     if (get_papers_count(url) == 0) {   # return empty dataframe
         return(data.frame(type=as.character(), value = as.integer()))}
 
+    url <- check_unlimited_rows(url)
+
     page <- xml2::read_html(url)
 
     if (is_dctype_enabled(page)) {

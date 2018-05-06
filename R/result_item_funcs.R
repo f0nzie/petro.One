@@ -17,7 +17,8 @@ get_dc_type_raw <- function(webpage) {
             mutate(dc_type = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1)) %>%
             mutate(dc_type = ifelse(dc_type_1 %in% "book", "chapter", dc_type))
     } else if(ncol(data_itemid) == 0) {
-        dc_type <- data.frame(dc_type = character(), paper_id = character())
+        dc_type <- tibble::tibble(dc_type = character(), paper_id = character())
+                                  # authors = character(), source = character(), year = integer())
 
     } else {
         dc_type <- data_itemid %>%
@@ -47,6 +48,11 @@ get_dc_type <- function(webpage) {
     dc_type_raw$dc_type
 }
 
+
+get_paper_id <- function(webpage) {
+    dc_type_raw <- get_dc_type_raw(webpage)
+    dc_type_raw$paper_id
+}
 
 get_book_title <- function(webpage) {
     html_nodes(webpage, '.result-item') %>%
@@ -124,8 +130,9 @@ get_papers_from_result_item <- function(url) {
 
     dc_type    <- get_dc_type(webpage)
     book_title <- get_book_title(webpage)
+    paper_id   <- get_paper_id(webpage)
     authors    <- get_authors(webpage)
     year       <- get_year(webpage)
     source     <- get_source(webpage)
-    tibble::as.tibble(cbind(book_title, dc_type, authors, year, source))
+    tibble::as.tibble(cbind(book_title, paper_id, dc_type, authors, year, source))
 }

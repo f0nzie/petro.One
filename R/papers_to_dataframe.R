@@ -14,17 +14,23 @@
 #' url_vlp <- "https://www.onepetro.org/search?q=%22vertical+lift+performance%22"
 #' onepetro_page_to_dataframe(url_vlp)
 onepetro_page_to_dataframe <- function(url) {
+    empty_df <- tibble::tibble(book_title = character(), dc_type = character(), paper_id = character(),
+                                                  authors = character(),
+                               source = character(), year = integer())
     webpage <- read_html(url)
     # titles
     # sources
     # author
+    data_itemid <- get_data_itemid(webpage)
+    if(ncol(data_itemid) == 0) return(empty_df)
 
     dc_type    <- get_dc_type(webpage)
     book_title <- get_book_title(webpage)
+    paper_id   <- get_paper_id(webpage)
     authors    <- get_authors(webpage)
     year       <- get_year(webpage)
     source     <- get_source(webpage)
-    return(tibble::as.tibble(cbind(book_title, dc_type, authors, year, source)))
+    return(tibble::as.tibble(cbind(book_title, paper_id, dc_type, authors, year, source)))
 }
 
 

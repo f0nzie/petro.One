@@ -12,7 +12,7 @@ test_that("dim of papers is 500, 5", {
 
     dims <- dim(get_papers_from_result_item(url_nn))  # 500, 5
     expect_equal(dims[1], 500)
-    expect_equal(dims[2], 5)
+    expect_equal(dims[2], 6)
 })
 
 
@@ -28,7 +28,7 @@ test_that("there are only 10 NN papers at this period", {
     )
     dims <- dim(get_papers_from_result_item(url_nn))  # 500, 5
     expect_equal(dims[1], 10)
-    expect_equal(dims[2], 5)
+    expect_equal(dims[2], 6)
 })
 
 
@@ -39,9 +39,9 @@ test_that("dataframe dimension is 1000x5", {
                               how = "all",
                               rows = 1000
     )
-    dims <- dim(get_papers_from_result_item(url_nn))  # 500, 5
+    dims <- dim(get_papers_from_result_item(url_nn))  # 500, 6
     expect_equal(dims[1], 1000)
-    expect_equal(dims[2], 5)
+    expect_equal(dims[2], 6)
 })
 
 

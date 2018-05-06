@@ -33,6 +33,13 @@ read_onepetro <- function(url) {
 }
 
 
+check_unlimited_rows <- function(url) {
+    if (!is.na(urltools::param_get(url, "rows"))) {
+        url <- urltools::param_remove(url, keys = c("start", "rows"))
+    }
+    url
+}
+
 #' @title Number of paper for a given query
 #' @description Obtains the number of papers being queried by the URL
 #' @param url char a query URL for OnePetro
@@ -53,17 +60,19 @@ read_onepetro <- function(url) {
 #' url_3 <- make_search_url(query = "inflow performance relationship", how = "all")
 #' get_papers_count(url_3)
 get_papers_count <- function(url) {
-  # result <- send_url(url)
-  result <- xml2::read_html(url)
+    # result <- send_url(url)
 
-  papers <- result %>%
+    url <- check_unlimited_rows(url)
+    result <- xml2::read_html(url)
+
+    papers <- result %>%
     html_nodes("h2") %>%
     html_text()
 
-  # extract the numeric part of the results
-  pattern <- "[\\d,]+(?= results.)"    # a number, including comma, before " results."
-  m <- regexpr(pattern, papers[1], perl = TRUE)       # matched
-  as.numeric(gsub(",", "", regmatches(papers[1], m))) # remove comma first
+    # extract the numeric part of the results
+    pattern <- "[\\d,]+(?= results.)"    # a number, including comma, before " results."
+    m <- regexpr(pattern, papers[1], perl = TRUE)       # matched
+    as.numeric(gsub(",", "", regmatches(papers[1], m))) # remove comma first
 }
 
 
