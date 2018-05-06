@@ -5,7 +5,7 @@
 \title{Get paper count and paper dataframe by joining keywords as vectors}
 \usage{
 join_keywords(..., get_papers = TRUE, bool_op = "AND", sleep = 3,
-  verbose = TRUE)
+  verbose = FALSE)
 }
 \arguments{
 \item{...}{input character vectors}

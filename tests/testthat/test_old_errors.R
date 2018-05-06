@@ -1,7 +1,8 @@
 library(testthat)
 
-context("Document types that were not uniform")
+# skip("skip")
 
+context("Document types that were not uniform")
 test_that("", {
     my_url <- make_search_url(query = "deepwater",
                               dc_type = "other")

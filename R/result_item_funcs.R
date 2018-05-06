@@ -16,11 +16,13 @@ get_dc_type_raw <- function(webpage) {
             mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>%
             mutate(dc_type = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1)) %>%
             mutate(dc_type = ifelse(dc_type_1 %in% "book", "chapter", dc_type))
+    } else if(ncol(data_itemid) == 0) {
+        dc_type <- data.frame(dc_type = character(), paper_id = character())
+
     } else {
         dc_type <- data_itemid %>%
             rename(dc_type = X1, paper_id = X2)
     }
-
 
     # number of columns of result is not a multiple of vector length (arg 154)
     tibble::as.tibble(cbind(dc_type_0, dc_type))

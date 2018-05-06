@@ -1,6 +1,6 @@
 library(testthat)
 
-skip("skip")
+# skip("skip")
 
 context("test neural networks, rows=500 papers")
 test_that("dim of papers is 500, 5", {
@@ -11,7 +11,6 @@ test_that("dim of papers is 500, 5", {
                               rows = 500)
 
     dims <- dim(get_papers_from_result_item(url_nn))  # 500, 5
-    skip("skip")
     expect_equal(dims[1], 500)
     expect_equal(dims[2], 5)
 })
@@ -27,7 +26,6 @@ test_that("there are only 10 NN papers at this period", {
                               to_year   = 2000,
                               how = "all"
     )
-    skip("skip")
     dims <- dim(get_papers_from_result_item(url_nn))  # 500, 5
     expect_equal(dims[1], 10)
     expect_equal(dims[2], 5)
@@ -41,7 +39,6 @@ test_that("dataframe dimension is 1000x5", {
                               how = "all",
                               rows = 1000
     )
-    skip("skip")
     dims <- dim(get_papers_from_result_item(url_nn))  # 500, 5
     expect_equal(dims[1], 1000)
     expect_equal(dims[2], 5)
