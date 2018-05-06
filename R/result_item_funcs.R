@@ -2,6 +2,9 @@
 
 #' @importFrom dplyr rename mutate
 get_dc_type_raw <- function(webpage) {
+    # visible binding
+    X1 <- NULL; X2 <- NULL; X3 <- NULL; X4 <- NULL
+    dc_type_1 <- NULL; dc_type_2 <- NULL
 
     dc_type_0 <- html_nodes(webpage, '.result-item') %>%
         html_attr("data-type") %>%
@@ -29,7 +32,7 @@ get_dc_type_raw <- function(webpage) {
     tibble::as.tibble(cbind(dc_type_0, dc_type))
 }
 
-
+#' @importFrom utils head
 get_data_itemid <- function(webpage) {
     data_itemid <- html_nodes(webpage, '.result-item') %>%
         html_attr("data-itemid") %>%      # extract data-itemid

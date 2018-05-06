@@ -8,9 +8,6 @@ read_multipage(url)
 }
 \arguments{
 \item{url}{A OnePetro query URL}
-
-\item{doctype}{a OnePetro paper type: conference-paper, journal-paper, general.
-presentation, chapter, etc.}
 }
 \description{
 This function will loop over and grab data from the OnePetro

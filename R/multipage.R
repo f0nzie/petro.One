@@ -34,8 +34,6 @@ read_multidoc <- function(my_url) {
 #' OnePetro limits the number of papers to view to 1000 papers and the query in
 #' this function automatically sets the start counter to read them in groups.
 #' @param url A OnePetro query URL
-#' @param doctype a OnePetro paper type: conference-paper, journal-paper, general.
-#' presentation, chapter, etc.
 #' @export
 read_multipage <- function(url) {
     df_cum <- data.frame()
