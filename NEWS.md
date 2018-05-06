@@ -16,6 +16,8 @@
 * 7:46 am - completing offline tests for read_multidoc().
 * spli offline tests for read_multidoc() and read_multipage()
 * Found discrepancies between numbers returned by the function and the values returned from OnePetro.
+* *20180506*
+* values from paper_count() do not match OnePetro
 
 
 
