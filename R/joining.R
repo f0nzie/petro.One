@@ -48,7 +48,7 @@ join_keywords <- function(...,
             # papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
             # # get multipages > 1000 papers
             # papers.df <- read_multipage(url.2, doctype = "conference-paper")
-            papers.df <- read_multipage(url.2)
+            papers.df <- read_multipage(url.2, verbose = verbose)
             # cat(dim(papers.df), "\n")
             papers.df$keyword <- sf                           # add columns
             papers.df.k <- rbind(papers.df, papers.df.k)      # cumulative dataframe

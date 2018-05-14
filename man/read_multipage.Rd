@@ -4,7 +4,7 @@
 \alias{read_multipage}
 \title{Reads metadata in groups of 1000 papers}
 \usage{
-read_multipage(url)
+read_multipage(url, verbose = FALSE)
 }
 \arguments{
 \item{url}{A OnePetro query URL}

@@ -35,7 +35,7 @@ read_multidoc <- function(my_url) {
 #' this function automatically sets the start counter to read them in groups.
 #' @param url A OnePetro query URL
 #' @export
-read_multipage <- function(url) {
+read_multipage <- function(url, verbose = FALSE) {
     df_cum <- data.frame()
     #
     if (is.na(urltools::param_get(url, "rows"))) {
@@ -55,7 +55,7 @@ read_multipage <- function(url) {
         for (page in 1:pages) {
             url <- urltools::param_set(url, "start", 1000 * page - 1000)
             url <- urltools::param_set(url, "rows", 1000)
-            # cat(page, 1000 * page - 1000, get_papers_count(url), "\n")
+            if (verbose) cat(sprintf("\t %3d %3d %8d %8d \n", page, pages, 1000 * page - 1000, get_papers_count(url)))
             df <- onepetro_page_to_dataframe(url)
             # print(df[1, ])   # print first row of dataframe
             df_cum <- rbind(df_cum, df)  # accumulate dataframes

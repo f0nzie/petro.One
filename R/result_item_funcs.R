@@ -14,11 +14,23 @@ get_dc_type_raw <- function(webpage) {
     data_itemid <- get_data_itemid(webpage)
 
     if (ncol(data_itemid) > 2) {
-        dc_type <- data_itemid %>%
-            rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3, sup = X4) %>%
+        # cat(ncol(data_itemid))
+        if (ncol(data_itemid) == 3) {
+            # print(data_itemid)
+            dc_type <- data_itemid %>%
+            rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3) %>%
             mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>%
             mutate(dc_type = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1)) %>%
             mutate(dc_type = ifelse(dc_type_1 %in% "book", "chapter", dc_type))
+        }
+        if (ncol(data_itemid) == 4) {
+            dc_type <- data_itemid %>%
+                rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3, sup = X4) %>%
+                mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>%
+                mutate(dc_type = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1)) %>%
+                mutate(dc_type = ifelse(dc_type_1 %in% "book", "chapter", dc_type))
+        }
+
     } else if(ncol(data_itemid) == 0) {
         dc_type <- tibble::tibble(dc_type = character(), paper_id = character())
                                   # authors = character(), source = character(), year = integer())
