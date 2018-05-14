@@ -8,16 +8,17 @@ test_that("shale oil, all, conference-paper, works with rows > 1000", {
                               dc_type = "conference-paper",
                               rows = 1100)
 
-    expect_true(get_papers_count(my_url) == 1865)
-    expect_equal(papers_by_type(my_url)$value, c(1474, 3, 372, 4, 1, 11))
+    # cat(get_papers_count(my_url))
+    expect_true(get_papers_count(my_url) == 1866)
+    expect_equal(papers_by_type(my_url)$value, c(1474, 3, 373, 4, 1, 11))
 
     p.by.pubshr <- papers_by_publisher(my_url)
     publisher <- "Society of Petroleum Engineers"
-    expect_equal(p.by.pubshr[p.by.pubshr$name == publisher, ]$value, 1352)
+    expect_equal(p.by.pubshr[p.by.pubshr$name == publisher, ]$value, 1353)
 
     p.by.yr <- papers_by_year(my_url)
     year <- "Since 2010"
-    expect_equal(p.by.yr[p.by.yr$name == year, ]$value, 1734)
+    expect_equal(p.by.yr[p.by.yr$name == year, ]$value, 1735)
 
     p.by.pubtn <- papers_by_publication(my_url)
     publication <- "Offshore Technology Conference"

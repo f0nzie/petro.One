@@ -52,7 +52,8 @@ test_that("papers by type match for ALL", {
                             )
 
     paper_count <- get_papers_count(url_nn)
-    expect_equal(paper_count, 3238)
+    # cat(paper_count)
+    expect_equal(paper_count, 3237)
     by_type <- papers_by_type(url_nn)
     # name               value  OnePetro
     # <chr>              <dbl>
@@ -63,8 +64,9 @@ test_that("papers by type match for ALL", {
     # 5 Other                5     5
     # 6 Presentation        23    23
     #   Standard            --     1
-    expect_equal(by_type$value, c(2881, 4, 323, 2, 5, 23))
-    expect_equal(nrow(get_papers_from_result_item(url_nn)), 10)
+    # cat(by_type$value)
+    expect_equal(by_type$value, c(2880, 4, 323, 2, 5, 23))
+    expect_equal(nrow(petro.One:::get_papers_from_result_item(url_nn)), 10)
 })
 
 test_that("papers by type match for ANY", {
@@ -72,7 +74,8 @@ test_that("papers by type match for ANY", {
                               how = "any"
     )
     paper_count <- get_papers_count(url_nn)
-    expect_equal(paper_count, 3536)
+    # cat(paper_count)
+    expect_equal(paper_count, 3535)
     by_type <- papers_by_type(url_nn)
     # name               value  OnePetro
     # <chr>              <dbl>
@@ -83,6 +86,8 @@ test_that("papers by type match for ANY", {
     # 5 Other                5     5
     # 6 Presentation        23    23
     #   Standard            --     1
-    expect_equal(by_type$value, c(3149, 5, 351, 2, 5, 23, 1))
-    expect_equal(nrow(get_papers_from_result_item(url_nn)), 10)
+
+    # cat(by_type$value)
+    expect_equal(by_type$value, c(3148, 5, 351, 2, 5, 23, 1))
+    expect_equal(nrow(petro.One:::get_papers_from_result_item(url_nn)), 10)
 })

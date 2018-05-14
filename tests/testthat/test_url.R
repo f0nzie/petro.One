@@ -16,5 +16,5 @@ test_that("papers by type match for ALL", {
     expect_true(capture.output(cat(url_nn)) == 'https://www.onepetro.org/search?q="neural+network"&peer_reviewed=&published_between=&from_year=&to_year=')
 
     paper_count <- get_papers_count(url_nn)
-    expect_equal(paper_count, 3238)
+    expect_equal(paper_count, 3237)
 })

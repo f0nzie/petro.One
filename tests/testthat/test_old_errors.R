@@ -25,7 +25,8 @@ test_that("", {
     my_url <- make_search_url(query = "unconventional",
                           rows = 1000)
 
-    expect_equal(get_papers_count(my_url), 17843)
+    # cat(get_papers_count(my_url))
+    expect_equal(get_papers_count(my_url), 17853)
     # 16359
     # 17843
     expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(1000, 6))
@@ -38,6 +39,7 @@ test_that("", {
     # Presentation	      155
     # Standard	            1
     by_type <- papers_by_type(my_url)
-    expect_equal(by_type$value, c(1, 14846, 42, 2701, 71, 26, 155, 1))
-    expect_equal(sum(by_type$value), 17843)
+    # cat(by_type$value)
+    expect_equal(by_type$value, c(1, 14849, 42, 2708, 71, 26, 155, 1))
+    expect_equal(sum(by_type$value), 17853)
 })
