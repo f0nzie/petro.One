@@ -16,7 +16,8 @@ test_that("when read_multidoc with neural network gets almost 3000 rows", {
     my_url <- make_search_url(query = "neural network",
                               how = "all")
     df <- read_multidoc(my_url)
-    expect_gte(nrow(df), 3231)
+    # cat(nrow(df))
+    expect_gte(nrow(df), 3230)
 })
 
 
