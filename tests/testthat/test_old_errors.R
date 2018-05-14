@@ -26,7 +26,7 @@ test_that("", {
                           rows = 1000)
 
     # cat(get_papers_count(my_url))
-    expect_equal(get_papers_count(my_url), 17853)
+    expect_equal(get_papers_count(my_url), 17860)
     # 16359
     # 17843
     expect_equal(dim(onepetro_page_to_dataframe(my_url)), c(1000, 6))
@@ -40,6 +40,6 @@ test_that("", {
     # Standard	            1
     by_type <- papers_by_type(my_url)
     # cat(by_type$value)
-    expect_equal(by_type$value, c(1, 14849, 42, 2708, 71, 26, 155, 1))
-    expect_equal(sum(by_type$value), 17853)
+    expect_equal(by_type$value, c(1, 14850, 42, 2714, 71, 26, 155, 1))
+    expect_equal(sum(by_type$value), 17860)
 })

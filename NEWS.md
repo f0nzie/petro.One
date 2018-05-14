@@ -2,6 +2,17 @@
 * merge *feature/result-item* with *develop*.
 * vignettes disabled for the moment.
 
+* *20180514*
+* debug, fix problem with keywprd "analytics". 
+* add "verbose" parameter to read_multipage(). 
+* add cat(sprintf()) for verbose to show page number being read and where it possible fails.
+* additional logic for get_dc_type_raw() when data_itemid has 3 columns instead of 4. 
+* new test script test_joining-analytics_error.R to confirm error is gone.
+
+* *20180515*
+* add skip() to **test_failing.R:25**
+* updating test paper values
+
 ## petro.One feature/result-item
 * this branch out of `develop`.
 * ignored branch: **feature/0.1.3.9001**
