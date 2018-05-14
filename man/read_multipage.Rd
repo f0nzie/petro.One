@@ -8,6 +8,8 @@ read_multipage(url, verbose = FALSE)
 }
 \arguments{
 \item{url}{A OnePetro query URL}
+
+\item{verbose}{indicate if want more printing}
 }
 \description{
 This function will loop over and grab data from the OnePetro

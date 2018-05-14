@@ -12,6 +12,8 @@
 * *20180515*
 * add skip() to **test_failing.R:25**
 * updating test paper values
+* document new parameter `verbose`.
+
 
 ## petro.One feature/result-item
 * this branch out of `develop`.
