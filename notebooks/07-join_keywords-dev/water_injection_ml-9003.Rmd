@@ -1,0 +1,142 @@
+---
+title: "9003: Function to get papers from composite keywords"
+output: html_notebook
+---
+
+
+
+## Function using algorithm that joins multiple composite keywords 
+
+* using `get_papers = TRUE`
+* add `if (get_papers)` to get into code to retrieve papers
+
+```{r rows.print=20}
+library(petro.One)
+
+#' @param ...     input character vectors
+#' @param bool_op boolean operator. It can be AND or OR
+join_keywords <- function(..., get_papers = TRUE, bool_op = "AND", sleep = 3) {
+    rec <- vector("list")
+    ##sleep <- 3
+    papers.df.k <- data.frame()
+    # works for "n" columns or "n" keyword character vectors
+    df <- expand.grid(..., stringsAsFactors = FALSE)   # combine keywords
+    sep     <- paste0("'", bool_op, "'")               # add apostrophes to operator
+    # iterate through the rows of keyword combinations dataframe
+    for (i in 1:nrow(df)) {
+        sf <- NULL
+        papers.df <- NULL
+        # iterate through columns of keywords
+        for (j in 1:ncol(df)) {
+            s     <- unlist(strsplit(df[i, j], " "))   # split keyword if space
+            splus <- paste(s, collapse = "+")          # join keywords with + sign
+            if (!is.null(sf)) {                        
+                sf <- paste(sf, splus, sep = sep)      # if not the 1st keyword add AND
+            } else {                                   # else
+                sf <- paste0("'", sf, splus)           # just join 1st with next kword
+            }
+        }
+        sf <- paste0(sf, "'")                          # close with apostrophe
+        url.1 <- make_search_url(sf, how = "all")      # search in OnePetro
+        paper_count <- get_papers_count(url.1)         # paper count
+        cat(sprintf("%3d %5d %-60s \n", i, paper_count, sf)) 
+        
+        # build a record of results
+        rec[[i]] <- list(paper_count = paper_count, sf  = sf, url = url.1)
+        
+        # create a dataframe of papers based on the paper count
+        if (get_papers) {
+            url.2 <- make_search_url(sf, how = "all", rows = paper_count)
+            papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
+            papers.df$keyword <- sf                           # add columns
+            papers.df.k <- rbind(papers.df, papers.df.k)      # cumulative dataframe
+        }
+        Sys.sleep(sleep)                    # give OnePetro a break
+    } 
+    rec.df <- data.table::rbindlist(rec)    # convert list to dataframe
+    df <- cbind(df, rec.df)                 # join the results
+    invisible(list(keywords=df, papers=papers.df.k))      # return cumulative dataframe
+}
+```
+
+### test #1
+```{r}
+# provide two different set of keywords to combine as vectors
+major  <- c("water injection", "water flooding")
+minor  <- c("machine-learning", "intelligent")
+lesser <- c("neural network", "SVM", "genetic", "algorithm")
+
+p.df <- join_keywords(major, minor, lesser, get_papers = FALSE)
+p.df
+```
+
+### test #2
+```{r rows.print=20}
+# provide two different set of keywords to combine as vectors
+m  <- c("water injection", "water flooding")
+n  <- c("machine-learning", "machine learning", "intelligent")
+p  <- c("neural network", "SVM", "genetic")
+q  <- c("algorithm")
+
+p.df <- join_keywords(m, n, p, q, get_papers = FALSE)
+p.df
+```
+
+### test #3
+```{r}
+# provide two different set of keywords to combine as vectors
+major  <- c("water-injection", "water injection")
+minor  <- c("machine-learning", "machine learning")
+lesser <- c("algorithm")
+
+p.df <- join_keywords(major, minor, lesser, get_papers = FALSE, sleep = 2)
+p.df
+
+unique(p.df$keyword)
+```
+
+
+### test #5.1
+```{r}
+# provide two different set of keywords to combine as vectors
+major   <- c("waterflooding")
+minor   <- c("machine-learning", "artificial intelligence")
+lesser  <- c("algorithm")
+another <- c("data-mining")
+more    <- c("data-driven")
+
+p.df <- join_keywords(major, minor, lesser, another, more, get_papers = FALSE, sleep = 1)
+p.df
+```
+
+### test #5.2
+* using get_papers = TRUE, sleep = 1
+
+```{r}
+# provide two different set of keywords to combine as vectors
+major   <- c("waterflooding")
+minor   <- c("machine-learning", "artificial intelligence")
+lesser  <- c("algorithm")
+another <- c("data-mining")
+more    <- c("data-driven")
+
+p.df <- join_keywords(major, minor, lesser, another, more, get_papers = TRUE, sleep = 1)
+p.df
+```
+
+
+        Error in `$<-.data.frame`(`*tmp*`, "keyword", value = "'machine+learning'AND'petrophysics'AND'deep+learning'") : replacement has 1 row, data has 0
+        
+
+```{r}
+# this was failing in machine learning notebook
+
+major <- c("machine learning")
+minor <- c( "geology", "seismic", "petrophysics", "geophysics")
+
+ml_technique <- c("SVM", "deep learning", "PCA", "principal component analysis")
+
+by.ml_technique <- join_keywords(major, minor, ml_technique, get_papers = TRUE, sleep = 3)
+by.ml_technique
+```
+

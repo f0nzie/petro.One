@@ -1,0 +1,19 @@
+
+
+This notebook uses the function `join_keywords` directly:
+
+
+```{r}
+library(petro.One)
+
+
+# provide two different set of keywords to combine as vectors
+major   <- c("waterflooding")
+minor   <- c("machine-learning", "artificial intelligence")
+lesser  <- c("algorithm")
+another <- c("data-mining")
+more    <- c("data-driven")
+
+p.df <- join_keywords(major, minor, lesser, another, more, get_papers = TRUE, sleep = 1)
+p.df
+```
