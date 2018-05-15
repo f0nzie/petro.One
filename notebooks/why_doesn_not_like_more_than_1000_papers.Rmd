@@ -18,7 +18,7 @@ top <- c("data driven")
 discipline <- c("reservoir", "production", "surface facilities", "metering")
 
 by.discipline.dd <- join_keywords(top, discipline, 
-                                   get_papers = FALSE, sleep = 3)
+                                   get_papers = FALSE, sleep = 3, verbose = TRUE)
 by.discipline.dd
 ```
 
@@ -37,9 +37,16 @@ top <- c("data driven")
 discipline <- c("reservoir", "production", "surface facilities", "metering")
 
 by.discipline.dd <- join_keywords(top, discipline, 
-                                   get_papers = TRUE, sleep = 3)
+                                   get_papers = TRUE, sleep = 3, verbose = TRUE)
 by.discipline.dd
 ```
+
+```{r}
+library(rNodal.utils)
+data_driven <- by.discipline.dd
+save_to_project(data_driven, name = "data_driven_L2")
+```
+
 
 We try this other one with `1300+` papers.
 
@@ -51,9 +58,15 @@ minor <- c("drilling")
 
 # the returning data structure is a a list
 # the list contains two dataframes: one for the keywords and a second for the papers
-prod.li <- join_keywords(major, minor, get_papers = TRUE, sleep = 3)
-prod.li
+ai_drilling <- join_keywords(major, minor, get_papers = TRUE, sleep = 3, verbose = TRUE)
+ai_drilling
 ```
+
+```{r}
+library(rNodal.utils)
+save_to_project(ai_drilling, name = "ai_drilling_L2")
+```
+
 
 
 ```{r}
@@ -151,7 +164,4 @@ url.1
 papers_by_type(url.1)
 ```
 
-```{r}
-
-```
 
