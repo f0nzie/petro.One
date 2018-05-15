@@ -31,3 +31,4 @@ Imports: rvest,
     data.table
 VignetteBuilder: knitr
 URL: https://github.com/f0nzie/petro.One
+Remotes: github::f0nzie/rNodal.utils
