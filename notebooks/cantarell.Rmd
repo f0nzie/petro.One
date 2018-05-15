@@ -75,6 +75,36 @@ kw_tbl <- read.table(text = keywords, header = FALSE,
 kw_tbl
 ```
 
+```{r}
+major <- "cantarell"
+mid <- c("optimization", "optimisation", "modeling", "modelling", "network",
+         "increase", "production", "IPM", "integrated")
+
+cantarell <- join_keywords(major, mid, 
+                                   get_papers = TRUE, sleep = 3, verbose = TRUE)
+```
+
+```{r}
+library(rNodal.utils)
+save_to_project(cantarell, name = "cantarell_L2")
+```
+
+
+```{r}
+cantarell$keywords
+```
+
+```{r}
+sum(cantarell$keywords$paper_count)
+```
+
+
+```{r rows.print=25}
+cantarell$papers
+```
+
+
+## older code
 
 ```{r rows.print = 20}
 rec <- vector("list")
