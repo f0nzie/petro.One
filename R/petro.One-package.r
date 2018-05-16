@@ -34,15 +34,15 @@ NULL
 "custom_stopwords"
 
 
-#' #' @title Default synonyms
-#' #' @description Synonyms dataset to prevent repetition of equivalent words
-#' #' during classification. Example: 2D/2-D, cased hole/cased-hole,
-#' #' deep water/deepwater, etc.
-#' #' The first column is for the original word; the second column is for the
-#' #'
-#' #' Dataset: synonyms.rda
-#' #'
-#' #' Source:  synonyms.txt
-#' #'
-#' #' @docType data
-#' 'custom_synonyms'
+# #' @title Default synonyms
+# #' @description Synonyms dataset to prevent repetition of equivalent words
+# #' during classification. Example: 2D/2-D, cased hole/cased-hole,
+# #' deep water/deepwater, etc.
+# #' The first column is for the original word; the second column is for the
+# #'
+# #' Dataset: synonyms.rda
+# #'
+# #' Source:  synonyms.txt
+# #'
+# #' @docType data
+# 'custom_synonyms'
