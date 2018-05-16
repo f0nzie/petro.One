@@ -1,15 +1,11 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
-cache: packages
+ cache: packages
+ sudo: false
 
-#r: bioc-release
-sudo: false
-
-
-addons:
-    apt:
-      update: true
-
-after_success:
-  - Rscript -e 'library(covr);codecov()'
+ addons:
+   apt:
+     packages:
+       - libgsl0-dev # for topicmodels
+       - libxml2-dev # for XML, a dependency of quanteda
