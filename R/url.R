@@ -35,7 +35,7 @@ read_onepetro <- function(url) {
 
 check_unlimited_rows <- function(url) {
     if (!is.na(urltools::param_get(url, "rows"))) {
-        url <- urltools::param_remove(url, keys = c("start", "rows"))
+        url <- urltools::param_remove(url, keys = c("rows"))
     }
     url
 }
@@ -60,8 +60,6 @@ check_unlimited_rows <- function(url) {
 #' url_3 <- make_search_url(query = "inflow performance relationship", how = "all")
 #' get_papers_count(url_3)
 get_papers_count <- function(url) {
-    # result <- send_url(url)
-
     url <- check_unlimited_rows(url)
     result <- xml2::read_html(url)
 
