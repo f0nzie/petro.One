@@ -10,8 +10,8 @@ dd_drilling <- join_keywords(major, minor, get_papers = TRUE, sleep = 3,
                              verbose = FALSE)
 context("drilling and data driven papers by paper_id")
 result <- remove_duplicates_by(dd_drilling$papers, by ="paper_id" )
-expect_equal(dim(result), c(789, 7))
+expect_equal(dim(result), c(788, 7))
 
 context("drilling and data driven papers by book_title")
 result <- remove_duplicates_by(dd_drilling$papers, by ="book_title" )
-expect_equal(dim(result), c(789, 7))
+expect_equal(dim(result), c(779, 7))
