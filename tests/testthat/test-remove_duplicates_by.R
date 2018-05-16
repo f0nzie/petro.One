@@ -1,5 +1,6 @@
 library(testthat)
 
+skip_on_travis()
 
 major <- c("data driven")
 minor <- c("drilling")
