@@ -1,0 +1,60 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Retrieve papers from OnePetro
+
+## reservoir + machine learning
+
+```{r}
+library(petro.One)
+
+# provide two different set of keywords to combine as vectors
+major   <- c("reservoir")
+minor   <- c("machine-learning", "machine learning")
+
+p.df <- join_keywords(major, minor, get_papers = TRUE, sleep = 3, verbose = TRUE)
+p.df
+```
+
+
+
+```{r}
+# save findings
+# save the three objects as one
+papers <- p.df
+reservoir_ml <- list(major = major, minor = minor, papers = papers)
+save(reservoir_ml, file = "reservoir_ml.rda")
+```
+
+```{r rows.print=25}
+load(file = "reservoir_ml.rda")
+
+papers <- reservoir_ml$papers
+papers
+```
+
+## reservoir engineering + machine learning
+
+```{r}
+library(petro.One)
+
+# provide two different set of keywords to combine as vectors
+major   <- c("reservoir engineering")
+minor   <- c("machine-learning", "machine learning")
+
+p.df <- join_keywords(major, minor, get_papers = TRUE, sleep = 3, verbose = TRUE)
+
+# save findings
+# save the three objects as one
+papers <- p.df
+reservoir_eng_ml <- list(major = major, minor = minor, papers = papers)
+save(reservoir_eng_ml, file = "reservoir_eng_ml.rda")
+
+# load previous findings
+load(file = "reservoir_eng_ml.rda")
+papers <- reservoir_eng_ml$papers
+papers
+```
+
