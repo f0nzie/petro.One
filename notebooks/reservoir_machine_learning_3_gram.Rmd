@@ -135,4 +135,26 @@ papers <- papers %>%
 ```
 
 
+history matching geologically
+matching geological complex
+
+### replace similar words
+```{r}
+# for example "well log" vs "well logs"
+
+papers <- papers %>%
+    # filter(grepl(pattern = "\\bwell log\\b", 
+    #              x = book_title, ignore.case = TRUE, perl = TRUE)) %>% 
+    mutate(book_title = gsub(pattern = "\\bwell log\\b", 
+                             replacement = "Well Logs", perl = TRUE, x = book_title, 
+                             ignore.case = TRUE)) %>% 
+    mutate(book_title = gsub(pattern = "\\bhistory matching geologically\\b", 
+                         replacement = "geological history matching", perl = TRUE, x = book_title, 
+                         ignore.case = TRUE)) %>% 
+    mutate(book_title = gsub(pattern = "\\bmatching geological complex\\b", 
+                         replacement = "geological history matching", perl = TRUE, x = book_title, 
+                         ignore.case = TRUE)) %>%     
+    print
+
+```
 
