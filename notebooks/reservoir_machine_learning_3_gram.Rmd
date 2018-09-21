@@ -1,0 +1,138 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r setup, include=F, error=T, message=F, warning=F}
+knitr::opts_chunk$set(echo = TRUE, 
+                      comment = NA, 
+                      error = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      fig.align = 'center')
+```
+
+
+```{r, echo = FALSE}
+# knitr::opts_chunk$set(
+#   collapse = TRUE,
+#   comment = "#>",
+#   fig.path = "README-"
+# )
+```
+
+
+## load paper object from previous OnePetro scan
+
+```{r rows.print=25}
+library(petro.One)
+library(RWeka)
+library(tm)
+library(tidyverse)
+
+
+# load previous findings
+load(file = paste0("rese_rese_mach_mach", ".rda"))
+papers <- paper_search_obj$papers
+papers
+```
+
+## Create the corpus from the papers dataframe
+
+```{r}
+vdocs <- VCorpus(VectorSource(papers$book_title))
+vdocs <- tm_map(vdocs, content_transformer(tolower))      # to lowercase
+vdocs <- tm_map(vdocs, removeWords, stopwords("english")) # remove stopwords
+```
+
+
+
+
+```{r rows.print=25}
+
+options(mc.cores=1)
+
+custom_stopwords_3 <- c("giant mature oilfield",
+                        "using machine learning",
+                        "using artificial neural",
+                        "using artificial intelligence",
+                        "using deep learning",
+                        "machine learning algorithms",
+                        "machine learning techniques",
+                        "oil gas industry",
+                        "ensemble kalman filter",
+                        "support vector machine",
+                        "machine learning approach",
+                        "case study",
+                        "application machine learning",
+                        "artificial neural network",
+                        "artificial neural networks",
+                        "artificial intelligence techniques",
+                        "using genetic algorithms",
+                        "petroleum data analytics",
+                        "application machine learning",
+                        "support vector machines",
+                        "machine learning reliable",
+                        "machine learning applied",
+                        "oil gas industry",
+                        "big data analytics",
+                        "algorithms applied history",
+                        "oil gas industry"
+                        )
+
+
+threegramTokenizer <- function(x) {
+    NGramTokenizer(x, Weka_control(min=3, max=3))
+}
+
+vdocs <- tm_map(vdocs, removeWords, custom_stopwords_3)
+
+tdm3 <- TermDocumentMatrix(vdocs,
+                           control=list(tokenize=threegramTokenizer))
+
+tdm3.matrix <- as.matrix(tdm3)
+tdm3.rs <- sort(rowSums(tdm3.matrix), decreasing=TRUE)
+tdm3.df <- data.frame(word = names(tdm3.rs), freq = tdm3.rs, stringsAsFactors = FALSE)
+head(tdm3.df, 25)
+
+
+```
+
+```{r fig.asp=1}
+p2 <- ggplot(subset(tdm3.df, freq > 3), aes(x=reorder(word, freq), y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + 
+    coord_flip()
+
+p2
+```
+
+
+history matching geologically
+matching geological complex
+
+### replace similar words
+```{r}
+# for example "well log" vs "well logs"
+
+papers <- papers %>%
+    # filter(grepl(pattern = "\\bwell log\\b", 
+    #              x = book_title, ignore.case = TRUE, perl = TRUE)) %>% 
+    mutate(book_title = gsub(pattern = "\\bwell log\\b", 
+                             replacement = "Well Logs", perl = TRUE, x = book_title, 
+                             ignore.case = TRUE)) %>% 
+    mutate(book_title = gsub(pattern = "\\bhistory matching geologically\\b", 
+                         replacement = "geological matching", perl = TRUE, x = book_title, 
+                         ignore.case = TRUE)) %>% 
+    mutate(book_title = gsub(pattern = "\\bmatching geological complex\\b", 
+                         replacement = "geological matching", perl = TRUE, x = book_title, 
+                         ignore.case = TRUE)) %>%     
+    print
+
+```
+
+
+
