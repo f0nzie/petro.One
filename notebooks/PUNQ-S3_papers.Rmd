@@ -9,8 +9,8 @@ library(petro.One)
 major   <- c("PUNQ-S3")
 minor   <- c("machine-learning", "machine learning")
 
-search_result <- run_papers_search(major, minor, get_papers = TRUE, 
-                                   verbose = FALSE, len_keywords = 4)
+search_result <- run_papers_search(major, minor, get_papers = FALSE, 
+                                   verbose = TRUE, len_keywords = 4)
 ```
 
 
