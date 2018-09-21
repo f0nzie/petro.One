@@ -1,0 +1,143 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=F, error=T, message=F, warning=F}
+knitr::opts_chunk$set(echo = TRUE, 
+                      comment = NA, 
+                      error = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      fig.align = 'center')
+```
+
+## load paper object from previous OnePetro scan
+
+```{r rows.print=25}
+library(petro.One)
+library(RWeka)
+library(tm)
+library(tidyverse)
+library(wordcloud)
+
+
+# load previous findings
+load(file = paste0("rese_rese_mach_mach", ".rda"))
+papers <- paper_search_obj$papers
+papers
+```
+
+
+# Two-words
+
+```{r warning=FALSE, fig.asp=1}
+
+custom_stopwords_2 <- c("machine learning", 
+                      "data analytics",
+                      "big data",
+                      "neural networks",
+                      "neural network",
+                      "artificial neural",
+                      "genetic algorithm",
+                      "artificial intelligence",
+                      "technology focus",
+                      "data mining",
+                      "data-driven",
+                      "data driven",
+                      "oil gas",
+                      "gas industry",
+                      "oil reservoir",
+                      "fuzzy logic",
+                      "ensemble kalman",
+                      "genetic algorithms",
+                      "vector machines",
+                      "eagle ford",
+                      "midland basin",
+                      "barnett shale",
+                      "deep learning",
+                      "crude oil",
+                      "flow rate",
+                      "vector regression",
+                      "vector machine",
+                      "data science",
+                      "data analysis",
+                      "data management",
+                      "predictive analytics",
+                      "ep notes",
+                      "oil field",
+                      "oil fields",
+                      "marcellus shale",
+                      "permian basin",
+                      "reliable technology",
+                      "feature selection",
+                      "model validation",
+                      "management tool",
+                      "pattern recognition"
+                      )
+
+```
+
+# Analysis on two-words
+
+```{r warning=FALSE}
+# this time we will remove all punctuation, all whitespaces, convert to lowercase,
+# without stemming
+
+data("stopwords")  # remove custom stopwords
+vdocs <- VCorpus(VectorSource(papers$book_title))
+
+vdocs <- tm_map(vdocs, content_transformer(tolower)) # convert to lowercase
+# vdocs <- tm_map(vdocs, removeNumbers)   # if we remove numbers, CO2, 3D won't be recognized
+
+vdocs <- tm_map(vdocs, removePunctuation)      # remove all punctuation
+vdocs <- tm_map(vdocs, stripWhitespace)        # remove whitespaces
+vdocs <- tm_map(vdocs, removeWords, stopwords("english")) # remove built-in stopwords
+vdocs <- tm_map(vdocs, removeWords, custom_stopwords)
+vdocs <- tm_map(vdocs, removeWords, custom_stopwords_2)   # remove 2-grams
+
+```
+
+
+```{r}
+options(mc.cores=1)
+
+twogramTokenizer <- function(x) {
+    NGramTokenizer(x, Weka_control(min=2, max=2))
+}
+
+tdm2 <- TermDocumentMatrix(vdocs,
+                           control = list(tokenize=twogramTokenizer))
+
+tdm2.matrix <- as.matrix(tdm2)
+tdm2.rs <- sort(rowSums(tdm2.matrix), decreasing=TRUE)
+tdm2.df <- data.frame(word = names(tdm2.rs), freq = tdm2.rs, stringsAsFactors = FALSE)
+
+row.names(tdm2.df) <- NULL
+head(tdm2.df, 60)
+# the only problem here is that "neural network" and "neural networks" are being treated
+# like separate 2-words
+```
+
+```{r}
+# we change the minimum frequency of appearance otherwise will be too crowded
+set.seed(1234)
+wordcloud(words = tdm2.df$word, freq = tdm2.df$freq, min.freq = 8,
+          max.words=200, random.order=TRUE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"), font = 2)
+
+p2 <- ggplot(subset(tdm2.df, freq > 8), aes(x=reorder(word, freq), y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + 
+    coord_flip()
+
+p2
+```
+
+
+
+
+
+
