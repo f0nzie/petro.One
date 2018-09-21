@@ -10,12 +10,17 @@
 #' @param sleep delay in seconds between search to OnePetro
 #' @param verbose TRUE if we want internal messages of the search progress
 #' @param len_keywords length of the keywords to form the filename of the rda file
+#'
+#' @importFrom dplyr distinct %>%
 #' @export
 run_papers_search <- function(...,
                               get_papers = TRUE,
                               sleep = 3,
                               verbose = TRUE,
-                              len_keywords = 3) {
+                              len_keywords = 3,
+                              allow_duplicates = TRUE) {
+
+    paper_id <- NULL; book_title <- NULL
 
     # join the keywords to searh in OnePetro
     papers_obj <- join_keywords(..., get_papers = get_papers,
@@ -23,9 +28,16 @@ run_papers_search <- function(...,
     keywords <- papers_obj$keywords
     papers   <- papers_obj$papers
 
+    # eliminate duplicates
+    if (!allow_duplicates) {
+        if (nrow(papers) > 1) {
+            papers <- papers %>%
+                distinct(paper_id, book_title, .keep_all = TRUE)
+        }
+    }
+
     # create an object to group all search objects, including paper results
     search_keywords <- list(...)
-
 
     # create filename from the keywords
     comb_keyw <- c(search_keywords[1], search_keywords[2])    # combine keywords
@@ -33,7 +45,7 @@ run_papers_search <- function(...,
                                   function(x) paste(substr(x, 1, len_keywords), collapse = "_")),
                            ".rda")
 
-    paper_search_obj <- rNodal.utils:::as_named_list(papers, keywords,
+    paper_search_obj <- as_named_list(papers, keywords,
                                                      search_keywords, rda_filename)
 
     # save the object to RDA file
