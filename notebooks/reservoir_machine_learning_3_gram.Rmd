@@ -23,6 +23,7 @@ library(petro.One)
 library(RWeka)
 library(tm)
 library(tidyverse)
+library(wordcloud)
 
 
 # load previous findings
@@ -34,6 +35,7 @@ papers
 ## Create the corpus from the papers dataframe
 
 ```{r}
+## create the corpus
 data("stopwords")  # remove custom stopwords
 
 vdocs <- VCorpus(VectorSource(papers$book_title))
@@ -51,54 +53,77 @@ vdocs <- tm_map(vdocs, stemDocument, language = "english")
 
 
 ```{r rows.print=25}
+# get the 3-grams and frequency table
 options(mc.cores=1)
 
 threegramTokenizer <- function(x) {
-    NGramTokenizer(x, Weka_control(min=3, max=3))
+    NGramTokenizer(x, Weka_control(min = 3, max = 3))
 }
 
 tdm3 <- TermDocumentMatrix(vdocs,
                            control=list(tokenize=threegramTokenizer))
 
 tdm3.matrix <- as.matrix(tdm3)
-tdm3.rs <- sort(rowSums(tdm3.matrix), decreasing=TRUE)
-tdm3.df <- data.frame(word = names(tdm3.rs), freq = tdm3.rs, stringsAsFactors = FALSE)
-row.names(tdm3.df) <- NULL
-head(tdm3.df, 35)
+tdm3.df     <- as.data.frame(tdm3.matrix)
 
+tdm3.rs <- sort(rowSums(tdm3.matrix), decreasing=TRUE)
+tdm3.freq <- data.frame(word = names(tdm3.rs), freq = tdm3.rs, stringsAsFactors = FALSE)
+row.names(tdm3.freq) <- NULL
+head(tdm3.freq, 35)
 ```
 
+> Some 3-g words that are not related to reservoir engineering. Need to remove them.
+
+## Remove 3-gram custom words
 
 ```{r}
-custom_stopwords_3 <- c("artifici neural network",
-                        "artifici intellig techniqu",
-                        "oil gas industri",
-                        "applic artifici intellig",
-                        "ensembl kalman filter",
-                        "genet algorithm optim",
-                        "machin learn",
-                        "histori match",
-                        "data mine"
-                        )
+datalytics <- c("artifici neural network",
+                "artifici intellig",
+                "applic artifici intellig",
+                "ensembl kalman filter",
+                "genet algorithm optim",
+                "machin learn",
+                "histori match",
+                "data mine"
+                )
+
+not_discipline <- c(
+    "oil gas industri",
+    "electr submers pump"
+)
+
+    
+custom_stopwords_3 <- c(datalytics, not_discipline)        
+
 ```
 
+
 ```{r rows.print=25}
+# remove the 3-g stop words
 vdocs <- tm_map(vdocs, removeWords, custom_stopwords_3)
 
 tdm3 <- TermDocumentMatrix(vdocs,
-                           control=list(tokenize=threegramTokenizer))
+                           control=list(tokenize = threegramTokenizer))
 
 tdm3.matrix <- as.matrix(tdm3)
+tdm3.df <- as.data.frame(tdm3.matrix)
+
 tdm3.rs <- sort(rowSums(tdm3.matrix), decreasing=TRUE)
-tdm3.df <- data.frame(word = names(tdm3.rs), freq = tdm3.rs, stringsAsFactors = FALSE)
-row.names(tdm3.df) <- NULL
-head(tdm3.df, 25)
+tdm3.freq <- data.frame(word = names(tdm3.rs), freq = tdm3.rs, stringsAsFactors = FALSE)
+row.names(tdm3.freq) <- NULL
+head(tdm3.freq, 25)
 ```
 
+```{r}
+set.seed(1234)
+wordcloud(words = tdm3.freq$word, freq = tdm3.freq$freq, min.freq = 3,
+          max.words = 200, random.order=TRUE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"), font = 2)
+```
 
-
-```{r fig.asp=1}
-p2 <- ggplot(subset(tdm3.df, freq > 3), aes(x=reorder(word, freq), y=freq)) + 
+```{r}
+# bar plot, top 10
+p2 <- ggplot(head(tdm3.freq, 10), aes(x = reorder(word, freq), y=freq)) + 
     geom_bar(stat = "identity") + 
     xlab("Terms") + ylab("Count") + 
     coord_flip()
@@ -107,12 +132,73 @@ p2
 ```
 
 
+# Inverse process
+
+
 ```{r}
-papers %>% 
-    filter(grepl(pattern = "enhanced oil recovery", x = book_title, ignore.case = TRUE))
+# get the papers for a given stemm 3-g word
+search_3g <- "well placement optim"
+
+dtm3 <- DocumentTermMatrix(vdocs,
+                           control = list(tokenize = threegramTokenizer))
+
+dtm3.matrix <- as.matrix(dtm3)
+dtm3.df <- as.data.frame(dtm3.matrix)
+
+indices <- which(dtm3.df[search_3g] > 0)
+papers[indices, "book_title"]
+```
+
+
+```{r}
+dim(tdm3.matrix)
+
+tdtm3.matrix <- t(tdm3.matrix)
+dim(tdtm3.matrix)
 ```
 
 ```{r}
-papers %>% 
-    filter(grepl(pattern = "well placement optim", x = book_title, ignore.case = TRUE))
+dtm3.df <- as.data.frame(tdtm3.matrix)
+
+indices <- which(dtm3.df$`enhanc oil recoveri` > 0)
+papers[indices, "book_title"]
 ```
+
+```{r}
+get_top_term_papers <- function(tdm_matrix, top_terms, verbose = FALSE) {
+    tdm.rs <- sort(rowSums(tdm_matrix), decreasing = TRUE)
+    tdm.freq <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+    tdm.freq <- head(tdm.freq, top_terms)  # select top # of rows
+    row.names(tdm.freq) <- NULL
+    
+    # make the words the rows, the docs the columns
+    tdtm_matrix <- t(tdm_matrix)          # transpose the matrix
+    dtm.df <- as.data.frame(tdtm_matrix)  # convert to dataframe
+    
+    # iterate through the tdm frequency dataframe and get the papers for indices
+    df_cum <- data.frame()        # accumulator
+    for (i in 1:nrow(tdm.freq)) {
+        w <- tdm.freq$word[i]
+        f <- tdm.freq$freq[i]
+        
+        indices <- which(dtm.df[w] > 0)  # get indices
+        if (verbose) {
+            cat(sprintf("%-25s %3d \t", w, f)) 
+            cat(indices, "\n")
+            }
+        df <- papers[indices, ]          # get papers
+        df$word <- w                     # add variable word
+        df$freq <- f                     # add variable frequency
+        df_cum <- rbind(df, df_cum)      # cumulative dataframe
+        
+    }
+    
+    df_cum <- df_cum[with(df_cum, order(-freq)), ] # sort by frequency
+    df_cum
+}
+
+
+top_papers <- get_top_term_papers(tdm3.matrix, 10)
+top_papers
+```
+
