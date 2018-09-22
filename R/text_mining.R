@@ -176,10 +176,17 @@ plot_cluster_dendrogram <- function(df) {
 #' @param top_terms top 10, or top 20, etc.
 #' @param verbose set to TRUE to show progress
 #' @export
-get_top_term_papers <- function(papers, tdm_matrix, top_terms, verbose = FALSE) {
+get_top_term_papers <- function(papers, tdm_matrix, top_terms, terms = NULL, verbose = FALSE) {
     tdm.rs <- sort(rowSums(tdm_matrix), decreasing = TRUE)
     tdm.freq <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
-    tdm.freq <- head(tdm.freq, top_terms)  # select top # of rows
+
+    if (is.null(terms))
+        tdm.freq <- head(tdm.freq, top_terms)  # select top # of rows
+    else {
+        tdm.freq <- tdm.freq %>%
+            filter(word %in% terms)
+    }
+
     row.names(tdm.freq) <- NULL
 
     # make the words the rows, the docs the columns
