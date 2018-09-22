@@ -1,9 +1,18 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
-
+```{r setup, include=F, error=T, message=F, warning=F}
+knitr::opts_chunk$set(echo = TRUE, 
+                      comment = NA, 
+                      error = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      fig.align = 'center')
+```
 
 ## load paper object from previous OnePetro scan
 
@@ -12,7 +21,7 @@ library(petro.One)
 library(RWeka)
 library(tm)
 library(tidyverse)
-
+library(wordcloud)
 
 # load previous findings
 load(file = paste0("rese_rese_mach_mach", ".rda"))
@@ -83,8 +92,6 @@ as.tibble(tdm.df)                          # prevent long printing of dataframe
 ## Word cloud with words that occur at least 50 times
 
 ```{r warning=FALSE, message=FALSE}
-library(wordcloud)
-
 set.seed(1234)
 wordcloud(words = tdm.df$word, freq = tdm.df$freq, min.freq = 20,
           max.words = 200, random.order = FALSE, rot.per=0.35,
