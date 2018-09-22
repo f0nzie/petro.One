@@ -1,6 +1,7 @@
 ---
-title: "R Notebook"
+title: "Reservoir Engineering and Machine Learning Papers"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -14,14 +15,20 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.align = 'center')
 ```
 
-## load paper object from previous OnePetro scan
+# Extracting 2-gram words from the papers
+
+## Load paper object from OnePetro scan
+We do not do the scan here to save time. The paper scan to OnePetro was done in another notebook.
 
 ```{r rows.print=25}
 library(petro.One)
 library(RWeka)
 library(tm)
+library(qdap)
 library(tidyverse)
 library(wordcloud)
+library(knitr)
+library(kableExtra)
 
 
 # load previous findings
@@ -30,57 +37,7 @@ papers <- paper_search_obj$papers
 papers
 ```
 
-
-# Two-words
-
-```{r warning=FALSE, fig.asp=1}
-
-custom_stopwords_2 <- c("machine learning", 
-                      "data analytics",
-                      "big data",
-                      "neural networks",
-                      "neural network",
-                      "artificial neural",
-                      "genetic algorithm",
-                      "artificial intelligence",
-                      "technology focus",
-                      "data mining",
-                      "data-driven",
-                      "data driven",
-                      "oil gas",
-                      "gas industry",
-                      "oil reservoir",
-                      "fuzzy logic",
-                      "ensemble kalman",
-                      "genetic algorithms",
-                      "vector machines",
-                      "eagle ford",
-                      "midland basin",
-                      "barnett shale",
-                      "deep learning",
-                      "crude oil",
-                      "flow rate",
-                      "vector regression",
-                      "vector machine",
-                      "data science",
-                      "data analysis",
-                      "data management",
-                      "predictive analytics",
-                      "ep notes",
-                      "oil field",
-                      "oil fields",
-                      "marcellus shale",
-                      "permian basin",
-                      "reliable technology",
-                      "feature selection",
-                      "model validation",
-                      "management tool",
-                      "pattern recognition"
-                      )
-
-```
-
-# Analysis on two-words
+## Create corpus for paper titles
 
 ```{r warning=FALSE}
 # this time we will remove all punctuation, all whitespaces, convert to lowercase,
@@ -96,30 +53,42 @@ vdocs <- tm_map(vdocs, removePunctuation)      # remove all punctuation
 vdocs <- tm_map(vdocs, stripWhitespace)        # remove whitespaces
 vdocs <- tm_map(vdocs, removeWords, stopwords("english")) # remove built-in stopwords
 vdocs <- tm_map(vdocs, removeWords, custom_stopwords)
-vdocs <- tm_map(vdocs, removeWords, custom_stopwords_2)   # remove 2-grams
+
+vdocs <- tm_map(vdocs, stemDocument, language = "english")  # apply stemming
 
 ```
 
+
+## Analysis on two-words
 
 ```{r}
 options(mc.cores=1)
 
 twogramTokenizer <- function(x) {
-    NGramTokenizer(x, Weka_control(min=2, max=2))
+    NGramTokenizer(x, Weka_control(min = 2, max = 2))
 }
 
 tdm2 <- TermDocumentMatrix(vdocs,
-                           control = list(tokenize=twogramTokenizer))
+                           control = list(tokenize = twogramTokenizer))
 
 tdm2.matrix <- as.matrix(tdm2)
-tdm2.rs <- sort(rowSums(tdm2.matrix), decreasing=TRUE)
+tdm2.rs <- sort(rowSums(tdm2.matrix), decreasing = TRUE)
 tdm2.df <- data.frame(word = names(tdm2.rs), freq = tdm2.rs, stringsAsFactors = FALSE)
 
 row.names(tdm2.df) <- NULL
-head(tdm2.df, 60)
-# the only problem here is that "neural network" and "neural networks" are being treated
-# like separate 2-words
+tdm2_df <- head(tdm2.df, 60)
+
+kable(
+    list(
+        tdm2_df[1:20, ], tdm2_df[21:40, ], tdm2_df[41:60, ]
+    ),
+    booktabs = TRUE, 
+    row.names = FALSE
+)
 ```
+
+
+## Plots on raw data
 
 ```{r}
 # we change the minimum frequency of appearance otherwise will be too crowded
@@ -136,8 +105,172 @@ p2 <- ggplot(subset(tdm2.df, freq > 8), aes(x=reorder(word, freq), y=freq)) +
 p2
 ```
 
+> We see many words that are not directly related to the *reservoir engineering*
+discipline. We will remove them by first creating a vector of **common stop words**.
+We split in three groups: data anlytics stop words, common or geographical
+terms, and those terms not in the RE discipline, such as _electro submersible
+pumps_.
 
 
+# Refining the results
+
+## Additional custom stop words
+```{r}
+datalytics <- c(
+    "machin learn",
+    "artifici intellig",
+    "genet algorithm",
+    "data analyt",
+    "data mine",
+    "data driven",
+    "vector machin",
+    "data analysi",
+    "deep learn",
+    "technolog focus",
+    "pattern recognit",
+    "datadriven model",
+    "fuzzi logic",
+    "kalman filter",
+    "ensembl kalman",
+    "optim techniqu",
+    "neural network",
+    "algorithm applic",
+    "data manag",
+    "data scienc",
+    "datadriven method"
+    
+)    
+
+common_terms <- c(
+    "oil gas",
+    "marcellus shale",
+    "eagl ford",
+    "oil field",
+    "midland basin",
+    "permian basin",
+    "barnett shale",
+    "crude oil"
+)
+
+not_in_discipline <- c(
+    "ep note",
+    "electr submers",
+    "drill data",
+    "well complet"
+)
+
+custom_stopwords_2 <- c(datalytics, common_terms, not_in_discipline)    
+```
 
 
+## Final Frequency table
 
+```{r}
+# refine paper corpus by removing more stop words.
+vdocs <- tm_map(vdocs, removeWords, custom_stopwords_2)   # remove 2-grams
+
+tdm2 <- TermDocumentMatrix(vdocs,
+                           control = list(tokenize = twogramTokenizer))
+
+tdm2.matrix <- as.matrix(tdm2)
+tdm2.rs <- sort(rowSums(tdm2.matrix), decreasing = TRUE)
+tdm2.df <- data.frame(word = names(tdm2.rs), freq = tdm2.rs, stringsAsFactors = FALSE)
+
+row.names(tdm2.df) <- NULL
+tdm2_df <- head(tdm2.df, 60)
+
+kable(
+    list(
+        tdm2_df[1:20, ], tdm2_df[21:40, ], tdm2_df[41:60, ]
+    ),
+    booktabs = TRUE, 
+    row.names = FALSE
+)
+```
+
+## Word cloud
+
+```{r}
+set.seed(1234)
+wordcloud(words = tdm2.df$word, freq = tdm2.df$freq, min.freq = 8,
+          max.words=200, random.order=TRUE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"), font = 2)
+```
+
+## Bar plot
+
+```{r}
+p2 <- ggplot(subset(tdm2.df, freq > 8), aes(x=reorder(word, freq), y=freq)) + 
+    geom_bar(stat = "identity") + 
+    xlab("Terms") + ylab("Count") + 
+    coord_flip()
+
+p2
+```
+
+
+## Get papers for top 10 terms
+
+```{r echo=FALSE}
+# get papers for top 10 terms
+top_papers <- get_top_term_papers(papers, tdm2.matrix, 10)
+```
+
+
+```{r}
+top_papers %>% 
+    distinct(word, freq) %>% 
+    kable(booktabs = TRUE) %>% 
+    kable_styling(latex_options = "striped")
+
+```
+
+> Notice that we are using stemmed words, the root of the words. In the next table,
+the stemmed words are replaced by the complete words.
+
+## Report
+
+```{r}
+top_papers %>% 
+    select(book_title, paper_id) %>% 
+    mutate(book_title = substr(book_title, 1, 80)) %>% 
+    kable(booktabs = T, longtable = TRUE) %>% 
+    kable_styling(latex_options = c("striped", "repeat_header")) %>% 
+    group_rows("history matching", 1, 46) %>% 
+    group_rows("reservoir simulation", 47, 66) %>% 
+    group_rows("well logging", 67, 85) %>%
+    group_rows("oil recovery", 86, 104) %>% 
+    group_rows("reservoir modeling", 105, 122) %>% 
+    group_rows("unconventional reservoirs", 123, 139) %>% 
+    group_rows("uncertainty quantification", 140, 156) %>% 
+    group_rows("hydraulic fracturing", 157, 173) %>% 
+    group_rows("carbonate reservoirs", 174, 189) %>% 
+    group_rows("horizontal wells", 190, 202)
+    
+```
+
+
+### Sample of papers for **Candidate Selection** and **Permeability Prediction**
+```{r}
+papers_2t <- get_top_term_papers(papers, tdm2.matrix, 
+                                 terms = c("candid select"))
+papers_2t %>% 
+    select(book_title, paper_id, authors) %>% 
+    mutate(book_title = substr(book_title, 1, 65)) %>% 
+    mutate(paper_id = substr(paper_id, 1, 14)) %>% 
+    mutate(authors = substr(authors, 1, 20)) %>% 
+    kable(booktabs = T, caption = "Candidate Selection") %>% 
+    kable_styling(latex_options = "striped")
+```
+
+```{r}
+papers_2t <- get_top_term_papers(papers, tdm2.matrix, 
+                                 terms = c("permeabl predict"))
+papers_2t %>% 
+    select(book_title, paper_id, authors) %>% 
+    mutate(book_title = substr(book_title, 1, 65)) %>% 
+    mutate(paper_id = substr(paper_id, 1, 14)) %>% 
+    mutate(authors = substr(authors, 1, 20)) %>% 
+    kable(booktabs = T, caption = "Permeability Prediction") %>% 
+    kable_styling(latex_options = "striped")
+```
