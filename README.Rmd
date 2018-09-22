@@ -51,6 +51,24 @@ or from [CRAN](https://cran.r-project.org/) with:
 install.packages("petro.One")
 ```
 
+
+```{r eval=FALSE}
+# install required packages
+
+install.packages(c(
+                    "tm",
+                    "wordcloud",
+                    "urltools",
+                    "RWeka"
+                   ))
+
+
+source("https://bioconductor.org/biocLite.R")
+biocLite("graph")
+biocLite("Rgraphviz")
+```
+
+
 ## What is behind the paper search
 
 A typical OnePetro search URL would look like this:
@@ -198,6 +216,8 @@ library(petro.One)
 
 my_url <- make_search_url(query = "well test", 
                           dc_type = "conference-paper",
+                          from_year = 2017, 
+                          to_year   = 2018, 
                           how = "all")
 
 get_papers_count(my_url)
@@ -210,7 +230,7 @@ term_frequency(df)
 
 ```{r}
 # plot the 500 most freqent terms
-plot_bars(df, min.freq = 400)
+plot_bars(df, min.freq = 50)
 ```
 
 ## How do the most frequent terms relate each other
@@ -219,10 +239,13 @@ Now, it is not enough for us to know what terms are the more repeating but how t
 In the following plot you will see that the strength of the relationship between terms is reflected by the thickness of the connection lines.
 
 ```{r}
-plot_relationships(df, min.freq = 400, threshold = 0.075)
+plot_relationships(df, min.freq = 50, threshold = 0.075)
 ```
 
 We can see that *wells* and *well* are connected strongly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
+
+
+## Stronger term relationships
 
 For instance, if you are looking for papers that have stronger relationship between *well test* and *permeability*, it would wise to add that term to the search.
 
