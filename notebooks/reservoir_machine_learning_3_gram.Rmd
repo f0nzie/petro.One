@@ -134,38 +134,15 @@ p2
 
 # Inverse process
 
-
 ```{r}
-# get the papers for a given stemm 3-g word
-search_3g <- "well placement optim"
-
-dtm3 <- DocumentTermMatrix(vdocs,
-                           control = list(tokenize = threegramTokenizer))
-
-dtm3.matrix <- as.matrix(dtm3)
-dtm3.df <- as.data.frame(dtm3.matrix)
-
-indices <- which(dtm3.df[search_3g] > 0)
-papers[indices, "book_title"]
+# get papers for top 10 terms
+top_papers <- get_top_term_papers(papers, tdm3.matrix, 10)
+top_papers
 ```
 
 
-```{r}
-dim(tdm3.matrix)
-
-tdtm3.matrix <- t(tdm3.matrix)
-dim(tdtm3.matrix)
-```
-
-```{r}
-dtm3.df <- as.data.frame(tdtm3.matrix)
-
-indices <- which(dtm3.df$`enhanc oil recoveri` > 0)
-papers[indices, "book_title"]
-```
-
-```{r}
-get_top_term_papers <- function(tdm_matrix, top_terms, verbose = FALSE) {
+```{r function-get_top_term_papers, eval=FALSE, echo=FALSE}
+get_top_term_papers <- function(papers, tdm_matrix, top_terms, verbose = FALSE) {
     tdm.rs <- sort(rowSums(tdm_matrix), decreasing = TRUE)
     tdm.freq <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
     tdm.freq <- head(tdm.freq, top_terms)  # select top # of rows
@@ -192,13 +169,10 @@ get_top_term_papers <- function(tdm_matrix, top_terms, verbose = FALSE) {
         df_cum <- rbind(df, df_cum)      # cumulative dataframe
         
     }
-    
-    df_cum <- df_cum[with(df_cum, order(-freq)), ] # sort by frequency
-    df_cum
+    df_cum <- df_cum[with(df_cum, order(-freq)), ]             # sort by frequency
+    subset(df_cum, select = c(word, freq, book_title:keyword)) # select columns
 }
 
 
-top_papers <- get_top_term_papers(tdm3.matrix, 10)
-top_papers
 ```
 
