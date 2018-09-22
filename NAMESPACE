@@ -3,6 +3,7 @@
 export(generate_offline_data)
 export(get_papers_count)
 export(get_term_document_matrix)
+export(get_top_term_papers)
 export(join_keywords)
 export(make_search_url)
 export(onepetro_page_to_dataframe)

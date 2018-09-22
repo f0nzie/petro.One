@@ -61,6 +61,7 @@ plot_wordcloud <- function(df, ..., max.words = 200, min.freq = 50) {
               colors = RColorBrewer::brewer.pal(8, "Dark2"))
 }
 
+
 #' @title Find the frequency for two or more words together
 #' @description Use this function when trying to find frequency of two or more words
 #' @param df a dataframe with paper results
@@ -160,4 +161,48 @@ plot_cluster_dendrogram <- function(df) {
     d <- dist(tdm.rst, method="euclidian")
     fit <- hclust(d=d, method="complete")
     plot(fit, hang = 1)
+}
+
+
+
+
+#' Get papers for top "N" terms
+#'
+#' Indicate the top terms from which we want to extract papers.
+#' For instance, if we want the papers for the top 10 terms, we set top_terms = 10.
+#'
+#' @param papers a dataframe with papers
+#' @param tdm_matrix a Term Document Matrix
+#' @param top_terms top 10, or top 20, etc.
+#' @param verbose set to TRUE to show progress
+#' @export
+get_top_term_papers <- function(papers, tdm_matrix, top_terms, verbose = FALSE) {
+    tdm.rs <- sort(rowSums(tdm_matrix), decreasing = TRUE)
+    tdm.freq <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+    tdm.freq <- head(tdm.freq, top_terms)  # select top # of rows
+    row.names(tdm.freq) <- NULL
+
+    # make the words the rows, the docs the columns
+    tdtm_matrix <- t(tdm_matrix)          # transpose the matrix
+    dtm.df <- as.data.frame(tdtm_matrix)  # convert to dataframe
+
+    # iterate through the tdm frequency dataframe and get the papers for indices
+    df_cum <- data.frame()        # accumulator
+    for (i in 1:nrow(tdm.freq)) {
+        w <- tdm.freq$word[i]
+        f <- tdm.freq$freq[i]
+
+        indices <- which(dtm.df[w] > 0)  # get indices
+        if (verbose) {
+            cat(sprintf("%-25s %3d \t", w, f))
+            cat(indices, "\n")
+        }
+        df <- papers[indices, ]          # get papers
+        df$word <- w                     # add variable word
+        df$freq <- f                     # add variable frequency
+        df_cum <- rbind(df, df_cum)      # cumulative dataframe
+
+    }
+    df_cum <- df_cum[with(df_cum, order(-freq)), ]             # sort by frequency
+    subset(df_cum, select = c(word, freq, book_title:keyword)) # select columns
 }
