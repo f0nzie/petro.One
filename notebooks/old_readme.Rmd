@@ -1,0 +1,149 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+
+
+
+
+And plot a wordcloud:
+
+```{r fig.height=9, fig.width=6}
+plot_wordcloud(df, max.words = 100, min.freq = 10)
+```
+
+#### Journal papers (`journal-paper`)
+In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits per page: 1000. Of course, this value is not shown in the rows by page selector which maxes out at 100. It is understandable because loading 1000-row page would take too long.
+
+```{r}
+# specify document type = "journal-paper", rows = 1000
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all",
+                          dc_type = "journal-paper",
+                          rows = 1000)
+
+get_papers_count(my_url)
+df <- onepetro_page_to_dataframe(my_url)
+df
+```
+
+#### Word cloud for journal papers
+
+```{r fig.height=9, fig.width=6}
+plot_wordcloud(df, max.words = 100, min.freq = 50)
+```
+
+
+
+
+## Stronger term relationships
+
+For instance, if you are looking for papers that have stronger relationship between *well test* and *permeability*, it would wise to add that term to the search.
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test permeability", 
+                          dc_type = "conference-paper",
+                          how = "all")
+
+get_papers_count(my_url)
+df <- read_multidoc(my_url)
+
+term_frequency(df)
+plot_bars(df, min.freq = 10)
+```
+
+In this example, we can see the effect of refining our search by including the term *permeability*.
+
+```{r}
+plot_relationships(df, min.freq = 15, threshold = 0.05)
+```
+
+This has the advantage of improving the search and narrow down the papers we are more interested in.
+
+
+
+
+
+Here is an example of summaries. In this case, we want papers that contain the exact words "well test".
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test", 
+                          how = "all")
+```
+
+```{r eval=FALSE}
+papers_by_type(my_url)
+```
+
+
+### By document type
+```{r, echo=FALSE, results='asis'}
+knitr::kable(papers_by_type(my_url))
+```
+
+
+### By publisher
+```{r eval=FALSE}
+papers_by_publisher(my_url)
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(papers_by_publisher(my_url), 10))
+```
+
+### By publication source
+
+```{r eval=FALSE}
+papers_by_publication(my_url)
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(papers_by_publication(my_url), 10))
+```
+
+
+
+
+
+## Search for **any** word
+In this other example, we want papers that containg the word "well" or "test".
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test", 
+                          how = "any")
+
+by_doctype <- papers_by_type(my_url)
+```
+
+```{r eval=FALSE}
+by_doctype
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(by_doctype)
+```
+
+
+#### Total number of papers that contain **well** or **test**
+In this example we get the total number of papers by document type.
+
+```{r}
+sum(by_doctype$value)
+```
+
+Or use the R base function `summary` to give us a quick statistics of the papers:
+
+```{r}
+# r-base function summary
+summary(by_doctype)
+```
