@@ -10,6 +10,8 @@
 #' @param sleep delay in seconds between search to OnePetro
 #' @param verbose TRUE if we want internal messages of the search progress
 #' @param len_keywords length of the keywords to form the filename of the rda file
+#' @param allow_duplicates if TRUE, it will allow duplicates based on book_title and
+#' paper_id
 #'
 #' @importFrom dplyr distinct %>%
 #' @export
