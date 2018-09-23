@@ -174,9 +174,15 @@ plot_cluster_dendrogram <- function(df) {
 #' @param papers a dataframe with papers
 #' @param tdm_matrix a Term Document Matrix
 #' @param top_terms top 10, or top 20, etc.
+#' @param terms a term or vector of terms to get papers from
 #' @param verbose set to TRUE to show progress
+#'
+#' @importFrom dplyr filter %>%
 #' @export
 get_top_term_papers <- function(papers, tdm_matrix, top_terms, terms = NULL, verbose = FALSE) {
+    # prevent no visible binding for global variables
+    word <- NULL; freq <- NULL; book_title <- NULL; keyword <- NULL
+
     tdm.rs <- sort(rowSums(tdm_matrix), decreasing = TRUE)
     tdm.freq <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
 
