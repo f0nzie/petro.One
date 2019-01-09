@@ -18,7 +18,7 @@ get_term_document_matrix <- function(df) {
     toSpace <- content_transformer(function(x, pattern) {return (gsub(pattern," ",
                                                                       x))})
     # Apply it for substituting the regular expression given in one of the former answers by " "
-    vdocs<- tm_map(vdocs, toSpace,"[^[:graph:]]")
+    vdocs <- tm_map(vdocs, toSpace,"[^[:graph:]]")
     vdocs <- tm_map(vdocs, content_transformer(tolower))
     vdocs <- tm_map(vdocs, removeWords, stopwords("english"))
     data("stopwords", envir = environment())
