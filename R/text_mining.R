@@ -37,6 +37,8 @@ get_term_document_matrix <- function(df) {
 #' @title Word Frequency Dataframe
 #' @description Returns a dataframe of words vs frequency
 #' @param df a dataframe with paper results
+#' @param gram.min minimum number of grams
+#' @param gram.max maximum number of grams
 #' @export
 term_frequency <- function(df, gram.min = 1, gram.max = 1) {
     # tibble::as.tibble(get_term_document_matrix(df)$freq)
@@ -126,6 +128,8 @@ term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2,
 #' @title Plot frequency distribution with horizontal bara
 #' @description SHows a bar plot with words on the y-axis and frequency on the x-axis
 #' @param df a dataframe with paper results
+#' @param gram.min minimum number of grams
+#' @param gram.max maximum number of grams
 #' @param min.freq minimum frequency of the words to be plotted
 #' @importFrom ggplot2 ggplot geom_bar xlab coord_flip aes ylab xlab
 #' @importFrom stats reorder

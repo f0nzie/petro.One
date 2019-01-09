@@ -9,6 +9,10 @@ plot_bars(df, gram.min = 1, gram.max = 1, min.freq = 25)
 \arguments{
 \item{df}{a dataframe with paper results}
 
+\item{gram.min}{minimum number of grams}
+
+\item{gram.max}{maximum number of grams}
+
 \item{min.freq}{minimum frequency of the words to be plotted}
 }
 \description{
