@@ -288,6 +288,11 @@ tf
 ```
 
 ```{r}
+term_frequency_n_grams(df = papers, gram.min = 1, gram.max = 1)
+```
+
+
+```{r}
 # calculate the minimum frequency for, let's say, the first 20th term
 min_freq <- min(head(tf, 20)$freq)
 ```
@@ -296,3 +301,15 @@ min_freq <- min(head(tf, 20)$freq)
 # plot the 20 most freqent terms
 plot_bars(papers, min.freq = min_freq)
 ```
+
+```{r}
+tf2 <- term_frequency_n_grams(papers)
+tf2
+# min_freq_2 <- min(head(tf2, 20)$freq)
+```
+
+
+```{r}
+plot_bars(papers, min.freq = 100)
+```
+
