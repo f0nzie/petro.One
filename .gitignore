@@ -6,7 +6,7 @@ inst/doc
 # docs/*
 # man/*
 *.html
-*.png
+# *.png
 *.csv
 man/
 arti.rda
