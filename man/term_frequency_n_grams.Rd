@@ -4,7 +4,8 @@
 \alias{term_frequency_n_grams}
 \title{Find the frequency for two or more words together}
 \usage{
-term_frequency_n_grams(df, gram.min = 2, gram.max = 2)
+term_frequency_n_grams(df, gram.min = 2, gram.max = 2, mc.cores = 2,
+  stemming = TRUE, more_stopwords = NULL)
 }
 \arguments{
 \item{df}{a dataframe with paper results}
@@ -12,6 +13,12 @@ term_frequency_n_grams(df, gram.min = 2, gram.max = 2)
 \item{gram.min}{minimum amount of words together}
 
 \item{gram.max}{maximum amount of words together}
+
+\item{mc.cores}{number of cores}
+
+\item{stemming}{apply stemming by default}
+
+\item{more_stopwords}{a vector of additional stop words}
 }
 \description{
 Use this function when trying to find frequency of two or more words
