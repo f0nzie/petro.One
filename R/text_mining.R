@@ -38,8 +38,9 @@ get_term_document_matrix <- function(df) {
 #' @description Returns a dataframe of words vs frequency
 #' @param df a dataframe with paper results
 #' @export
-term_frequency <- function(df) {
-    tibble::as.tibble(get_term_document_matrix(df)$freq)
+term_frequency <- function(df, gram.min = 1, gram.max = 1) {
+    # tibble::as.tibble(get_term_document_matrix(df)$freq)
+    term_frequency_n_grams(df, gram.min, gram.max)
 }
 
 
@@ -112,8 +113,8 @@ term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2) {
 #' @importFrom ggplot2 ggplot geom_bar xlab coord_flip aes ylab xlab
 #' @importFrom stats reorder
 #' @export
-plot_bars <- function(df, min.freq = 25) {
-    tdm2.df <- term_frequency(df)
+plot_bars <- function(df, gram.min = 1, gram.max = 1, min.freq = 25) {
+    tdm2.df <- term_frequency(df, gram.min, gram.max)
     # tdm2.df <- df
     freq <- tdm2.df$freq
     word <- tdm2.df$word
