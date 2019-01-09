@@ -1,4 +1,62 @@
 
+#' Run a papers search providing multiple keywords
+#'
+#' This search performs search of papers by provifing multiple levels of keywords.
+#' The levels can have one or more keywords and the levels can be as many as desired.
+#' Deeper levels makes the search longer.
+#'
+#' @param ... keywords and keyword levels
+#' @param get_papers TRUE to retrieve the papers. FALSE, only return the count
+#' @param sleep delay in seconds between search to OnePetro
+#' @param verbose TRUE if we want internal messages of the search progress
+#' @param len_keywords length of the keywords to form the filename of the rda file
+#' @param allow_duplicates if TRUE, it will allow duplicates based on book_title and
+#' paper_id
+#'
+#' @importFrom dplyr distinct %>%
+#' @export
+run_papers_search <- function(...,
+                              get_papers = TRUE,
+                              sleep = 3,
+                              verbose = TRUE,
+                              len_keywords = 3,
+                              allow_duplicates = TRUE) {
+
+    paper_id <- NULL; book_title <- NULL
+
+    # join the keywords to searh in OnePetro
+    papers_obj <- join_keywords(..., get_papers = get_papers,
+                                sleep = sleep, verbose = verbose)
+    keywords <- papers_obj$keywords
+    papers   <- papers_obj$papers
+
+    # eliminate duplicates
+    if (!allow_duplicates) {
+        if (nrow(papers) > 1) {
+            papers <- papers %>%
+                distinct(paper_id, book_title, .keep_all = TRUE)
+        }
+    }
+
+    # create an object to group all search objects, including paper results
+    search_keywords <- list(...)
+
+    # create filename from the keywords
+    comb_keyw <- c(search_keywords[1], search_keywords[2])    # combine keywords
+    rda_filename <- paste0(lapply(list(unlist(comb_keyw)),
+                                  function(x) paste(substr(x, 1, len_keywords), collapse = "_")),
+                           ".rda")
+
+    paper_search_obj <- as_named_list(papers, keywords,
+                                                     search_keywords, rda_filename)
+
+    # save the object to RDA file
+    save(paper_search_obj, file = rda_filename)
+    return(paper_search_obj)
+}
+
+
+
 #' Get paper count and paper dataframe by joining keywords as vectors
 #' @param ...     input character vectors
 #' @param bool_op boolean operator. It can be AND or OR

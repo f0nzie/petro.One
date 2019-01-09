@@ -1,0 +1,39 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r eval=FALSE}
+#' @param len_keywords length of the keywords to form the filename of the rda file
+run_papers_search <- function(..., 
+                                get_papers = TRUE, 
+                                sleep = 3, 
+                                verbose = TRUE,
+                                len_keywords = 3) {
+    
+    # join the keywords to searh in OnePetro
+    papers_obj <- join_keywords(..., get_papers = get_papers, 
+                                sleep = sleep, verbose = verbose)
+    keywords <- papers_obj$keywords
+    papers   <- papers_obj$papers
+    
+    # create an object to group all search objects, including paper results
+    search_keywords <- list(...)
+    
+    
+    # create filename from the keywords
+    comb_keyw <- c(search_keywords[1], search_keywords[2])    # combine keywords
+    rda_filename <- paste0(lapply(list(unlist(comb_keyw)), 
+                       function(x) paste(substr(x, 1, len_keywords), collapse = "_")),
+                       ".rda")
+    
+    paper_search_obj <- rNodal.utils:::as_named_list(papers, keywords, 
+                                                     search_keywords, rda_filename)
+    
+    # save the object to RDA file
+    save(paper_search_obj, file = rda_filename)
+    return(paper_search_obj)
+}
+
+```

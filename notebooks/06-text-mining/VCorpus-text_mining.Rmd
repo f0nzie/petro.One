@@ -20,6 +20,23 @@ vdocs <- VCorpus(VectorSource(nn_papers$title_data))
 ```
 
 ```{r}
+    webpage <- read_html("3000_conference.html")
+    # titles
+    # sources
+    # author
+    data_itemid <- petro.One:::get_data_itemid(webpage)
+    if(ncol(data_itemid) == 0) return(empty_df)
+
+    dc_type    <- petro.One:::get_dc_type(webpage)
+    book_title <- petro.One:::get_book_title(webpage)
+    paper_id   <- petro.One:::get_paper_id(webpage)
+    authors    <- petro.One:::get_authors(webpage)
+    year       <- petro.One:::get_year(webpage)
+    source     <- petro.One:::get_source(webpage)
+```
+
+
+```{r}
 vdocs
 ```
 
