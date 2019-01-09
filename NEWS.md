@@ -1,9 +1,19 @@
+## petro.One 0.1.3.9004
+* bump version to 0.1.3.9004
+* 
+
+## petro.One 0.1.3.9003
+* *20190109*
+* document two new parameters for number of grams
+* merge branch `Merge branch 'feature/arr-20180917-reservoir_ml_papers' into develop`.
+* delete file arti.rda in project folder root.
+
 ## petro.One 0.1.3.9002
 * merge *feature/result-item* with *develop*.
 * vignettes disabled for the moment.
 
 * *20180514*
-* debug, fix problem with keywprd "analytics". 
+* debug, fix problem with keyword "analytics". 
 * add "verbose" parameter to read_multipage(). 
 * add cat(sprintf()) for verbose to show page number being read and where it possible fails.
 * additional logic for get_dc_type_raw() when data_itemid has 3 columns instead of 4. 
