@@ -68,20 +68,36 @@ plot_wordcloud <- function(df, ..., max.words = 200, min.freq = 50) {
 #' @param df a dataframe with paper results
 #' @param gram.min minimum amount of words together
 #' @param gram.max maximum amount of words together
+#' @param mc.cores number of cores
+#' @param stemming apply stemming by default
+#' @param more_stopwords a vector of additional stop words
+#'
 #' @importFrom tm VCorpus VectorSource tm_map content_transformer
 #' TermDocumentMatrix removeWords stopwords stripWhitespace removePunctuation
 #' @importFrom RWeka NGramTokenizer Weka_control
 #' @importFrom utils data
+#' @importFrom tm stemDocument
 #' @export
-term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2) {
-    vdocs <- VCorpus(VectorSource(df$book_title))
-    vdocs <- tm_map(vdocs, content_transformer(tolower))
-    vdocs <- tm_map(vdocs, removeWords, stopwords("english"))
+term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2,
+                                   mc.cores = 2,
+                                   stemming = TRUE,
+                                   more_stopwords = NULL) {
 
-    # data("stopwords", envir = environment())
-    vdocs <- tm_map(vdocs, removeWords, custom_stopwords)
+    vdocs <- VCorpus(VectorSource(df$book_title))
     vdocs <- tm_map(vdocs, stripWhitespace)
     vdocs <- tm_map(vdocs, removePunctuation)
+    vdocs <- tm_map(vdocs, content_transformer(tolower))
+    vdocs <- tm_map(vdocs, removeWords, stopwords("english"))
+    vdocs <- tm_map(vdocs, removeWords, custom_stopwords)  # from data
+
+    # apply more stopwords
+    if (!is.null(more_stopwords))
+        vdocs <- tm_map(vdocs, removeWords, more_stopwords)  # more stopwords
+
+    # apply stemming
+    if (stemming)
+        vdocs <- tm_map(vdocs, stemDocument, language = "english")
+
     tdm   <- TermDocumentMatrix(vdocs)
 
     tdm.matrix <- as.matrix(tdm)
@@ -89,7 +105,8 @@ term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2) {
     tdm.df <- data.frame(word = names(tdm.rs), freq = as.integer(tdm.rs),
                          stringsAsFactors = FALSE)
 
-    options(mc.cores=1)
+    options(mc.cores = mc.cores)
+
     twogramTokenizer <- function(x) {
         NGramTokenizer(x, Weka_control(min=gram.min, max=gram.max))
     }
