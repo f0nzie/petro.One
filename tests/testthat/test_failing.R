@@ -9,25 +9,25 @@ library(testthat)
 skip_on_cran()
 skip_on_travis()
 
-context("fails at deepwater, other return GTE 12")
+context("this fails at deepwater")
 
 test_that("deepwater, other return GTE 12", {
     my_url <- make_search_url(query = "deepwater",
                               dc_type = "other")
-    expect_true(get_papers_count(my_url) >= 12)
+    expect_equal(get_papers_count(my_url), 12)
     # 12
-    expect_true(dim(onepetro_page_to_dataframe(my_url))[1] >= 10)
+    expect_equal(dim(onepetro_page_to_dataframe(my_url))[1], 10)
 })
 
 
-context("Fails at deepwater, media return GTE 69")
+context("Fails at deepwater and media type")
 
-test_that("deepwater, media return GTE 69", {
+test_that("deepwater, media type", {
     my_url <- make_search_url(query = "deepwater", dc_type = 'media')
 
-    expect_true(get_papers_count(my_url) >= 69)
+    expect_equal(get_papers_count(my_url), 73)
     # 69
-    expect_true(nrow(onepetro_page_to_dataframe(my_url)) >= 10)
+    expect_equal(nrow(onepetro_page_to_dataframe(my_url)), 10)
 })
 
 # skip("skip")
