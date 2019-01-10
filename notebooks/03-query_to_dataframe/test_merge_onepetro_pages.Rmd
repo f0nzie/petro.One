@@ -3,6 +3,73 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+# read/write web pages of OnePetro searches
+
+## How many papers in search
+
+```{r}
+url <- "https://www.onepetro.org/search?q=neural+networks&peer_reviewed=&published_between=&from_year=&to_year=&"
+get_papers_count(url)
+```
+
+
+```{r}
+# Specifying the url for desired website to be scrapped
+url <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=1000&to_year="
+
+get_papers_count(url)
+```
+
+
+## write web page of the first 1000 rows
+
+```{r}
+# Reading the HTML code from the website
+webpage1 <- read_html(url)
+xml2::write_html(webpage1, file = "neural_network-s0r1000.html")
+```
+
+
+## read the save web page
+```{r}
+url_page <- "neural_network-s0r1000.html"
+onepetro_page_to_dataframe(url_page)
+```
+
+## next 1000 rows: start at 1001
+
+```{r}
+# Specifying the url for desired website to be scrapped
+url <- "https://www.onepetro.org/search?start=1001&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=1000&to_year="
+
+# Reading the HTML code from the website
+webpage2 <- read_html(url)
+xml2::write_html(webpage2, file = "neural_network-s1001r1000.html")
+```
+
+## read the saved web page: 1001-2000
+```{r}
+url_page <- "neural_network-s1001r1000.html"
+onepetro_page_to_dataframe(url_page)
+```
+
+## next 1000 rows: start at 2001
+
+```{r}
+# Specifying the url for desired website to be scrapped
+url <- "https://www.onepetro.org/search?start=2001&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=1000&to_year="
+
+# Reading the HTML code from the website
+webpage3 <- read_html(url)
+xml2::write_html(webpage3, file = "neural_network-s2001r1000.html")
+```
+
+## read the saved web page: 1001-2000
+```{r}
+url_page <- "neural_network-s2001r1000.html"
+onepetro_page_to_dataframe(url_page)
+```
+
 
 ```{r}
 url <- "https://www.onepetro.org/search?q=smartwell&peer_reviewed=&published_between=&from_year=&to_year="
@@ -30,18 +97,24 @@ webpage2
 library('rvest')
 
 #Specifying the url for desired website to be scrapped
-url <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=100&to_year="
+url <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=1000&to_year="
 
 #Reading the HTML code from the website
 webpage1 <- read_html(url)
 webpage1
-xml2::write_html(webpage1, file = "100rows.html")
+xml2::write_html(webpage1, file = "1000rows.html")
+```
+
+```{r}
+url_page <- "1000rows.html"
+webpage <- xml2::read_html(url_page)
+onepetro_page_to_dataframe(url_page)
 ```
 
 
 
-
 ```{r}
+# THIS DOESN'T WORK
 #Specifying the url for desired website to be scrapped
 url2 <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&peer_reviewed=&published_between=&rows=3000&to_year="
 
@@ -49,6 +122,11 @@ url2 <- "https://www.onepetro.org/search?start=0&q=neural+networks&from_year=&pe
 webpage2 <- read_html(url2)
 xml2::write_html(webpage2, file = "0to3000.html")
 ```
+
+```{r}
+onepetro_page_to_dataframe(url_page)
+```
+
 
 
 ```{r}
@@ -62,6 +140,11 @@ xml2::write_html(webpage2, file = "2501to3500.html")
 
 ```{r}
 webpage <- read_html("1501to2500.html")
+```
+
+```{r}
+# read from webpage
+onepetro_page_to_dataframe("2501to3500.html")
 ```
 
 
