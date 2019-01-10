@@ -25,11 +25,12 @@ library(tibble)
 
 use_example(1)
 
-p1 <- onepetro_page_to_dataframe("1000_conference.html")
-p2 <- onepetro_page_to_dataframe("2000_conference.html")
-p3 <- onepetro_page_to_dataframe("3000_conference.html")
+p1 <- onepetro_page_to_dataframe("neural_network-s0000r1000.html")
+p2 <- onepetro_page_to_dataframe("neural_network-s1000r1000.html")
+p3 <- onepetro_page_to_dataframe("neural_network-s2000r1000.html")
+p4 <- onepetro_page_to_dataframe("neural_network-s3000r1000.html")
 
-nn_papers <- rbind(p1, p2, p3)
+nn_papers <- rbind(p1, p2, p3, p4)
 nn_papers
 ```
 
@@ -38,7 +39,7 @@ nn_papers
 Note that here we are removing some elemental common words, the ones supplied by the a text mining package called `tm`. This is the same function we used in the previous session. It does not eliminate words like *using*, *use*, etc.
 
 ```{r}
-vdocs <- VCorpus(VectorSource(nn_papers$title_data))
+vdocs <- VCorpus(VectorSource(nn_papers$book_title))
 vdocs <- tm_map(vdocs, content_transformer(tolower))      # to lowercase
 vdocs <- tm_map(vdocs, removeWords, stopwords("english")) # remove stopwords
 ```
