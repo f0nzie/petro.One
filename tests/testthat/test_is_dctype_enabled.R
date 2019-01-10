@@ -1,5 +1,8 @@
 library(testthat)
 
+skip_on_cran()
+skip_on_travis()
+
 context("is_dctype_enabled in summary.R")
 
 
