@@ -117,10 +117,12 @@ get_authors <- function(webpage) {
 
 get_year <- function(webpage) {
     f <- function(x) {
-        if (!any(sapply(x, function(y) grepl(y, pattern = "- [0-9].", perl = TRUE))))
+        if (!any(sapply(x, function(y) grepl(y, pattern = "- [0-9].",
+                                             perl = TRUE))))
             NA
         else {
-            as.integer(trimws(gsub("-", "",grep(x, pattern = "- [0-9].", perl = TRUE, value = TRUE))))
+            as.integer(trimws(gsub("-", "",grep(x, pattern = "- [0-9].",
+                                                perl = TRUE, value = TRUE))))
         }
 
     }
@@ -130,7 +132,8 @@ get_year <- function(webpage) {
 
 get_source <- function(webpage) {
     f <- function(x) {
-        if (!any(sapply(x, function(y) grepl(y, pattern = "^[A-Z]+$", perl = TRUE))))
+        if (!any(sapply(x, function(y) grepl(y, pattern = "^[A-Z]+$",
+                                             perl = TRUE))))
             NA
         else
             grep(x, pattern = "^[A-Z]+$", perl = TRUE, value = TRUE)

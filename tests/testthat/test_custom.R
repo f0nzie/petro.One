@@ -3,12 +3,14 @@ library(testthat)
 context("load_synonyms")
 
 test_that("synonyms.txt file exists", {
-    expect_true(file.exists(system.file("extdata", "synonyms.txt", package = "petro.One")))
+    expect_true(file.exists(system.file("extdata", "synonyms.txt",
+                                        package = "petro.One")))
 })
 
 test_that("synonyms.txt file is converted to dataframe", {
     synfile <- system.file("extdata", "synonyms.txt", package = "petro.One")
-    custom_synonyms <- utils::read.table(file = synfile, header = TRUE, sep = "|",
+    custom_synonyms <- utils::read.table(file = synfile,
+                                         header = TRUE, sep = "|",
                                          stringsAsFactors = FALSE)
     names(custom_synonyms) <- c("original", "replace_by")
     expect_s3_class(custom_synonyms, "data.frame")

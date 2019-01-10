@@ -56,7 +56,10 @@ read_multipage <- function(url, verbose = FALSE) {
         for (page in 1:pages) {
             url <- urltools::param_set(url, "start", 1000 * page - 1000)
             url <- urltools::param_set(url, "rows", 1000)
-            if (verbose) cat(sprintf("\t %3d %3d %8d %8d \n", page, pages, 1000 * page - 1000, get_papers_count(url)))
+            if (verbose) cat(sprintf("\t %3d %3d %8d %8d \n",
+                                     page,
+                                     pages, 1000 * page - 1000,
+                                     get_papers_count(url)))
             df <- onepetro_page_to_dataframe(url)
             # print(df[1, ])   # print first row of dataframe
             df_cum <- rbind(df_cum, df)  # accumulate dataframes
