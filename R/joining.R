@@ -1,5 +1,5 @@
 
-#' Run a papers search providing multiple keywords
+#' Run a papers search providing multiple keywords and optionally save results.
 #'
 #' This search performs search of papers by provifing multiple levels of keywords.
 #' The levels can have one or more keywords and the levels can be as many as desired.
@@ -44,13 +44,13 @@ run_papers_search <- function(...,
     search_keywords <- list(...)
 
     # create filename from the keywords
-    if (save_to_rda) {
+    if (save_to_rda) {                       # enter here if save_to_rda is TRUE
         comb_keyw <- c(search_keywords[1], search_keywords[2])  # combine keywords
         rda_filename <- paste0(lapply(list(unlist(comb_keyw)),
                                       function(x) paste(substr(x, 1, len_keywords),
                                                         collapse = "_")), ".rda")
     } else {
-        rda_filename <- NULL
+        rda_filename <- NULL      # won't save the results
     }
     print(rda_filename)
 
