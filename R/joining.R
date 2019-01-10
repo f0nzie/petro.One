@@ -12,6 +12,7 @@
 #' @param len_keywords length of the keywords to form the filename of the rda file
 #' @param allow_duplicates if TRUE, it will allow duplicates based on book_title and
 #' paper_id
+#' @param save_to_rda logical that indicates if we want to save results to an RDA
 #'
 #' @importFrom dplyr distinct %>%
 #' @export
@@ -20,9 +21,10 @@ run_papers_search <- function(...,
                               sleep = 3,
                               verbose = TRUE,
                               len_keywords = 3,
-                              allow_duplicates = TRUE) {
+                              allow_duplicates = TRUE,
+                              save_to_rda = FALSE) {
 
-    paper_id <- NULL; book_title <- NULL
+    paper_id <- NULL; book_title <- NULL; rda_filename <- ""
 
     # join the keywords to searh in OnePetro
     papers_obj <- join_keywords(..., get_papers = get_papers,
@@ -42,16 +44,25 @@ run_papers_search <- function(...,
     search_keywords <- list(...)
 
     # create filename from the keywords
-    comb_keyw <- c(search_keywords[1], search_keywords[2])    # combine keywords
-    rda_filename <- paste0(lapply(list(unlist(comb_keyw)),
-                                  function(x) paste(substr(x, 1, len_keywords), collapse = "_")),
-                           ".rda")
+    if (save_to_rda) {
+        comb_keyw <- c(search_keywords[1], search_keywords[2])  # combine keywords
+        rda_filename <- paste0(lapply(list(unlist(comb_keyw)),
+                                      function(x) paste(substr(x, 1, len_keywords),
+                                                        collapse = "_")), ".rda")
+    } else {
+        rda_filename <- NULL
+    }
+    print(rda_filename)
 
-    paper_search_obj <- as_named_list(papers, keywords,
-                                                     search_keywords, rda_filename)
+    # collect all objects in a list
+    paper_search_obj <- as_named_list(papers,
+                                      keywords,
+                                      search_keywords,
+                                      rda_filename)
 
     # save the object to RDA file
-    save(paper_search_obj, file = rda_filename)
+    # why do we save the RDA file? To avoid doing the previous online request
+    if (save_to_rda) save(paper_search_obj, file = rda_filename)
     return(paper_search_obj)
 }
 

@@ -5,8 +5,8 @@
 inst/doc
 # docs/*
 # man/*
-*.html
-*.png
+# *.html
+# *.png
+# man/
 *.csv
-man/
-arti.rda
+notebooks/*
