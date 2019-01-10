@@ -1,6 +1,8 @@
 ## petro.One 0.1.3.9004
 * bump version to 0.1.3.9004
-* 
+* add plot of tri-gram
+* enable man/ folder to git
+* add parameter save_to_rda in function run_papers_search()
 
 ## petro.One 0.1.3.9003
 * *20190109*
