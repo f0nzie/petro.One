@@ -88,6 +88,7 @@ join_keywords <- function(...,
     df <- expand.grid(..., stringsAsFactors = FALSE)   # combine keywords
     sep     <- paste0("'", bool_op, "'")               # add apostrophes to operator
     # iterate through the rows of keyword combinations dataframe
+    cat("\n")
     for (i in 1:nrow(df)) {
         sf <- NULL
         papers.df <- NULL
@@ -117,7 +118,7 @@ join_keywords <- function(...,
             # papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
             # # get multipages > 1000 papers
             # papers.df <- read_multipage(url.2, doctype = "conference-paper")
-            papers.df <- read_multipage(url.2, verbose = verbose)
+            papers.df <- read_multipage(url.2, verbose = FALSE)
             # cat(dim(papers.df), "\n")
             papers.df$keyword <- sf                           # add columns
             papers.df.k <- rbind(papers.df, papers.df.k)      # cumulative dataframe
