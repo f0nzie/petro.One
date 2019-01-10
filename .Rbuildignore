@@ -11,4 +11,4 @@ travis.yml
 ^\.travis\.yml$
 ^codecov\.yml$
 old_travis.yml
-_vignettes
+# _vignettes
