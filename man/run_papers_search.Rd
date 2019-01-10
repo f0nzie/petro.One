@@ -2,7 +2,7 @@
 % Please edit documentation in R/joining.R
 \name{run_papers_search}
 \alias{run_papers_search}
-\title{Run a papers search providing multiple keywords}
+\title{Run a papers search providing multiple keywords and optionally save results.}
 \usage{
 run_papers_search(..., get_papers = TRUE, sleep = 3, verbose = TRUE,
   len_keywords = 3, allow_duplicates = TRUE, save_to_rda = FALSE)
