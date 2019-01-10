@@ -16,7 +16,7 @@ test_that("mechanistic performance, all, returns one row", {
     df <- (papers_by_type(my_url))
 
     expect_equal(df$name, "Journal Paper")
-    expect_gte(sum(df$value), 4)
+    expect_equal(sum(df$value), 4)
 })
 
 
@@ -27,7 +27,7 @@ test_that("mechanistic performance, any, returns one row", {
 
     df <- (papers_by_type(my_url))
 
-    expect_gte(sum(df$value), 3301)
+    expect_equal(sum(df$value), 3658)
 })
 
 
