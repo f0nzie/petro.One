@@ -1,3 +1,7 @@
+# Functions tested
+#   expect_equal_scale
+#   use_example
+
 library(testthat)
 
 context("expect_equal_scale")

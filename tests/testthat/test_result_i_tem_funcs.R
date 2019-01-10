@@ -1,3 +1,7 @@
+# Functions tested
+#   make_search_url
+#   get_papers_from_result_item
+
 library(testthat)
 
 # skip("skip")

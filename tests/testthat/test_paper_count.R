@@ -1,3 +1,7 @@
+# Functions tested
+#   get_papers_count
+#   make_search_url
+
 library(testthat)
 
 skip_on_cran()

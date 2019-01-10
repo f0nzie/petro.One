@@ -1,3 +1,8 @@
+# functions tested
+#   join_keywords
+#   get_papers_count
+#   get_dc_type_raw
+
 library(testthat)
 
 skip_on_cran()

@@ -1,3 +1,7 @@
+# functions tested
+#   make_search_url
+#   is_dctype_enabled
+
 library(testthat)
 
 skip_on_cran()

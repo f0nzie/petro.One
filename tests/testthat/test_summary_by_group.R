@@ -1,3 +1,10 @@
+# Functions tested:
+#   make_search_url
+#   papers_by_type
+#   papers_by_publisher
+#   papers_by_year
+#   papers_by_publication
+
 library(testthat)
 
 skip_on_cran()

@@ -1,3 +1,8 @@
+# Functions tested:
+#   make_search_url
+#   onepetro_page_to_dataframe
+#
+
 library(testthat)
 
 context("onepetro_page_to_dataframe, paper_to_dataframe.R")

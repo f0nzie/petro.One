@@ -1,3 +1,7 @@
+# Functions tested:
+#   make_search_url
+#   get_papers_count
+
 library(testthat)
 
 skip_on_travis()

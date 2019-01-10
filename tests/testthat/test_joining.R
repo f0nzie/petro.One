@@ -1,3 +1,9 @@
+# test functions
+#   join_keywords()
+#
+# Functionality:
+#   * list objects; keywords, papers dataframes
+
 library(testthat)
 
 skip_on_cran()

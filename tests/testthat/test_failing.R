@@ -1,3 +1,9 @@
+# functions tested
+#   onepetro_page_to_dataframe()
+#   papers_by_type()
+#   get_papers_count()
+#   make_search_url()
+
 library(testthat)
 
 skip_on_cran()

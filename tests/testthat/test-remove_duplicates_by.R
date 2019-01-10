@@ -1,3 +1,6 @@
+# test function remove_duplicates_by()
+# Test that duplicate papers are being removed
+
 library(testthat)
 
 skip_on_travis()

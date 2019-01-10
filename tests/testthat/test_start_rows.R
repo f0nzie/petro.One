@@ -1,3 +1,11 @@
+# Functions tested:
+#   make_search_url
+#   get_papers_count
+#   papers_by_type
+#   papers_by_publisher
+#   papers_by_year
+#   papers_by_publication
+
 library(testthat)
 
 skip_on_travis()

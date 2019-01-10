@@ -1,3 +1,9 @@
+# Functions tested
+#   make_search_url
+#   papers_by_type
+#   extract_source_when_disabled
+#   get_item_source
+
 library(testthat)
 
 context("papers_by_type")
