@@ -4,9 +4,9 @@
 .Ruserdata
 inst/doc
 # docs/*
-man/*
-*.html
+# man/*
+# *.html
 # *.png
 *.csv
-man/
-arti.rda
+# man/
+notebooks/*
