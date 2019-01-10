@@ -1,5 +1,8 @@
 library(testthat)
 
+skip_on_cran()
+skip_on_travis()
+
 context("paper_count multitest function")
 # test the following functions:
     # make_search_url
@@ -8,7 +11,8 @@ context("paper_count multitest function")
 
 test_that("all queries match expected values", {
 
-    expected <- c(71, 3237, 4876, 896, 8098, 13960, 13960, 570, 1802, 4, 9, 0, 4, 0)
+    expected <- c(72, 3614, 5161, 941, 8398, 14444, 14444, 606, 1908,
+                  4, 12, 0, 4, 0)
 
     all_tests <- list(
         test_1 = list(

@@ -1,6 +1,8 @@
 library(testthat)
 
 # skip("skip")
+skip_on_travis()
+skip_on_cran()
 
 context("test neural networks, rows=500 papers")
 test_that("dim of papers is 500, 5", {
@@ -53,7 +55,7 @@ test_that("papers by type match for ALL", {
 
     paper_count <- get_papers_count(url_nn)
     # cat(paper_count)
-    expect_equal(paper_count, 3237)
+    expect_equal(paper_count, 3614)
     by_type <- papers_by_type(url_nn)
     # name               value  OnePetro
     # <chr>              <dbl>
@@ -65,7 +67,7 @@ test_that("papers by type match for ALL", {
     # 6 Presentation        23    23
     #   Standard            --     1
     # cat(by_type$value)
-    expect_equal(by_type$value, c(2880, 4, 323, 2, 5, 23))
+    expect_equal(by_type$value, c(3219, 4, 343, 4, 5, 39))
     expect_equal(nrow(petro.One:::get_papers_from_result_item(url_nn)), 10)
 })
 
@@ -75,7 +77,7 @@ test_that("papers by type match for ANY", {
     )
     paper_count <- get_papers_count(url_nn)
     # cat(paper_count)
-    expect_equal(paper_count, 3535)
+    expect_equal(paper_count, 3930)
     by_type <- papers_by_type(url_nn)
     # name               value  OnePetro
     # <chr>              <dbl>
@@ -88,6 +90,6 @@ test_that("papers by type match for ANY", {
     #   Standard            --     1
 
     # cat(by_type$value)
-    expect_equal(by_type$value, c(3148, 5, 351, 2, 5, 23, 1))
+    expect_equal(by_type$value, c(3502, 5, 374, 4, 5, 39, 1))
     expect_equal(nrow(petro.One:::get_papers_from_result_item(url_nn)), 10)
 })
