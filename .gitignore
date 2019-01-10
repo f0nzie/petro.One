@@ -7,6 +7,6 @@ inst/doc
 # man/*
 # *.html
 # *.png
-*.csv
 # man/
+*.csv
 notebooks/*
