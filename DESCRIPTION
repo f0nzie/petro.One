@@ -34,7 +34,8 @@ Imports: rvest,
     RWeka,
     cluster,
     RColorBrewer,
-    data.table
+    data.table,
+    SnowballC
 VignetteBuilder: knitr
 URL: https://github.com/f0nzie/petro.One
 
