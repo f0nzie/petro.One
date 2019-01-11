@@ -10,6 +10,9 @@
     <loc>https://github.com/f0nzie/petro.One/reference/custom_stopwords.html</loc>
   </url>
   <url>
+    <loc>https://github.com/f0nzie/petro.One/reference/discipline_labels.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/f0nzie/petro.One/reference/generate_offline_data.html</loc>
   </url>
   <url>
@@ -23,9 +26,6 @@
   </url>
   <url>
     <loc>https://github.com/f0nzie/petro.One/reference/join_keywords.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/f0nzie/petro.One/reference/labels.html</loc>
   </url>
   <url>
     <loc>https://github.com/f0nzie/petro.One/reference/make_search_url.html</loc>
@@ -95,5 +95,23 @@
   </url>
   <url>
     <loc>https://github.com/f0nzie/petro.One/reference/use_example.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/f0nzie/petro.One/articles/document_types_of_papers.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/f0nzie/petro.One/articles/gather_thousand_papers_to_dataframe.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/f0nzie/petro.One/articles/joining_keywords.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/f0nzie/petro.One/articles/make_wordcloud_01.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/f0nzie/petro.One/articles/make_wordcloud_02.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/f0nzie/petro.One/articles/permanent_downhole_gauge.html</loc>
   </url>
 </urlset>
