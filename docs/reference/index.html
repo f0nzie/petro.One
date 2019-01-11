@@ -75,6 +75,33 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/document_types_of_papers.html">Document types for Papers</a>
+    </li>
+    <li>
+      <a href="../articles/gather_thousand_papers_to_dataframe.html">Thousands of Papers to Dataframe</a>
+    </li>
+    <li>
+      <a href="../articles/joining_keywords.html">Reducing paper results by joining keywords</a>
+    </li>
+    <li>
+      <a href="../articles/make_wordcloud_01.html">Make a word cloud</a>
+    </li>
+    <li>
+      <a href="../articles/make_wordcloud_02.html">Improving the word cloud: custom stopwords</a>
+    </li>
+    <li>
+      <a href="../articles/permanent_downhole_gauge.html">Text Mining of Permanent Downhole Gauges</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -132,6 +159,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="run_papers_search.html">run_papers_search()</a></code> </p>
+        </td>
+        <td><p>Run a papers search providing multiple keywords and optionally save results.</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="onepetro_page_to_dataframe.html">onepetro_page_to_dataframe()</a></code> </p>
         </td>
         <td><p>Reads a OnePetro URL and converts it to a dataframe</p></td>
@@ -147,6 +180,18 @@
           <p><code><a href="join_keywords.html">join_keywords()</a></code> </p>
         </td>
         <td><p>Get paper count and paper dataframe by joining keywords as vectors</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_multidoc.html">read_multidoc()</a></code> </p>
+        </td>
+        <td><p>Read all OnePetro papers metadata by type of document</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="read_onepetro.html">read_onepetro()</a></code> </p>
+        </td>
+        <td><p>Read OnePetro web page given a query URL</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -179,6 +224,107 @@
           <p><code><a href="papers_by_publisher.html">papers_by_publisher()</a></code> </p>
         </td>
         <td><p>Papers by publisher</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summary_by_dates.html">summary_by_dates()</a></code> </p>
+        </td>
+        <td><p>Summary by year</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summary_by_doctype.html">summary_by_doctype()</a></code> </p>
+        </td>
+        <td><p>Summary by document type</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summary_by_publications.html">summary_by_publications()</a></code> </p>
+        </td>
+        <td><p>Summary by publication</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summary_by_publisher.html">summary_by_publisher()</a></code> </p>
+        </td>
+        <td><p>Summary by publisher</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-manipulation" class="hasAnchor"><a href="#section-data-manipulation" class="anchor"></a>Data Manipulation</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="remove_duplicates_by.html">remove_duplicates_by()</a></code> </p>
+        </td>
+        <td><p>Remove duplicate papers by a variable</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="generate_offline_data.html">generate_offline_data()</a></code> </p>
+        </td>
+        <td><p>Generate data for offline testing
+Mockup test data</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-mining" class="hasAnchor"><a href="#section-data-mining" class="anchor"></a>Data Mining</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="get_term_document_matrix.html">get_term_document_matrix()</a></code> </p>
+        </td>
+        <td><p>A TermDocumentMatrix corpus objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_top_term_papers.html">get_top_term_papers()</a></code> </p>
+        </td>
+        <td><p>Get papers for top "N" terms</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_cluster_dendrogram.html">plot_cluster_dendrogram()</a></code> </p>
+        </td>
+        <td><p>Plot a dendrogram</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_bars.html">plot_bars()</a></code> </p>
+        </td>
+        <td><p>Plot frequency distribution with horizontal bara</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_relationships.html">plot_relationships()</a></code> </p>
+        </td>
+        <td><p>Plot a relationship diagram with weights</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_wordcloud.html">plot_wordcloud()</a></code> </p>
+        </td>
+        <td><p>Plot a word cloud</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="term_frequency_n_grams.html">term_frequency_n_grams()</a></code> </p>
+        </td>
+        <td><p>Find the frequency for two or more words together</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="term_frequency.html">term_frequency()</a></code> </p>
+        </td>
+        <td><p>Word Frequency Dataframe</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -193,6 +339,33 @@
           <p><code><a href="custom_stopwords.html">custom_stopwords</a></code> </p>
         </td>
         <td><p>Default custom stop words</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="discipline_labels.html">discipline_labels</a></code> </p>
+        </td>
+        <td><p>Discipline and Subject  labels dataset</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-miscelaneous" class="hasAnchor"><a href="#section-miscelaneous" class="anchor"></a>Miscelaneous</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="petro.One-package.html">petro.One-package</a></code> </p>
+        </td>
+        <td><p>Text mining and statistics for OnePetro papers
+petro.One</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="use_example.html">use_example()</a></code> </p>
+        </td>
+        <td><p>Unpack an example</p></td>
       </tr>
     </tbody>
     </table>
@@ -203,7 +376,10 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#section-search-papers">Search Papers</a></li>
       <li><a href="#section-papers-summary">Papers Summary</a></li>
+      <li><a href="#section-data-manipulation">Data Manipulation</a></li>
+      <li><a href="#section-data-mining">Data Mining</a></li>
       <li><a href="#section-datasets">datasets</a></li>
+      <li><a href="#section-miscelaneous">Miscelaneous</a></li>
     </ul>
   </div>
 </div>
