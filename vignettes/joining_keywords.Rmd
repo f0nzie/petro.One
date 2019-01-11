@@ -24,22 +24,27 @@ library(petro.One)
 
 
 ## test #1
-```{r}
+We start with these keywords:
+    water injection     water flooding
+    machine-learning    artificial intelligence
+    neural networks
+
+```{r, 5-keywords}
 # provide two different set of keywords to combine as vectors
 major  <- c("water injection", "water flooding")
-minor  <- c("machine-learning", "intelligent")
-lesser <- c("neural network", "SVM", "genetic", "algorithm")
+minor  <- c("machine-learning", "artificial intelligence")
+lesser <- c("neural networks")
 
-p.df <- join_keywords(major, minor, lesser, get_papers = TRUE)
-p.df
+result_object <- join_keywords(major, minor, lesser, get_papers = TRUE)
+result_object
 ```
 
 
 ```{r}
 # save findings
 # save the three objects as one
-papers <- p.df
-wat_inj_ml_1 <- rNodal.utils:::as_named_list(major, minor, lesser, papers)
+papers <- result_object
+wat_inj_ml_1 <- petro.One:::as_named_list(major, minor, lesser, papers)
 save(wat_inj_ml_1, file = paste0("wat_inj_ml_1", ".rda"))
 
 # load previous save
@@ -48,54 +53,73 @@ papers <- wat_inj_ml_1$papers
 papers
 ```
 
-```{r function-dev}
-save_paper_results <- function(...) {
-    # if it is a dataframe, call it papers
-    # all other objects are the search keywords
-    # put all the object in a named list using as_named_list function from rNodal.utils
-    # save the list as an rda
-    # load the .rda
-    # show the list
-}
+## Using a new function to replace multiple commands
 
+```{r}
+paper_results <- run_papers_search(major, minor, lesser,
+                                   get_papers = TRUE,       # return with papers
+                                   verbose = FALSE,         # show progress
+                                   len_keywords = 4,        # naming the data file
+                                   allow_duplicates = FALSE) # by paper title and id
+```
+
+```{r}
+names(paper_results)
 ```
 
 
+
 ### test #2
-```{r rows.print=20}
+Then, we increase the number of keywords:
+
+    water injection     water flooding
+    machine-learning    machine learning    intelligent
+    neural network      SVM                 genetic
+    algorithm
+
+```{r}
 # provide two different set of keywords to combine as vectors
 m  <- c("water injection", "water flooding")
 n  <- c("machine-learning", "machine learning", "intelligent")
 p  <- c("neural network", "SVM", "genetic")
 q  <- c("algorithm")
 
-p.df <- join_keywords(m, n, p, q, get_papers = TRUE, verbose = TRUE)
-p.df
+paper_results_9 <- run_papers_search(m, n, p, q,
+                                   get_papers = TRUE,       # return with papers
+                                   verbose = FALSE,         # show progress
+                                   len_keywords = 4,        # naming the data file
+                                   allow_duplicates = FALSE) # by paper title and id
 
-# save findings
-# save the three objects as one
-papers <- p.df
-wat_inj_ml_int <- rNodal.utils:::as_named_list(m, n, p, q, papers)
-save(wat_inj_ml_int, file = paste0("wat_inj_ml_int", ".rda"))
-
-# load previous save
-load(file = paste0("wat_inj_ml_int", ".rda"))
-(papers <- wat_inj_ml_int$papers)
-
+paper_results_9$papers
 ```
 
 
 
 ## Reducing test 5.2
 
-```{r}
-# provide two different set of keywords to combine as vectors
-major   <- c("waterflooding")
-minor   <- c("machine-learning", "artificial intelligence")
-lesser  <- c("algorithm")
-another <- c("data-mining")
-more    <- c("data-driven")
+      waterflooding
+      machine-learning    artificial intelligence
+      algorithm
+      data-mining
+      data-driven
 
-p.df <- join_keywords(major, minor, lesser, another, more, get_papers = TRUE)
-p.df
+```{r, 6-keywords}
+# provide two different set of keywords to combine as vectors
+maj <- c("waterflooding")
+min <- c("machine-learning", "artificial intelligence")
+les <- c("algorithm")
+anr <- c("data-mining", "data-driven")
+
+paper_results_5 <- run_papers_search(maj, min, les, anr, 
+                                   get_papers = TRUE,       # return with papers
+                                   verbose = FALSE,         # show progress
+                                   len_keywords = 4,        # naming the data file
+                                   allow_duplicates = FALSE) # by paper title and id
+
+paper_results_5$keywords
 ```
+
+```{r}
+paper_results_5$search_keywords
+```
+
