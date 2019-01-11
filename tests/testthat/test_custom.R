@@ -1,3 +1,7 @@
+# Functions tested:
+#   load_synonyms
+#   change_to_synonym
+#
 library(testthat)
 
 context("load_synonyms")
