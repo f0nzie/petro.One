@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">petro.One</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@
 <a class="sourceLine" id="cb1-2" title="2"></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="co"># install from the *master* release branch</span></a>
 <a class="sourceLine" id="cb1-4" title="4">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"f0nzie/petro.One"</span>)</a></code></pre></div>
-<p>Or, the latest dvelopment version:</p>
+<p>Or, the latest development version with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># install from the *develop* branch</span></a>
 <a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"f0nzie/petro.One"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</a></code></pre></div>
 <p>Or from <a href="https://cran.r-project.org/">CRAN</a> with:</p>
@@ -128,13 +128,14 @@
 <a class="sourceLine" id="cb4-5" title="5">                   <span class="st">"urltools"</span>,</a>
 <a class="sourceLine" id="cb4-6" title="6">                   <span class="st">"RWeka"</span>,</a>
 <a class="sourceLine" id="cb4-7" title="7">                   <span class="st">"tidyverse"</span>,</a>
-<a class="sourceLine" id="cb4-8" title="8">                   <span class="st">"data.table"</span></a>
-<a class="sourceLine" id="cb4-9" title="9">                   ))</a>
-<a class="sourceLine" id="cb4-10" title="10"></a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="co"># from BioConductor</span></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">"https://bioconductor.org/biocLite.R"</span>)</a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="kw">biocLite</span>(<span class="st">"graph"</span>)</a>
-<a class="sourceLine" id="cb4-14" title="14"><span class="kw">biocLite</span>(<span class="st">"Rgraphviz"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb4-8" title="8">                   <span class="st">"data.table"</span>,</a>
+<a class="sourceLine" id="cb4-9" title="9">                   <span class="st">"SnowBallC"</span></a>
+<a class="sourceLine" id="cb4-10" title="10">                   ))</a>
+<a class="sourceLine" id="cb4-11" title="11"></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="co"># from BioConductor</span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">"https://bioconductor.org/biocLite.R"</span>)</a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="kw">biocLite</span>(<span class="st">"graph"</span>)</a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="kw">biocLite</span>(<span class="st">"Rgraphviz"</span>)</a></code></pre></div>
 </div>
 <div id="what-is-behind-the-paper-search" class="section level2">
 <h2 class="hasAnchor">
@@ -352,20 +353,20 @@ They key is build a search URL that is recognizable by OnePetro. To do that I wr
 <a class="sourceLine" id="cb11-13" title="13"><span class="co">#&gt; [1] 956   6</span></a>
 <a class="sourceLine" id="cb11-14" title="14"></a>
 <a class="sourceLine" id="cb11-15" title="15">(tf &lt;-<span class="st"> </span><span class="kw"><a href="reference/term_frequency.html">term_frequency</a></span>(df))    <span class="co"># create a term frequency table</span></a>
-<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt; # A tibble: 1,977 x 2</span></a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt; # A tibble: 1,974 x 2</span></a>
 <a class="sourceLine" id="cb11-17" title="17"><span class="co">#&gt;    word       freq</span></a>
 <a class="sourceLine" id="cb11-18" title="18"><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb11-19" title="19"><span class="co">#&gt;  1 reservoir   324</span></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="co">#&gt;  1 reservoir   325</span></a>
 <a class="sourceLine" id="cb11-20" title="20"><span class="co">#&gt;  2 well        269</span></a>
-<a class="sourceLine" id="cb11-21" title="21"><span class="co">#&gt;  3 field       221</span></a>
+<a class="sourceLine" id="cb11-21" title="21"><span class="co">#&gt;  3 field       223</span></a>
 <a class="sourceLine" id="cb11-22" title="22"><span class="co">#&gt;  4 model       161</span></a>
-<a class="sourceLine" id="cb11-23" title="23"><span class="co">#&gt;  5 fractur     159</span></a>
-<a class="sourceLine" id="cb11-24" title="24"><span class="co">#&gt;  6 gas         151</span></a>
+<a class="sourceLine" id="cb11-23" title="23"><span class="co">#&gt;  5 fractur     160</span></a>
+<a class="sourceLine" id="cb11-24" title="24"><span class="co">#&gt;  6 gas         152</span></a>
 <a class="sourceLine" id="cb11-25" title="25"><span class="co">#&gt;  7 case        139</span></a>
-<a class="sourceLine" id="cb11-26" title="26"><span class="co">#&gt;  8 product     135</span></a>
-<a class="sourceLine" id="cb11-27" title="27"><span class="co">#&gt;  9 use         135</span></a>
+<a class="sourceLine" id="cb11-26" title="26"><span class="co">#&gt;  8 use         136</span></a>
+<a class="sourceLine" id="cb11-27" title="27"><span class="co">#&gt;  9 product     135</span></a>
 <a class="sourceLine" id="cb11-28" title="28"><span class="co">#&gt; 10 studi       124</span></a>
-<a class="sourceLine" id="cb11-29" title="29"><span class="co">#&gt; # ... with 1,967 more rows</span></a>
+<a class="sourceLine" id="cb11-29" title="29"><span class="co">#&gt; # ... with 1,964 more rows</span></a>
 <a class="sourceLine" id="cb11-30" title="30"></a>
 <a class="sourceLine" id="cb11-31" title="31"><span class="co"># calculate the minimum frequency for, let's say, the first 20th term</span></a>
 <a class="sourceLine" id="cb11-32" title="32">min_freq &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(tf, <span class="dv">20</span>)<span class="op">$</span>freq)</a></code></pre></div>
