@@ -15,6 +15,4 @@ while creating the package
 }
 \examples{
 use_example(1)
-use_example(2)
-use_example(3)
 }

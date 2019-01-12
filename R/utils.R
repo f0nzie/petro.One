@@ -6,12 +6,10 @@
 #' @importFrom utils unzip
 #' @examples
 #' use_example(1)
-#' use_example(2)
-#' use_example(3)
 #' @export
 use_example <- function(which_one = NULL) {
     if (is.null(which_one)) stop("an example number must be supplied")
-    if (which_one == 1) unzip_this("3_pages_conference.zip")
+    if (which_one == 1) unzip_this("offline_html_pages.zip")
     else stop("example not implemented")
 }
 
