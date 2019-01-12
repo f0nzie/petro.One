@@ -16,21 +16,17 @@ knitr::opts_chunk$set(
 [![Travis-CI Build Status](https://travis-ci.org/f0nzie/petro.One.svg?branch=master)](https://travis-ci.org/f0nzie/petro.One)
 [![codecov](https://codecov.io/gh/f0nzie/petro.One/branch/master/graph/badge.svg)](https://codecov.io/gh/f0nzie/petro.One)
 
-The goal of **petro.One** is providing a reproducible platform for acquiring and analyzing metadata while searching papers on oil and gas in the OnePetro website.
+The goal of **petro.One** is providing a reproducible platform for acquiring and analyzing metadata by searching papers on oil and gas from the OnePetro website.
 
 ## Motivation
-The standard way of searching for papers in [OnePetro](https://www.onepetro.org/) is using a web browser to enter the search terms for a particular paper we are looking for. The result will come in web pages with which could be dozens, hundreds or thousand of paper titles. We will need to browse all the resulting pages to find papers that have a better match with the subject we are researching.
+The standard way of searching for papers in [OnePetro](https://www.onepetro.org/) is using a web browser entering the search terms for a particular paper we are looking for. The result will come as web pages containing dozens, hundreds or thousand of paper titles. We need to browse all the resulting pages to find the papers that have a good match with the subject we are researching. Although it has the capability to export to _csv_ and _xls_ files, they will need to be imported into another application to perform some analysis.
 
-By using some statistical tools available through `R`, the search could turn in highly profitable in terms of time, matching quality and selection of the papers. 
-
-The search keywords are entered thorugh the R console and the papers will return in a shape of a dataframe, which is identical to a spreadsheet: rows of paper titles and columns with details from the metadata extracted from the web page.
-
-With the dataframe already in our computers we could perform a thorough search and narrow down to the most ideal papers.
+By using some statistical tools available through `R`, the search could turn in highly profitable in terms of time, matching quality and selection of the papers. The search keywords are entered thorugh the R console and the papers will return in a shape of a dataframe, which is identical to a spreadsheet: rows of paper titles and columns with details from the metadata extracted from the web page. With the dataframe already in our computers we could perform a thorough search and narrow down to the ideal papers for our research.
 
 
 ## Installation
 
-You can install petro.One from github with:
+You can install `petro.One` from Github with:
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("devtools")       # install *devtools* first
@@ -39,17 +35,40 @@ You can install petro.One from github with:
 devtools::install_github("f0nzie/petro.One")
 ```
 
+Or, the latest development version with:
+
 ```{r, eval = FALSE}
 # install from the *develop* branch
 devtools::install_github("f0nzie/petro.One", ref = "develop")
 ```
 
 
-or from [CRAN](https://cran.r-project.org/) with:
+Or from [CRAN](https://cran.r-project.org/) with:
 
 ```{r eval=FALSE}
 install.packages("petro.One")
 ```
+
+The package dependencies can be installed with:
+
+```{r eval=FALSE}
+# install required packages
+# from CRAN
+install.packages(c("tm",
+                   "wordcloud",
+                   "urltools",
+                   "RWeka",
+                   "tidyverse",
+                   "data.table",
+                   "SnowBallC"
+                   ))
+
+# from BioConductor
+source("https://bioconductor.org/biocLite.R")
+biocLite("graph")
+biocLite("Rgraphviz")
+```
+
 
 ## What is behind the paper search
 
@@ -57,22 +76,30 @@ A typical OnePetro search URL would look like this:
 
         https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year=
         
-which could be explained like this:
+You can see the search string for yourself after you hit enter on a paper search, which could be explained like this:
 
-`domain`: https://www.onepetro.org/   
-`command`: search?   
-`q=`: *parameter* that holds the query words. In the example above, it would be `q=neural+network`. As it is shown, it means search `any` word.    
-`peer_reviewed=`: *parameter* switch to get papers than have been only peer reviewed. When it has the value `on` means that is activated.      
-`published_between=`: *parameter* switch that activates when `from_year` and `to_year` have numeric entries.  
-`from_year=`: *parameter* to enter the starting year of the search  
-`to_year=`: *parameter* to enter the end year of the search.     
+
+| Parameter          | Description                                                                                                                                          |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| domain             | https://www.onepetro.org/                                                                                                                            |
+| command            | search?                                                                                                                                              |
+| q=                 | parameter that holds the query words. In the example above, it would be `q=neural+network`. As it is shown, it means search `any` word. |
+| peer_reviewed=     | parameter switch to get papers than have been only peer reviewed. When it has the value `on` means that is activated.                                |
+| published_between= | *parameter* switch that activates when `from_year` and `to_year` have numeric entries.                                                               |
+| from_year=         | *parameter* to enter the starting year of the search                                                                                                 |
+| to_year=           | *parameter* to enter the end year of the search.                                                                                                     |
+                                                                                
 
 There are additional parameters such as:
 
-`start=`: *parameter* to indicate the starting page if the resulting search has several pages.
-`rows=`: *parameter* to indicate the number of rows (papers) to display per page. In the web browser, the options are 10, 50 and 100. Off-browser it could be a number up to 1000.   
-`sort=`: *parameter* related to the selector `Sort By` with options `Relevance`, `Most recent` and `Highest rated`.   
-`dc_type`: *parameter* that indicates what type of document the paper is. These are the type of documents:
+| Parameter | Description                                                                                                                                                |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| start=    | indicate the starting page if the resulting search has several                                                                                             |
+| rows=     | indicate the number of rows (papers) to display per page. In the web browser, the options are 10, 50 and 100. Off-browser it could be a number up to 1000. |
+| sort=     | related to the selector `Sort By` with options `Relevance`, `Most recent` and `Highest rated`.                                                             |
+| dc_type=  | indicates what type of document the paper is.                                                                                                              |
+
+These are the type of documents:
 
     chapter
     conference-paper
@@ -83,23 +110,21 @@ There are additional parameters such as:
     other
     standard
     
-There are few additional parameters but they will not be used as often as the ones already described.    
-
-
+There are other parameters but they will not be used as often as the ones already described.    
 They key is build a search URL that is recognizable by OnePetro. To do that I wrote a function `make_search_url` that does just that. Instead of entering the search keywords, how will they be searched, year and type of paper, we enter them from the R console.
 
-Below some examples:
-
+# Examples
 
 ## Get the number of papers for the keyword *neural network*.
-The option `how = "any"` means to search for papers that contain the word `neural` or the word `network`.
+Let's say we want to search the word **neural network**. How do we want to perform that search? Paper that contain the word **neural** or the word **network**, or papers that contain exactly the words **neural network**? In the former, we would use the option `any`, in the latter, `all`. 
 
-Let's take a look at the difference in returning results with `any` and `all` for the same keywords `neural network`.
+The option `how = "any"` means to search for papers that contain the word `neural` or the word `network`. Let's take a look at the difference in returning results with `any` and `how = all` for the same keywords `neural network`. Here we make of use of two functions in _petro.One_:  `make_search_url()` and `get_papers_count()`.
 
-Here we make of of two functions of petro.One:  `make_search_url` and `get_papers_count`.
 
 ```{r example}
 library(petro.One)
+library(tidyverse)
+
 # search any word like "neural" or "network"
 url_any <- make_search_url(query = "neural network", how = "any")
 url_any
@@ -111,18 +136,16 @@ url_all
 get_papers_count(url_all)
 ```
 
+
 ## Read papers from *from_year* to *to_year*
-We can send a query where we specify the starting year and the end year.
-Use the parameters as in the example below.
-
+We can send a query where we specify the _starting year_ and the _ending year_.
 In this example the option `how = "all"` means to search papers that contain **exactly** the words `neural network` as a difference to `any` which means search for `any` occurrence of the words. Of course, using `any` rather than `all` will yield many more results.
-
-We use two petro.One functions: `make_search_url` to build the OnePetro search URL and `onepetro_page_to_dataframe` to put the papers in a table.
+We use two petro.One functions: `make_search_url()` to build the OnePetro search URL and `onepetro_page_to_dataframe()` to put the papers in a table.
 
 ```{r}
 library(petro.One)
 
-# neural network papers from 1990 to 2000. Exact phrase
+# neural network papers from 1990 to 1999. Exact phrase
 my_url <- make_search_url(query = "neural network", 
                           from_year = 1990, 
                           to_year   = 1999, 
@@ -139,114 +162,70 @@ term_frequency(df)
 ```
 
 
+
 ## Get papers by document type (*dc_type*)
 We can also get paper by the type of document. In OnePetro it is called `dc_type`.
 
-#### Conference papers (`conference-paper`)
-In this example we are requesting only `conference-paper` type.
-
-Here we add to `make_search_url` the parameter `dc_type`.
-
-Note also that we are adding another parameter `rows` to get 1000 rows instead of 10, 50 or 100 as the browser allows.
+In this example we will be requesting only `conference-paper` type.
+Here we add to `make_search_url()` the parameter `dc_type`. Note also that we are adding another parameter `rows` to get 1000 rows instead of 10, 50 or 100 as the browser allows.
 
 ```{r}
 # specify document type = "conference-paper", rows = 1000
 
-my_url <- make_search_url(query = "neural network", 
+my_url <- make_search_url(query = "artificial intelligence", 
                           how = "all",
+                          from_year = 1950, 
+                          to_year   = 1980, 
                           dc_type = "conference-paper",
                           rows = 1000)
 
-get_papers_count(my_url)
+(pcount <- get_papers_count(my_url))
 df <- onepetro_page_to_dataframe(my_url)
 df
 ```
 
-#### Word cloud for journal papers
+Only `r pcount` on _artificial intelligence_ from 1950 until 1980!
 
-```{r fig.height=9, fig.width=6}
-plot_wordcloud(df, max.words = 100, min.freq = 10)
-```
 
-#### Journal papers (`journal-paper`)
-In this other example we are requesting for `journal-paper` type of papers. We are also specifying to get the maximum number of rows that OnePetro permits: 1000.
+## Finding the most frequent terms in *well test*
+For this example we want to know about _conference papers_ where the words *well* and *test* are found together in the papers.
 
-```{r}
-# specify document type = "journal-paper", rows = 1000
-
-my_url <- make_search_url(query = "neural network", 
-                          how = "all",
-                          dc_type = "journal-paper",
-                          rows = 1000)
-
-get_papers_count(my_url)
-df <- onepetro_page_to_dataframe(my_url)
-df
-```
-
-#### Word cloud for journal papers
-
-```{r fig.height=9, fig.width=6}
-plot_wordcloud(df, max.words = 100, min.freq = 50)
-```
-
-## Finding the most freqent terms in *well test*
-For this example we want to know about conference papers where the words *well* and *test* are found together in the papers.
-
-```{r}
+```{r welltest}
 library(petro.One)
 
 my_url <- make_search_url(query = "well test", 
                           dc_type = "conference-paper",
+                          from_year = 2017, 
+                          to_year   = 2018, 
                           how = "all")
 
-get_papers_count(my_url)
-df <- read_multidoc(my_url)
+get_papers_count(my_url)      # get the paper count
+df <- read_multidoc(my_url)   # create a dataframe of papers
+print(dim(df))                # dimension of the dataframe
 
-term_frequency(df)
+(tf <- term_frequency(df))    # create a term frequency table
+
+# calculate the minimum frequency for, let's say, the first 20th term
+min_freq <- min(head(tf, 20)$freq)
 ```
 
-#### Most frequent terms in *well test*
+### Most frequent terms in *well test*
 
 ```{r}
-# plot the 500 most freqent terms
-plot_bars(df, min.freq = 400)
+print(min_freq)
+# plot most frequent terms
+plot_bars(df, min.freq = min_freq)
 ```
 
-## How do the most frequent terms relate each other
-Now, it is not enough for us to know what terms are the more repeating but how those freqent terms relate to each other.
-
-In the following plot you will see that the strength of the relationship between terms is reflected by the thickness of the connection lines.
+### How do the most frequent terms relate each other
+Now, it is not enough for us to know what terms are the more repeating but how those freqent terms relate to each other. In the following plot you will see that the strength of the relationship between terms is reflected by the thickness of the connection lines.
 
 ```{r}
-plot_relationships(df, min.freq = 400, threshold = 0.075)
+plot_relationships(df, min.freq = min_freq, threshold = 0.075)
 ```
 
-We can see that *wells* and *well* are connected stringly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
+We can see that *wells* and *well* are connected strongly to *horizontal*, *transient*, *pressure*, *flow*, *testing*, *reservoirs*, *fracture*, and *analysis*. The rest of the words are frequent but not very much connected.
 
-For instance, if you are looking for papers that have stronger relationship between of *well test* and *permeability*, it would wise to add that term to the search.
-
-```{r}
-library(petro.One)
-
-my_url <- make_search_url(query = "well test permeability", 
-                          dc_type = "conference-paper",
-                          how = "all")
-
-get_papers_count(my_url)
-df <- read_multidoc(my_url)
-
-term_frequency(df)
-plot_bars(df, min.freq = 10)
-```
-
-In this example, we can see the effect of refining our search by including the term *permeability*.
-
-```{r}
-plot_relationships(df, min.freq = 15, threshold = 0.05)
-```
-
-This has the advantage of improving the search and narrow down the papers we are more interested in.
 
 
 ## Summaries
@@ -259,89 +238,20 @@ The summary functions allow us to group the papers by a preferred group:
 
 This will give you a summary of the count not the papers themselves.
 
-
-Here is an example of summaries. In this case, we want papers that contain the exact words "well test".
-
 ```{r}
 library(petro.One)
 
-my_url <- make_search_url(query = "well test", 
+my_url <- make_search_url(query = "artificial intelligence", 
                           how = "all")
 ```
 
-```{r eval=FALSE}
-papers_by_type(my_url)
-```
-
-
-### By document type
-```{r, echo=FALSE, results='asis'}
-knitr::kable(papers_by_type(my_url))
-```
-
-
-### By publisher
-```{r eval=FALSE}
-papers_by_publisher(my_url)
-```
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(papers_by_publisher(my_url), 10))
-```
-
-### By publication source
-
-```{r eval=FALSE}
-papers_by_publication(my_url)
-```
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(papers_by_publication(my_url), 10))
-```
-
-
 ### By year of publication
 
-```{r eval=FALSE}
-papers_by_year(my_url)
-```
-
 ```{r, echo=FALSE, results='asis'}
-knitr::kable(head(papers_by_year(my_url), 10))
+pby <- papers_by_year(my_url)
+knitr::kable(head(pby, 10))
 ```
 
 
-## Search for **any** word
-In this other example, we want papers that containg the word "well" or "test".
-
-```{r}
-library(petro.One)
-
-my_url <- make_search_url(query = "well test", 
-                          how = "any")
-
-by_doctype <- papers_by_type(my_url)
-```
-
-```{r eval=FALSE}
-by_doctype
-```
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(by_doctype)
-```
 
 
-#### Total number of papers that contain **well** or **test**
-In this example we get the total number of papers by document type.
-
-```{r}
-sum(by_doctype$value)
-```
-
-Or use the R base function `summary` to give us a quick statistics of the papers:
-
-```{r}
-# r-base function summary
-summary(by_doctype)
-```

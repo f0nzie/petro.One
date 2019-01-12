@@ -15,7 +15,9 @@ NULL
 #' File:  disciplines.rda
 #' Class: data.frame
 #' @docType data
-"labels"
+"discipline_labels"
+
+
 
 #' @title Default custom stop words
 #' @description This is a minimal dataset of custom stopwords.
@@ -31,16 +33,16 @@ NULL
 #' @docType data
 "custom_stopwords"
 
-#' @title Default synonyms
-#' @description Synonyms dataset to prevent repetition of equivalent words
-#' during classification. Example: 2D/2-D, cased hole/cased-hole,
-#' deep water/deepwater, etc.
-#' The first column is for the original word; the second column is for the
-#' replacement or standard word.
-#'
-#' Dataset: synonyms.rda
-#'
-#' Source:  synonyms.txt
-#'
-#' @docType data
-"custom_synonyms"
+
+# #' @title Default synonyms
+# #' @description Synonyms dataset to prevent repetition of equivalent words
+# #' during classification. Example: 2D/2-D, cased hole/cased-hole,
+# #' deep water/deepwater, etc.
+# #' The first column is for the original word; the second column is for the
+# #'
+# #' Dataset: synonyms.rda
+# #'
+# #' Source:  synonyms.txt
+# #'
+# #' @docType data
+# 'custom_synonyms'

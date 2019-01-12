@@ -13,8 +13,9 @@ papers_by_year(url)
 Generate a summary by the year the paper was published
 }
 \examples{
-#
+\dontrun{
 # Example
 my_url <- make_search_url(query = "production automation", how = "all")
 papers_by_year(my_url)
+}
 }

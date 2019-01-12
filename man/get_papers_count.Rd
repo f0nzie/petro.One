@@ -13,6 +13,7 @@ get_papers_count(url)
 Obtains the number of papers being queried by the URL
 }
 \examples{
+\dontrun{
 # Example 1
 url_1 <- make_search_url(query = "static gradient survey", how = "all")
 get_papers_count(url_1)
@@ -24,4 +25,5 @@ get_papers_count(url_2)
 # Example 3
 url_3 <- make_search_url(query = "inflow performance relationship", how = "all")
 get_papers_count(url_3)
+}
 }

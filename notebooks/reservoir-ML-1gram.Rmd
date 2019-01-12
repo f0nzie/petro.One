@@ -1,0 +1,102 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=F, error=T, message=F, warning=F}
+knitr::opts_chunk$set(echo = TRUE, 
+                      comment = NA, 
+                      error = TRUE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      fig.align = 'center')
+```
+
+## load paper object from previous OnePetro scan
+
+```{r rows.print=25}
+library(petro.One)
+library(RWeka)
+library(tm)
+library(tidyverse)
+library(wordcloud)
+
+# load previous findings
+load(file = paste0("rese_rese_mach_mach", ".rda"))
+papers <- paper_search_obj$papers
+papers
+```
+
+
+
+```{r}
+vdocs <- VCorpus(VectorSource(papers$book_title))
+vdocs <- tm_map(vdocs, content_transformer(tolower))      # to lowercase
+vdocs <- tm_map(vdocs, removeWords, stopwords("english")) # remove stopwords
+```
+
+
+## Create own custom stopwords
+We can take a look at what words to stop if we see the dataframe `tdm.df` in the previous article. Here are some:
+
+```{r}
+# our custom vector of stop words
+
+my_custom_stopwords <- c("approach", 
+                      "case", 
+                      "low",
+                      "new",
+                      "north",
+                      "real",
+                      "use", 
+                      "using",
+                      "like",
+                      "given",
+                      "2018",
+                      "2017",
+                      "wolfcamp",
+                      "based",
+                      "study",
+                      "method",
+                      "design",
+                      "improved",
+                      "novel",
+                      "advanced",
+                      "big",
+                      "efficient"
+                      )
+```
+
+## Remove custom stopwords from the document corpus
+
+```{r}
+# this is one way to remove custom stopwords
+vdocs <- tm_map(vdocs, removeWords, my_custom_stopwords)
+```
+
+
+## Summary table with words frequency
+
+```{r rows.print=25}
+tdm <- TermDocumentMatrix(vdocs)
+
+tdm.matrix <- as.matrix(tdm)
+tdm.rs <- sort(rowSums(tdm.matrix), decreasing=TRUE)
+tdm.df <- data.frame(word = names(tdm.rs), freq = tdm.rs, stringsAsFactors = FALSE)
+as.tibble(tdm.df)                          # prevent long printing of dataframe
+```
+
+
+## Word cloud with words that occur at least 50 times
+
+```{r warning=FALSE, message=FALSE}
+set.seed(1234)
+wordcloud(words = tdm.df$word, freq = tdm.df$freq, min.freq = 20,
+          max.words = 200, random.order = FALSE, rot.per=0.35,
+          colors=brewer.pal(8, "Dark2"))
+```
+
+
+

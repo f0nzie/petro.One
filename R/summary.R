@@ -7,15 +7,18 @@ library(rvest)
 #' @param url a OnePetro page with results
 #' @export
 #' @examples
+#' \dontrun{
 #' #
 #' # Example 1
 #' my_url <- make_search_url(query = "well test", how = "all")
 #' papers_by_type(my_url)
+#' }
 #' @importFrom dplyr group_by summarize rename n
 papers_by_type <- function(url) {
     if (get_papers_count(url) == 0) {   # return empty dataframe
         return(data.frame(type=as.character(), value = as.integer()))}
 
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
 
     if (is_dctype_enabled(page)) {
@@ -51,11 +54,12 @@ papers_by_type <- function(url) {
 #' @param result a OnePetro page with results
 #' @export
 #' @examples
-#' #
+#' \dontrun{
 #' # Example 1
 #' my_url <- make_search_url(query = "well test", how = "all")
 #' result <- read_onepetro(my_url)
 #' summary_by_doctype(result)
+#' }
 summary_by_doctype <- function(result) {
     x <- publication_result_right(result)
     doctype_vector <- get_dctype(x)
@@ -97,11 +101,13 @@ break_by_pattern <- function(x, pattern) {
 #' @param url a OnePetro query URL
 #' @export
 #' @examples
-#' #
+#' \dontrun{
 #' # Example
 #' my_url <- make_search_url(query = "shale gas", how = "all")
 #' papers_by_publisher(my_url)
+#' }
 papers_by_publisher <- function(url) {
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
     x <- publication_result_right(page)
     pub_vector <- get_dc_publisher(x)
@@ -117,11 +123,12 @@ papers_by_publisher <- function(url) {
 #' @param result a OnePetro page with results
 #' @export
 #' @examples
-#' #
+#' \dontrun{
 #' # Example
 #' my_url <- make_search_url(query = "shale gas", how = "all")
 #' page <- read_onepetro(my_url)
 #' summary_by_publisher(page)
+#' }
 summary_by_publisher <- function(result) {
     x <- publication_result_right(result)
     pub_vector <- get_dc_publisher(x)
@@ -139,11 +146,13 @@ summary_by_publisher <- function(result) {
 #' @param url a OnePetro query URL
 #' @export
 #' @examples
-#' #
+#' \dontrun{
 #' # Example
 #' my_url <- make_search_url(query = "production automation", how = "all")
 #' papers_by_year(my_url)
+#' }
 papers_by_year <- function(url) {
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
     x <- publication_result_left(page)
     pub_vector <- get_dc_issued_year(x)
@@ -159,11 +168,12 @@ papers_by_year <- function(url) {
 #' @param result a OnePetro page with results
 #' @export
 #' @examples
-#' #
+#' \dontrun{
 #' # Example
 #' my_url <- make_search_url(query = "production automation", how = "all")
 #' result <- read_onepetro(my_url)
 #' summary_by_dates(result)
+#' }
 summary_by_dates <- function(result) {
     x <- publication_result_left(result)
     pub_vector <- get_dc_issued_year(x)
@@ -180,11 +190,13 @@ summary_by_dates <- function(result) {
 #' @param url a OnePetro query URL
 #' @export
 #' @examples
-#' #
+#' \dontrun{
 #' # Example
 #' my_url <- make_search_url(query = "industrial drilling", how = "all")
 #' papers_by_publication(my_url)
+#' }
 papers_by_publication <- function(url) {
+    url <- check_unlimited_rows(url)
     page <- xml2::read_html(url)
     x <- publication_result_left(page)
     pub_vector <- get_s2_parent_title(x)
@@ -201,11 +213,12 @@ papers_by_publication <- function(url) {
 #' @param result a OnePetro page with results
 #' @export
 #' @examples
-#' #
+#' \dontrun{
 #' # Example
 #' my_url <- make_search_url(query = "industrial drilling", how = "all")
 #' result <- read_onepetro(my_url)
 #' summary_by_publications(result)
+#' }
 summary_by_publications <- function(result) {
     x <- publication_result_left(result)
     pub_vector <- get_s2_parent_title(x)

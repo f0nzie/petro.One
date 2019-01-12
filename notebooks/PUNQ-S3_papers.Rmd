@@ -1,0 +1,66 @@
+---
+title: "PUNQ-S3"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(petro.One)
+library(dplyr)
+
+major   <- c("PUNQ-S3")
+minor   <- c("machine-learning", "machine learning")
+
+search_result <- run_papers_search(major, minor, get_papers = TRUE , 
+                                   verbose = TRUE, len_keywords = 4)
+```
+
+
+
+
+```{r rows.print=25}
+papers <- search_result$papers
+papers
+```
+
+```{r echo=FALSE}
+# no need of this because now is built in into the function run_papers_search()
+
+# eliminate duplicates
+# papers <- papers %>% 
+#     distinct(paper_id, .keep_all = TRUE) %>% 
+#     distinct(book_title, .keep_all = TRUE) %>%  
+#     print
+
+# 54 vs 26
+```
+
+```{r rows.print=25}
+papers %>% 
+    group_by(year) %>%
+    summarize(n  = n()) %>% 
+    print
+```
+
+
+```{r}
+papers %>%
+    filter(year == 2003)
+```
+
+### what papers have machine learning in the title
+```{r}
+papers %>%
+    # machine learning OR machine-learning
+    filter(grepl(pattern = "machine[-\\s]learning", 
+                 x = book_title, ignore.case = TRUE, perl = TRUE))
+```
+
+### what papers have PUNQ-S3 in the title
+```{r}
+papers %>%
+    # machine learning OR machine-learning
+    filter(grepl(pattern = "PUNQ-S3", 
+                 x = book_title, ignore.case = TRUE, perl = TRUE))
+```

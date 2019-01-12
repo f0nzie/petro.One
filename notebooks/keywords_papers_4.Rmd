@@ -1,0 +1,178 @@
+---
+title: "Load dataset ml_technique_4 - 1st analysis"
+output: html_notebook
+---
+
+# Analysis
+
+## Load dataset `ml_technique_4.rda`
+
+```{r}
+library(dplyr)
+
+results_loc <- system.file("results", package = "petro.One")
+load(file = paste(results_loc, "ml_technique_4.rda", sep = "/"))
+
+keywords.4 <- by.ml_technique.4$keywords
+papers.4   <- by.ml_technique.4$papers
+
+# sort and sum most used algos
+keywords.4 %>%
+    group_by(Var3) %>%
+    summarize(papers=sum(paper_count)) %>%
+    rename(algorithm = Var3) %>% 
+    arrange(desc(papers))
+
+```
+
+```{r}
+keywords.4 <- by.ml_technique.4$keywords
+tibble::as.tibble(keywords.4)
+
+keywords.41 <- keywords.4 %>%
+    select(-c(Var1, sf, url)) %>% 
+    rename(algorithm = Var3, discipline = Var2) %>%
+    mutate(algorithm = trimws(algorithm)) %>% 
+    
+    print()
+```
+
+```{r}
+# show machine learning algorithms
+keywords.41 %>%
+    distinct(algorithm)
+
+```
+
+```{r rows.print=20}
+# rename equivalent algorithms
+
+keywords.42 <- keywords.41 %>%
+    mutate(algorithm = ifelse(algorithm == "PCA", "principal component analysis", algorithm)) %>% 
+    mutate(algorithm = ifelse(algorithm == "SVM", "Support Vector Machine", algorithm)) %>% 
+    mutate(algorithm = ifelse(algorithm == "SVD", "Singular Value Decomposition", algorithm)) %>% 
+    mutate(algorithm = ifelse(algorithm == "SVR", "Support Vector Regression", algorithm)) %>% 
+    mutate(algorithm = ifelse(algorithm == "GPR", "Gaussian Process Regression", algorithm)) %>% 
+    mutate(algorithm = ifelse(algorithm == "neural nets", "neural network", algorithm)) %>% 
+    mutate(algorithm = ifelse(algorithm == "convolutional neural", "deep learning", algorithm)) %>% 
+    mutate(algorithm = ifelse(algorithm == "convolutional network", "deep learning", algorithm)) %>% 
+    # sort and sum most used algos
+    group_by(algorithm) %>%
+    summarize(papers = sum(paper_count)) %>%
+    arrange(desc(papers)) %>% 
+    mutate(algorithm = gsub("(?<=\\b)([a-z])", "\\U\\1", tolower(algorithm), perl=TRUE)) %>% 
+    print
+```
+
+
+```{r}
+write.csv(keywords.42$algorithm, file = "ml_algorithms.csv")
+```
+
+
+```{r}
+# papers with selected columns only. Create a new ID to detect duplicate papers
+new.papers.4 <- papers.4 %>% 
+    select(title_data, keyword, year, paper_id, source) %>% 
+    mutate(id = trimws(paste0(trimws(source), trimws(paper_id))))
+
+new.papers.4
+```
+
+```{r}
+# how many duplicate papers
+new.papers.4 %>% 
+    distinct(id)
+
+
+```
+
+
+
+
+```{r}
+# new.papers.4$id == distinct(new.papers.4, id)
+```
+
+
+
+```{r}
+# split keyword at AND word
+res <- strsplit(new.papers.4$keyword, "AND")
+res[[1]]
+
+# replace extraneous chars by blank and space in str string vectors 
+res.la.1 <- lapply(res, function(x) gsub("\\+", " ", x))
+res.la.2 <- lapply(res.la.1, function(x) gsub("'", "", x))
+res.la.2[[1]]
+```
+
+
+```{r}
+# convert list of string vectors to dataframe
+keyword.cols <- as.data.frame(do.call(rbind, res.la.2), stringsAsFactors = FALSE)
+keyword.cols
+
+# merge columns
+mod.papers.4 <- cbind(new.papers.4, keyword.cols)
+mod.papers.4
+```
+
+
+```{r}
+# save dataframe to development results
+devres_loc <- "../inst/results"
+write.csv(mod.papers.4, file = paste(devres_loc, "ml_papers_4.csv", sep = "/"))
+```
+
+
+
+```{r}
+Unique <- mod.papers.4 %>%
+  group_by(V3) %>%
+  filter(n_distinct(id))
+```
+
+```{r}
+library(dplyr)
+mod.papers.4 %>%
+    distinct(title_data, id)
+```
+
+```{r}
+names(mod.papers.4)
+```
+
+```{r}
+# get row index number for non-duplicated rows
+nodup.papers.4 <- mod.papers.4[!duplicated(mod.papers.4[6]),]
+nodups.papers.4 <- nodup.papers.4 %>% 
+    select(-c(keyword, paper_id, source, V1))
+```
+
+```{r}
+# save dataframe to development results
+devres_loc <- "../inst/results"
+write.csv(nodups.papers.4, file = paste(devres_loc, "ml_nodups_papers_4.csv", sep = "/"))
+```
+
+
+
+## Read Excel file with Petroleum Engineering applications
+
+```{r}
+xls.nodups.papers.4 <- readxl::read_xlsx(paste(devres_loc, "ml_nodups_papers_4.xlsx", sep = "/"), sheet = 1)
+
+xls.nodups.papers.4
+```
+
+```{r}
+# unique applications
+unique(xls.nodups.papers.4$pe_app)
+```
+
+
+```{r}
+
+```
+

@@ -4,13 +4,30 @@
 \alias{plot_bars}
 \title{Plot frequency distribution with horizontal bara}
 \usage{
-plot_bars(df, min.freq = 25)
+plot_bars(df, gram.min = 1, gram.max = 1, min.freq = 25)
 }
 \arguments{
 \item{df}{a dataframe with paper results}
+
+\item{gram.min}{minimum number of grams}
+
+\item{gram.max}{maximum number of grams}
 
 \item{min.freq}{minimum frequency of the words to be plotted}
 }
 \description{
 SHows a bar plot with words on the y-axis and frequency on the x-axis
+}
+\examples{
+\dontrun{
+my_url <- make_search_url(query = "well test",
+                          dc_type = "conference-paper",
+                          from_year = 2017,
+                          to_year   = 2018,
+                          how = "all")
+df <- read_multidoc(my_url)   # create a dataframe of papers
+(tf <- term_frequency(df))    # create a term frequency table
+min_freq <- min(head(tf, 20)$freq)
+plot_bars(df, min.freq = min_freq)
+}
 }

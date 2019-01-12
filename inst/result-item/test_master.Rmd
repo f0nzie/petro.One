@@ -1,0 +1,618 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all"
+                          )
+
+get_papers_count(my_url)
+# 3238
+
+df <- papers_by_type(my_url)
+df
+# Conference paper	2881			
+# General	           4			
+# Journal paper	     323			
+# Media	               2			
+# Other	               5			
+# Presentation	      23	
+sum(df$value)
+# 3238
+
+```
+
+
+
+
+```{r}
+# specify document type = "conference-paper", rows = 1000
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all",
+                          dc_type = "conference-paper",
+                          rows = 100)
+
+get_papers_count(my_url)
+papers_by_type(my_url)
+df <- onepetro_page_to_dataframe(my_url)
+df
+```
+
+
+
+
+```{r}
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all",
+                          dc_type = "other",
+                          rows = 100)
+
+get_papers_count(my_url)
+# 5
+df <- onepetro_page_to_dataframe(my_url)
+df
+# Error in `[.data.frame`(source_data, , 5) : undefined columns selected
+```
+
+
+```{r}
+
+my_url <- make_search_url(query = "neural network", 
+                          how = "all",
+                          dc_type = "media",
+                          rows = 100)
+
+get_papers_count(my_url)
+# 2
+df <- onepetro_page_to_dataframe(my_url)
+df
+# 0 rows
+```
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "pressure"
+                          )
+
+get_papers_count(my_url)
+# Search results: Your search for pressure has returned 132,327 results.
+# 132327
+papers_by_type(my_url)
+# Chapter	             87			
+# Conference paper	 108985			
+# General	           1521			
+# Journal paper	      20807			
+# Media	                107			
+# Other	                158			
+# Presentation	        559			
+# Standard	            103	
+```
+
+```{r}
+library(petro.One)
+
+url <- make_search_url(query = "pressure",
+                          rows = 90        # page of size 90
+                          )
+
+# get_papers_count(my_url)
+df <- onepetro_page_to_dataframe(url)
+df
+# Error in onepetro_page_to_dataframe(my_url) : Dataframe sizes different
+# WRB Lance Formation - Pressure Gradient
+# Document Type: Other
+```
+
+```{r}
+get_papers_count(url)
+webpage <- xml2::read_html(url)
+petro.One:::read_titles(webpage)
+petro.One:::read_sources(webpage)
+petro.One:::read_author(webpage)
+```
+
+## The question
+How do we know the `webpage` we just read contains howmany of `conference-paper`, `media` or `presentation` kind of documents?
+
+Is there a way to search the `webpage` for those tags?
+
+<div class="result-item" data-type="other" data-itemid="other/468">
+
+<div class="result-item-stars"
+          data-p13n-rating="other/468" data-p13n-rating-type="technical"
+          
+<div class="result-item-actions">
+              <a href="http://www.netl.doe.gov/kmd/CDs/Disk8/Model Inputs and Analyses Wind River Basin/wprslnc.pdf" class="result-item-action-btn" target="_blank">Visit External Site</a>
+          <div class="save-item-btn" data-p13n="other" data-p13n-uri="https://www.onepetro.org:443/other/468?          
+
+
+```{r}
+library(rvest)
+library(petro.One)
+
+url <- make_search_url(query = "pressure",
+                          rows = 90        # page of size 90
+                          )
+webpage <- xml2::read_html(url)
+```
+
+
+```{r creating-dataframe, row.print=20}
+url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows=400"
+
+webpage <- xml2::read_html(url)
+
+col1 <- html_nodes(webpage, '.result-item') %>%
+     html_attr("data-type") %>% 
+    trimws %>% 
+    head(., -1)
+
+col2 <- html_nodes(webpage, '.result-item') %>%
+    html_attr("data-itemid") %>% 
+    gsub("data-cite-id=", "", .) %>% 
+    trimws %>% 
+    head(., -1)
+
+data.frame(data_type = col1, item_id = col2)
+
+
+# html_nodes(webpage, '.result-item.dc_type-media')
+```
+
+```{r}
+## Creates a character matrix
+col2_df <- data.frame(do.call(rbind, strsplit(col2, "/")), stringsAsFactors = FALSE)
+col2_df
+```
+
+```{r}
+col2_df %>% 
+    rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3, sup = X4) %>% 
+    mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>% 
+    mutate(dc_type_3 = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1))
+```
+
+
+
+
+```{r right_dc-type, rows.print=25}
+url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows=153"
+
+webpage <- xml2::read_html(url)
+
+col2 <- html_nodes(webpage, '.result-item') %>%
+    html_attr("data-itemid") %>% 
+    gsub("data-cite-id=", "", .) %>% 
+    trimws %>% 
+    head(., -1)
+
+col2_df <- data.frame(do.call(rbind, strsplit(col2, "/")), stringsAsFactors = FALSE)
+
+dc_type <- col2_df %>%
+    rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3, sup = X4) %>%
+    mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>%
+    mutate(dc_type_3 = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1))
+
+# number of columns of result is not a multiple of vector length (arg 154)
+dc_type
+```
+
+```{r}
+dc_type %>% 
+    group_by(dc_type_3) %>% 
+    summarise(count = n())
+```
+
+```{r}
+url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows=156"
+
+webpage <- xml2::read_html(url)
+
+col2 <- html_nodes(webpage, '.result-item') %>%
+    html_attr("data-itemid") %>% 
+    gsub("data-cite-id=", "", .) %>% 
+    trimws %>% 
+    head(., -1)
+```
+
+
+
+```{r}
+col2.li <- html_nodes(webpage, '.result-item') %>%
+    html_attr("data-itemid") %>% 
+    gsub("data-cite-id=", "", .) %>% 
+    trimws %>% 
+    head(., -1) %>% 
+    strsplit(., "/")
+    
+head(col2.li)
+# sapply(col2.li, length)
+```
+
+```{r table-that-works}
+url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows=200"
+
+webpage <- xml2::read_html(url)
+
+col1 <- html_nodes(webpage, '.result-item') %>%
+     html_attr("data-type") %>% 
+    trimws %>% 
+    head(., -1)
+
+col2 <- html_nodes(webpage, '.result-item') %>%
+    html_attr("data-itemid") %>% 
+    gsub("data-cite-id=", "", .) %>% 
+    trimws %>% 
+    head(., -1)
+
+# col2_df <- data.frame(do.call(rbind, strsplit(col2, "/")), stringsAsFactors = FALSE)
+col2_split <- strsplit(col2, "/")
+col2_df <- data.frame(t(sapply(col2_split, '[', 1:max(sapply(col2_split, length)))),
+                      stringsAsFactors = FALSE)
+
+dc_type <- col2_df %>%
+    rename(dc_type_1 = X1, paper_id = X2, dc_type_2 = X3, sup = X4) %>%
+    mutate(x1x3 = ifelse(dc_type_1 == dc_type_2, TRUE, FALSE)) %>%
+    mutate(dc_type = ifelse(dc_type_2 %in% "SUPPLEMENTARY", "media", dc_type_1))
+
+# number of columns of result is not a multiple of vector length (arg 154)
+cbind(col1, dc_type)
+```
+
+```{r}
+get_result_item_source <- function(webpage) {
+    source_data_txt <- petro.One:::get_item_source(webpage)
+    source_data <- data.frame(do.call('rbind', strsplit(as.character(source_data_txt),
+                                                        '\n', fixed=TRUE)),
+                              stringsAsFactors = FALSE)
+    # print(source_data)
+    # force data types
+    data.frame(paper_id = as.character(source_data[, 2]),
+                              source   = as.character(source_data[, 3]),
+                              type     = as.character(source_data[, 4]),
+                              year     = as.character(source_data[, 5]),
+                              stringsAsFactors = FALSE)    
+}
+
+get_result_item_source(webpage)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+html_nodes(webpage, '.result-item') %>%
+    html_nodes(".book-title") %>% 
+    html_text %>% 
+    gsub("\n", "", .) %>% 
+    trimws
+```
+
+
+
+
+
+
+
+
+
+
+
+
+```{r function_join_authors}
+
+join_authors <- function(x) {
+    nm1 <- if (grepl("[,.]", item_authors[[x]][1])) item_authors[[x]][1] else "NA"
+    nm2 <- if (grepl("[,.]", item_authors[[x]][2])) item_authors[[x]][2] else "NA"
+    nm3 <- if (grepl("[,.]", item_authors[[x]][3])) item_authors[[x]][3] else "NA"
+    nm4 <- if (grepl("[,.]", item_authors[[x]][4])) item_authors[[x]][4] else "NA"
+    nm5 <- if (grepl("[,.]", item_authors[[x]][5])) item_authors[[x]][5] else "NA"
+    nm6 <- if (grepl("[,.]", item_authors[[x]][6])) item_authors[[x]][6] else "NA"
+    nm7 <- if (grepl("[,.]", item_authors[[x]][7])) item_authors[[x]][7] else "NA"
+    nm8 <- if (grepl("[,.]", item_authors[[x]][8])) item_authors[[x]][8] else "NA"
+    authors <- paste(nm1, nm2, nm3, nm4, nm5, nm6, nm7, sep = "|")
+    authors <- strsplit(authors, "|", fixed = TRUE)
+    authors <- lapply(authors, function(x) x[!x %in% "NA"] )  # remove a blank from a list
+    sapply(authors, paste, collapse = " | ")
+}
+
+df <- data.frame(authors = sapply(1:100, join_authors), stringsAsFactors = FALSE)
+df
+```
+
+
+```{r}
+# only delivers the grand total, not the count by page
+papers_by_type(url)
+```
+
+
+```{r}
+# data.frame(do.call(rbind, col2_split))
+paste0("x", seq(1:max(sapply(col2_split, length))))
+setattr(col2_split, "names", paste0("x", seq(1:max(sapply(col2_split, length)))))
+data.table::rbindlist(col2_split, fill =TRUE, use.names = TRUE)
+```
+
+
+```{r}
+col2_split <- strsplit(col2, "/")
+```
+
+
+```{r}
+col3 <- lapply(col2.li, function(x) x[1])
+col4 <- lapply(col2.li, function(x) x[2])
+col5 <- lapply(col2.li, function(x) x[3])
+col6 <- lapply(col2.li, function(x) x[4])
+head(col3)
+
+data.frame(as.character(col3), as.character(col4), as.character(col5), as.character(col6))
+```
+
+
+
+```{r rows.print=25}
+data.frame(data_type = col1, item_id = col2)
+```
+
+
+```{r}
+html_nodes(webpage, '.result-item')
+```
+
+```{r}
+html_nodes(webpage, '.result-item.dc_type-media')
+```
+
+```{r}
+rvest::html_children(webpage)
+```
+
+
+```{r}
+html_nodes(webpage, '.highlighted') 
+# %>% 
+#    html_attr("\n")
+#    html_text()
+```
+
+```{r}
+html_nodes(webpage, 'result-item data-type="conference-paper"') 
+
+```
+
+```{r}
+nodes <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows=90" %>% 
+read_html %>% 
+html_nodes('.result-item')
+```
+
+
+```{r}
+column <- function(x) nodes %>% html_node(xpath = x) %>% html_text()
+```
+
+
+```{r}
+head(column("div[1]"))
+```
+
+
+
+## find downloads
+
+```{r}
+column("div[2]//p") %>% 
+    gsub("\n", "", .) %>% 
+    trimws %>% 
+    head(1)
+    
+```
+
+
+```{r}
+x = "7 downloads  in the last 30 days 304 downloads  since 2007"
+grep("[0-9]+", x, perl = TRUE, value = TRUE)
+```
+
+
+> url <- "https://www.ratebeer.com/beer/8481"
+> 
+> read_html(url) %>%
++   html_nodes(., css = '.stats-container') %>%
++   html_text(url)
+Error in xpath_class(<S4 object of class "Class">) : 
+  could not find function "xpath_class"
+>   
+>   
+> read_html(url) %>%
++   html_nodes(., xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "stats-container", " " ))]') %>%
++   html_text(url)
+character(0)
+
+```{r}
+read_html(url) %>%
+   html_nodes(., css = '.stats-container') %>%
+   html_text(url)
+```
+
+
+```{r}
+url <- "https://www.ratebeer.com/beer/8481"
+read_html(url) %>%
+  html_nodes(., xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "stats-container", " " ))]') %>%
+   html_text(url)
+```
+
+```{r}
+url <- "https://www.ratebeer.com/beer/saugatuck-starburst-wheat/268652/168672/"
+
+read_html(url) %>%
+   html_nodes(., css = '.stats-container') %>%
+   html_text()
+
+```
+
+
+```{r}
+# Load packages
+library(rvest)
+library(dplyr)
+
+#Retrieve impact evaluations
+evaluation_table <- data.frame() 
+begin_path <- "http://www.3ieimpact.org/en/evidence/impact-evaluations/details/"
+end_path <- "/"
+
+for (i in 3082:3084) {
+  path <- paste(begin_path, i, end_path, sep ="")
+  print(path)
+  if (!grepl("Error in parse", try(html_text(read_html(path))))) {
+    evaluation <- read_html(path)
+    # Check if there is an evaluation date
+    if (grepl("Error", try(html_text(html_node(evaluation, "time"))))) {
+      time <- NA
+    } else {
+      time <- as.character(html_text(html_node(evaluation, "time")))
+      time <- gsub("[^0-9]*", "", time)
+    }
+    # Retrieve fields names and information
+    
+    # nodes
+    title      <- as.character(html_text(html_nodes(evaluation, "h1")))
+    categories <- html_text(html_nodes(evaluation, "dl dt"))
+    details    <- html_text(html_nodes(evaluation, "dl dd"))
+    synthesis  <- html_text(html_nodes(evaluation, ".summary_item h2 , .summary_item p"))
+    
+    # pre-processing
+    synthesis  <- paste(synthesis, collapse = " ")
+    categories <- c("3IE_ID", "Title", "Time", categories, "URL")
+    categories <- gsub(" ", "_", categories)
+    details    <- c(i, title, time, details, path)
+    details    <- append(details, synthesis)
+    categories <- append(categories, "synthesis")
+    
+    # Consolidates evaluation info with others
+    eval_data <- data.frame(rbind(details), row.names = i)
+    colnames(eval_data) <- categories
+    eval_data[] <- lapply(eval_data, as.character)
+    evaluation_table <- bind_rows(evaluation_table, eval_data)
+  }
+}
+```
+
+```{r}
+# add a member to a vector
+a <- c("alfa", "beta")
+b <- append(a, "gama")
+b
+```
+
+
+```{r}
+path <- "http://www.3ieimpact.org/en/evidence/impact-evaluations/details/3082/"
+evaluation <- read_html(path)
+time <- html_text(html_node(evaluation, "time"))
+time <- gsub("[^0-9]*", "", time)
+time
+```
+
+```{r}
+as.character(html_text(html_nodes(evaluation, "h1")))
+html_text(html_nodes(evaluation, "dl dt"))
+html_text(html_nodes(evaluation, ".summary_item h2 , .summary_item p"))
+```
+
+```{r}
+url <- "https://www.onepetro.org/search?sort=&start=90&q=pressure&s2_parent_title=&dc_issued_year=&dc_publisher_facet=&from_year=&peer_reviewed=&published_between=&dc_type=media&rows=90&to_year="
+
+url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows=90"
+
+webpage <- xml2::read_html(url)
+html_nodes(webpage, '.highlighted') %>% 
+    html_nodes("strong") %>% 
+    html_text
+```
+
+
+```{r}
+html_nodes(webpage, '.highlighted') %>% 
+    html_nodes(".sources") %>% 
+    html_text
+```
+
+The tag `result-link:nth-child(1)` returns a partial list of the papers. Some papers will not have download links.
+
+
+```{r}
+url <- "https://www.onepetro.org/search?start=0&q=pressure&from_year=&peer_reviewed=&published_between=&to_year=&rows=90"
+
+webpage <- xml2::read_html(url)
+html_nodes(webpage, '.result-link:nth-child(1)') %>% 
+    html_text %>% 
+    gsub("\n", "", .) %>% 
+    trimws
+```
+
+```{r}
+html_nodes(webpage, '.result-item') %>%
+    html_attr("data-itemid") %>% 
+    gsub("data-cite-id=", "", .) %>% 
+    trimws
+```
+
+## Represent a set of non-uniform sized dataframes in R
+https://stackoverflow.com/questions/17125296/represent-a-set-of-non-uniform-sized-dataframes-in-r
+
+```{r}
+A = read.table(text="item           Alice     Bob
+                     apples           3        7
+                     pears            1        2
+                     cookies         10        4   
+                     grapes         238      483
+                     watermelon       0        1", header=T)
+
+B = read.table(text="item           Alice     Bob 
+                     grapes          13       26", header=T)
+
+C = read.table(text="item           Alice     Bob 
+                     beef             1        3
+                     rice             1        2
+                     apples           1        0", header=T)
+
+Z = read.table(text="item           Alice     Bob 
+                     rice             2        1
+                     grapes          10       15
+                     watermelon       1        0
+                     beef             0        2", header=T)
+
+A$party = "A";    B$party = "B";    C$party = "C";    Z$party = "Z"
+dframe = rbind(A, B, C, Z)
+```
+
+
+data-type
+dc_type-media
+
+
+
+

@@ -5,6 +5,7 @@
 #' @param url char a OnePetro type URL
 #' @export
 #' @examples
+#' \dontrun{
 #' # Example 1
 #' # Search papers with keyword "smartwell"
 #' url_sw <- "https://www.onepetro.org/search?q=smartwell"
@@ -13,25 +14,28 @@
 #' # Search for exact words ""vertical lift performance"
 #' url_vlp <- "https://www.onepetro.org/search?q=%22vertical+lift+performance%22"
 #' onepetro_page_to_dataframe(url_vlp)
+#' }
 onepetro_page_to_dataframe <- function(url) {
+    empty_df <- tibble::tibble(book_title = character(),
+                               dc_type = character(),
+                               paper_id = character(),
+                               authors = character(),
+                               source = character(),
+                               year = integer())
     webpage <- read_html(url)
-    df_titles  <- read_titles(webpage)
-    # print(df_titles)
-    df_sources <- read_sources(webpage)
-    # print(df_sources)
-    df_author  <- read_author(webpage)
-    # print(df_author)
+    # titles
+    # sources
+    # author
+    data_itemid <- get_data_itemid(webpage)
+    if(ncol(data_itemid) == 0) return(empty_df)
 
-    # ensure that all dataframes have the same number of rows
-    if (all(dim(df_titles)[1]  == dim(df_sources)[1],
-            dim(df_sources)[1] == dim(df_author)[1],
-            dim(df_author)[1]  == dim(df_titles)[1]
-    ))
-        df <- cbind(df_titles, df_sources, df_author)
-    else
-        stop("Dataframe sizes different")  # otherwise, stop
-
-    return(tibble::as.tibble(df))
+    dc_type    <- get_dc_type(webpage)
+    book_title <- get_book_title(webpage)
+    paper_id   <- get_paper_id(webpage)
+    authors    <- get_authors(webpage)
+    year       <- get_year(webpage)
+    source     <- get_source(webpage)
+    return(tibble::as.tibble(cbind(book_title, paper_id, dc_type, authors, year, source)))
 }
 
 

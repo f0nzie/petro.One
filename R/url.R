@@ -33,6 +33,13 @@ read_onepetro <- function(url) {
 }
 
 
+check_unlimited_rows <- function(url) {
+    if (!is.na(urltools::param_get(url, "rows"))) {
+        url <- urltools::param_remove(url, keys = c("rows"))
+    }
+    url
+}
+
 #' @title Number of paper for a given query
 #' @description Obtains the number of papers being queried by the URL
 #' @param url char a query URL for OnePetro
@@ -41,6 +48,7 @@ read_onepetro <- function(url) {
 #' @importFrom rvest html_nodes html_text
 #' @export
 #' @examples
+#' \dontrun{
 #' # Example 1
 #' url_1 <- make_search_url(query = "static gradient survey", how = "all")
 #' get_papers_count(url_1)
@@ -52,18 +60,19 @@ read_onepetro <- function(url) {
 #' # Example 3
 #' url_3 <- make_search_url(query = "inflow performance relationship", how = "all")
 #' get_papers_count(url_3)
+#' }
 get_papers_count <- function(url) {
-  # result <- send_url(url)
-  result <- xml2::read_html(url)
+    url <- check_unlimited_rows(url)
+    result <- xml2::read_html(url)
 
-  papers <- result %>%
+    papers <- result %>%
     html_nodes("h2") %>%
     html_text()
 
-  # extract the numeric part of the results
-  pattern <- "[\\d,]+(?= results.)"    # a number, including comma, before " results."
-  m <- regexpr(pattern, papers[1], perl = TRUE)       # matched
-  as.numeric(gsub(",", "", regmatches(papers[1], m))) # remove comma first
+    # extract the numeric part of the results
+    pattern <- "[\\d,]+(?= results.)"    # a number, including comma, before " results."
+    m <- regexpr(pattern, papers[1], perl = TRUE)       # matched
+    as.numeric(gsub(",", "", regmatches(papers[1], m))) # remove comma first
 }
 
 
@@ -80,6 +89,7 @@ get_papers_count <- function(url) {
 #' @param how char           default="any". "all" will match exact words
 #' @export
 #' @examples
+#' \dontrun{
 #' # Example 1
 #' url_1 <- make_search_url(query = "flowing gradient survey", how = "all")
 #' onepetro_page_to_dataframe(url_1)
@@ -90,6 +100,7 @@ get_papers_count <- function(url) {
 #' url_3 <- make_search_url(query = "downhole flowrate measurement",
 #'       how = "all", from_year = 1982, to_year = 2017)
 #' onepetro_page_to_dataframe(url_3)
+#' }
 make_search_url <- function(query = NULL, start = NULL, from_year = NULL,
                             peer_reviewed = NULL,
                             published_between = NULL,

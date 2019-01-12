@@ -5,8 +5,19 @@
 inst/doc
 # docs/*
 # man/*
-
-*.html
-*.png
+# *.html
+# *.png
+# man/
 *.csv
-man/
+notebooks/*
+
+tests/testthat/neural_network-s0000r1000\.html
+
+tests/testthat/neural_network-s1000r1000\.html
+
+tests/testthat/neural_network-s3000r1000\.html
+
+tests/testthat/neural_network-s2000r1000\.html
+
+_tests/
+tests/

@@ -5,7 +5,7 @@
 \title{Get paper count and paper dataframe by joining keywords as vectors}
 \usage{
 join_keywords(..., get_papers = TRUE, bool_op = "AND", sleep = 3,
-  verbose = TRUE)
+  verbose = FALSE)
 }
 \arguments{
 \item{...}{input character vectors}
@@ -20,4 +20,13 @@ join_keywords(..., get_papers = TRUE, bool_op = "AND", sleep = 3,
 }
 \description{
 Get paper count and paper dataframe by joining keywords as vectors
+}
+\examples{
+\dontrun{
+major  <- c("water-injection", "water injection")
+minor  <- c("machine-learning", "machine learning")
+lesser <- c("algorithm")
+p.df <- join_keywords(major, minor, lesser, get_papers = TRUE,
+                      sleep = 2, verbose = FALSE)
+}
 }

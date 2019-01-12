@@ -42,6 +42,23 @@ kw_tbl
 ```
 
 
+```{r}
+sucker_rod_pump <- join_keywords(kw_tbl$keyword,
+                                   get_papers = TRUE, sleep = 3, verbose = TRUE)
+
+# "sucker rod" is the same as "sucker-rod"
+```
+
+
+```{r}
+library(rNodal.utils)
+save_to_project(sucker_rod_pump, name = "sucker_rod_pump_L1")
+```
+
+```{r}
+sucker_rod_pump$papers
+```
+
 
 ## Build iteration loop
 

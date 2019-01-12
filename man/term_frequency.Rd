@@ -4,11 +4,25 @@
 \alias{term_frequency}
 \title{Word Frequency Dataframe}
 \usage{
-term_frequency(df)
+term_frequency(df, gram.min = 1, gram.max = 1)
 }
 \arguments{
 \item{df}{a dataframe with paper results}
+
+\item{gram.min}{minimum number of grams}
+
+\item{gram.max}{maximum number of grams}
 }
 \description{
 Returns a dataframe of words vs frequency
+}
+\examples{
+\dontrun{
+my_url <- make_search_url(query = "neural network",
+                          from_year = 1990,
+                          to_year   = 1999,
+                          how = "all")
+df <- onepetro_page_to_dataframe(my_url)
+term_frequency(df)
+}
 }

@@ -47,3 +47,21 @@ for (k in kw_tbl$keyword) {
 }                                         # be a good internet citizen
 data.table::rbindlist(rec)                # final data table
 ```
+
+
+## using join_keywords
+
+```{r}
+major <- c("gas lift", "gas-lift", "GasLift", "gas-lifted", "gas lifted", 
+           "lift gas", "lift-gas", "gas.lift", "gas_lift")
+gas_lift <- join_keywords(major, 
+                                   get_papers = TRUE, sleep = 3, verbose = TRUE)
+
+# "gas lift" is the same as "gas-lift"
+```
+
+```{r}
+library(rNodal.utils)
+save_to_project(gas_lift, name = "gas_lift_L1")
+```
+

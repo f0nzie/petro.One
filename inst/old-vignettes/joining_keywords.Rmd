@@ -1,0 +1,97 @@
+---
+title: "Reducing paper results by joining keywords"
+author: "Alfonso R. Reyes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This is a demonstration on how the number of papers can be reduced using additional keywords to control the number of results returned.
+
+```{r}
+library(petro.One)
+```
+
+
+## test #1
+We start with these keywords:
+    water injection     water flooding
+    machine-learning    artificial intelligence
+    neural networks
+
+```{r, 5-keywords}
+# provide two different set of keywords to combine as vectors
+major  <- c("water injection", "water flooding")
+minor  <- c("machine-learning", "artificial intelligence")
+lesser <- c("neural networks")
+
+result_object <- join_keywords(major, minor, lesser, get_papers = TRUE)
+result_object
+```
+
+
+```{r}
+# save findings
+# save the three objects as one
+papers <- result_object
+wat_inj_ml_1 <- petro.One:::as_named_list(major, minor, lesser, papers)
+save(wat_inj_ml_1, file = paste0("wat_inj_ml_1", ".rda"))
+
+# load previous save
+load(file = paste0("wat_inj_ml_1", ".rda"))
+papers <- wat_inj_ml_1$papers
+papers
+```
+
+## Using a new function to replace multiple commands
+
+```{r}
+paper_results <- run_papers_search(major, minor, lesser,
+                                   get_papers = TRUE,       # return with papers
+                                   verbose = FALSE,         # show progress
+                                   len_keywords = 4,        # naming the data file
+                                   allow_duplicates = FALSE) # by paper title and id
+```
+
+```{r}
+names(paper_results)
+```
+
+
+
+### test #2
+Then, we increase the number of keywords:
+
+    water injection     water flooding
+    machine-learning    machine learning    intelligent
+    neural network      SVM                 genetic
+    algorithm
+
+```{r}
+# provide two different set of keywords to combine as vectors
+m  <- c("water injection", "water flooding")
+n  <- c("machine-learning", "machine learning", "intelligent")
+p  <- c("neural network", "SVM", "genetic")
+q  <- c("algorithm")
+
+paper_results_9 <- run_papers_search(m, n, p, q,
+                                   get_papers = TRUE,       # return with papers
+                                   verbose = FALSE,         # show progress
+                                   len_keywords = 4,        # naming the data file
+                                   allow_duplicates = FALSE) # by paper title and id
+
+paper_results_9$papers
+```
+
+
+

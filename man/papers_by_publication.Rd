@@ -15,8 +15,9 @@ be World Petroleum Congress, Annual Technical
 Meeting, SPE Unconventional Reservoirs Conference, etc.
 }
 \examples{
-#
+\dontrun{
 # Example
 my_url <- make_search_url(query = "industrial drilling", how = "all")
 papers_by_publication(my_url)
+}
 }
