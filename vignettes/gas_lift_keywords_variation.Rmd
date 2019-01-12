@@ -1,0 +1,102 @@
+---
+title: "Gas Lift keywords variation"
+author: "Alfonso R. Reyes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+One of the little annoyances while doing paper research in OnePetro is knowing the correct spelling of the keywords under search. It would seem insignificant but we will see in this article choosing the right keyword could have effects on the results. Let's see a practical example.
+
+For this demonstration I will use the R package [petro.One][petro.One]. It is available from CRAN, as free and open source project. The advantage of using petro.One is that you can do many operations in batch, perform search automation, and receive a table (dataframe) as a result.
+
+We start by creating a list of all the possible combinations of the words "gas" and "lift". These are the some that I have seen written in papers, presentations and articles. There may be more, of course. You can try yourself if you install and run petro.One in your computer.
+
+In the code chunk below each of the keywords has been entered as one line of text. We enclosed that text with quotes and assign it to the object keywords. Then, we convert that text into a dataframe using the R function read.table, providing some arguments. For instance, we are not providing a header (header = FALSE), the separation between keywords is a new line (sep = "\n"), we don't want factors but text (stringsAsFactors = FALSE), remove blanks between words (strip.white = TRUE), and the name of the column is keyword (col.names = "keyword").
+
+```{r}
+library(petro.One)
+
+# provide the list of keywords
+keywords <- "    
+    gas lift
+    gas-lift
+    GasLift
+    gas.lift
+    gas_lift"
+
+# convert the text to a dataframe
+# read text table and split rows at carriage return
+kw_tbl <- read.table(text = keywords, header = FALSE, sep = "\n", 
+                     stringsAsFactors = FALSE, strip.white = TRUE, 
+                     col.names = "keyword")
+```
+
+
+The result is this little table or dataframe below. I am using a dataframe and not a vector because I am expecting that in other cases we could have many more word combinations; let's say, more than 20, or maybe above 100. And that's better managed with a dataframe.
+
+```{r}
+# show the dataframe
+kw_tbl  
+```
+
+Now that we have all the word combinations stored in a table, we will iterate through all these keywords and send a query search to OnePetro for each of them. This means that that we are sending an automated search to the OnePetro website. Because we are very good internet citizens, we are also taking care of not sending too much traffic to the website by adding a pause of five seconds between searches.
+
+### Build iteration loop
+
+```{r rows.print = 20}
+# iterate through the keywords dataframe
+rec <- vector("list")
+i <- 1
+for (k in kw_tbl$keyword) {
+    url_all  <- make_search_url(query = k, how = "all")    # create search query
+    count    <- get_papers_count(url_all)                  # paper count
+    rec[[i]] <- list(keyword = k, count = count)           # add observation
+    cat(sprintf("%30s %5d \n", k, count))                  # print it
+    i <-  i + 1                                            # increment counter
+    Sys.sleep(5)                          # do not bug OnePetro website too much
+}                                         # be a good internet citizen
+
+```
+
+These are the results.
+
+```{r}
+dt <- data.table::rbindlist(rec)                # final data table
+dt
+```
+
+```{r, echo=FALSE}
+total_count <- sum(dt$count)
+percent_of_total <- (dt[keyword == "gas-lift"]$count +  
+  dt[keyword == "gas lift"]$count) / total_count * 100
+marginal <- dt[keyword == "gas.lift"]$count +  dt[keyword == "gas_lift"]$count
+```
+
+
+## Observations
+The keyword with most papers written is the word "gas", followed by dash, followed by "lift". There are `r format(dt[keyword == "gas-lift"]$count, scientific=FALSE)` papers which contain the word "gas-lift". The second keyword is "gas lift" with `r dt[keyword == "gas lift"]$count`. That is the word "gas", followed by a space, followed by "lift". Both keywords account for little more than `r sprintf("%4.2f %%", percent_of_total)` of the papers. There is a third with `r dt[keyword == "GasLift"]$count` papers: the keyword "GasLift". It is not pretty common but I have seen it in some literature (Shell?, maybe). There are two more keywords with `r marginal` paper results. Very marginal within the context of `r format(sum(dt$count), scientific=FALSE)` papers. The words "gas.lift" and "gas_lift", probably typos.
+
+## Conclusions
+With this short example we could appreciate the importance of considering the right keywords when performing paper research. We could do this relatively fast in an automated fashion using data science tools such this R package. Of course, we could have done this manually, but keep in mind as the number of probable words combination increases so the time doing the search in the conventional way. Using paper search automation is a nice feature in our toolbox so there is no loss of information during the paper research.
+
+Those `r format(sum(dt$count), scientific=FALSE)` papers that have gas lift in their content may not represent how well or how intense the coverage of the subject is. Not until you provide some context to the search, for example, "gas lift optimization", "dual gas lift", "gas lift surveillance", etc. You will see the number of results shrink rapidly when a context is supplied. But at least, now you know that you have two keywords to add to your search context.
+
+In my view, the perfect search would be one where each of the papers return the number of times the keyword was mentioned, as well as the context or subject. You can do that but it requires that you have the physical paper to perform the search within the corpus of the paper. For us, engineers, is not practical, because we cannot store or purchase all those 24,000+ papers!
+
+Maybe the day is coming when OnePetro includes in the search results: 
+* the number of keyword occurrences within the corpus, 
+* the quality of the paper, 
+* number of tables, 
+* number of figures, and 
+* how strong are the keyword associations within the context of the petroleum engineering discipline.

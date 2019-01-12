@@ -18,3 +18,16 @@ plot_bars(df, gram.min = 1, gram.max = 1, min.freq = 25)
 \description{
 SHows a bar plot with words on the y-axis and frequency on the x-axis
 }
+\examples{
+\dontrun{
+my_url <- make_search_url(query = "well test",
+                          dc_type = "conference-paper",
+                          from_year = 2017,
+                          to_year   = 2018,
+                          how = "all")
+df <- read_multidoc(my_url)   # create a dataframe of papers
+(tf <- term_frequency(df))    # create a term frequency table
+min_freq <- min(head(tf, 20)$freq)
+plot_bars(df, min.freq = min_freq)
+}
+}

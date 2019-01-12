@@ -13,3 +13,6 @@ use_example(which_one = NULL)
 Examples are zipped to save disk space and prevent R complaining
 while creating the package
 }
+\examples{
+use_example(1)
+}

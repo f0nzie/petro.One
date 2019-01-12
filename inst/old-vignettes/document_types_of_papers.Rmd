@@ -1,0 +1,73 @@
+---
+title: "Document types for Papers"
+author: "Alfonso R. Reyes"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Document types for Papers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+When a query is returned by OnePetro inside the web page with the results also comes the `dc_type` or document type for all the papers that returned from that search.
+
+The type of papers are:
+
+* Conference paper
+* Journal paper
+* General
+* Media			
+* Presentation
+* Other		
+
+If we want to know what type of papers are available for a particular search we follow these steps:
+
+## Create a query
+Our search is for the exact words "well test". 
+How many papers return from that search?
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "well test", 
+                          how = "all")          # exact match
+
+get_papers_count(my_url)
+```
+
+## Find the type of papers available
+
+```{r}
+sdc <- papers_by_type(my_url)
+sdc
+```
+
+We see that the most numerous category is **conference** papers followed by **journal**. The total number of papers is about `r sprintf("%d", sum(sdc$value))`
+
+
+## Variable type of documents
+Depending of the words we are searching, the document types that return from the search may not be the same in all cases. For instance, in this case, we don't get the type for `Other` or `Chapter`.
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "smart completion", 
+                          how = "all")          # exact match
+
+sdc    <- papers_by_type(my_url)
+sdc
+```
+
+## Get a list of papers for specific type. 
+### All types for *deepwater*
+
+```{r}
+library(petro.One)
+
+my_url <- make_search_url(query = "deepwater")
+
+sdc    <- papers_by_type(my_url)
+sdc
+```
+

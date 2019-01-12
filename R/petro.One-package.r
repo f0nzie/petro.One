@@ -15,7 +15,7 @@ NULL
 #' File:  disciplines.rda
 #' Class: data.frame
 #' @docType data
-"labels"
+"discipline_labels"
 
 
 

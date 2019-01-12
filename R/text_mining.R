@@ -39,6 +39,15 @@ get_term_document_matrix <- function(df) {
 #' @param df a dataframe with paper results
 #' @param gram.min minimum number of grams
 #' @param gram.max maximum number of grams
+#' @examples
+#' \dontrun{
+#' my_url <- make_search_url(query = "neural network",
+#'                           from_year = 1990,
+#'                           to_year   = 1999,
+#'                           how = "all")
+#' df <- onepetro_page_to_dataframe(my_url)
+#' term_frequency(df)
+#' }
 #' @export
 term_frequency <- function(df, gram.min = 1, gram.max = 1) {
     # tibble::as.tibble(get_term_document_matrix(df)$freq)
@@ -133,6 +142,18 @@ term_frequency_n_grams <- function(df, gram.min = 2, gram.max = 2,
 #' @param min.freq minimum frequency of the words to be plotted
 #' @importFrom ggplot2 ggplot geom_bar xlab coord_flip aes ylab xlab
 #' @importFrom stats reorder
+#' @examples
+#' \dontrun{
+#' my_url <- make_search_url(query = "well test",
+#'                           dc_type = "conference-paper",
+#'                           from_year = 2017,
+#'                           to_year   = 2018,
+#'                           how = "all")
+#' df <- read_multidoc(my_url)   # create a dataframe of papers
+#' (tf <- term_frequency(df))    # create a term frequency table
+#' min_freq <- min(head(tf, 20)$freq)
+#' plot_bars(df, min.freq = min_freq)
+#' }
 #' @export
 plot_bars <- function(df, gram.min = 1, gram.max = 1, min.freq = 25) {
     tdm2.df <- term_frequency(df, gram.min, gram.max)
@@ -156,6 +177,18 @@ plot_bars <- function(df, gram.min = 1, gram.max = 1, min.freq = 25) {
 #' @param ... additional parameters
 #' @importFrom tm findFreqTerms
 #' @importFrom graphics plot
+#' @examples
+#' \dontrun{
+#' my_url <- make_search_url(query = "well test",
+#'                           dc_type = "conference-paper",
+#'                           from_year = 2017,
+#'                           to_year   = 2018,
+#'                           how = "all")
+#' df <- read_multidoc(my_url)   # create a dataframe of papers
+#' (tf <- term_frequency(df))    # create a term frequency table
+#' min_freq <- min(head(tf, 20)$freq)
+#' plot_relationships(df, min.freq = min_freq, threshold = 0.075)
+#' }
 #' @export
 plot_relationships <- function(df, ..., min.freq = 25, threshold = 0.10) {
     TDM <- get_term_document_matrix(df)

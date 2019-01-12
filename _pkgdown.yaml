@@ -10,34 +10,54 @@ reference:
     contents:
     - get_papers_count
     - make_search_url
+    - run_papers_search
     - onepetro_page_to_dataframe
     - read_multipage
     - join_keywords
+    - read_multidoc
+    - read_onepetro
   - title: Papers Summary
     contents:
     - papers_by_type
     - papers_by_year
     - papers_by_publication
     - papers_by_publisher
+    - summary_by_dates
+    - summary_by_doctype
+    - summary_by_publications
+    - summary_by_publisher
+  - title: Data Manipulation
+    contents:
+    - remove_duplicates_by
+    - generate_offline_data
+  - title: Data Mining
+    contents:
+    - get_term_document_matrix
+    - get_top_term_papers
+    - plot_cluster_dendrogram
+    - plot_bars
+    - plot_relationships
+    - plot_wordcloud
+    - term_frequency_n_grams
+    - term_frequency
   - title: datasets
     contents:
     - custom_stopwords
-    - custom_synonyms
+    - discipline_labels
+  - title: Miscelaneous
+    contents:
+    - petro.One-package
+    - use_example
 
 articles:
-  - title: "Papers by Document Type"
+  - title: "Gas Influx Overbalanced Shale Well"
     contents:
-    - document_types_of_papers
-  - title: "Convert thousands of papers to a dataframe"
+    - gas_influx_overbalanced
+  - title: "Artificial Intelligence papers over the years"
     contents:
-    - gather_thousand_papers_to_dataframe
-  - title: "Making a word cloud"
+    - artificial_intelligence_evolution
+  - title: "Gas Lift keywords variation"
     contents:
-    - make_wordcloud_01
-  - title: "Improving the word cloud with custom stopwords"
-    contents:
-    - make_wordcloud_02
-  - title: "Reducing paper results by joining keywords"
-    contents:
-    - joining_keywords
+    - gas_lift_keywords_variation
+
 

@@ -14,9 +14,10 @@ Generate a summary by publisher.
 Know publishers: OTC, SPE, etc.
 }
 \examples{
-#
+\dontrun{
 # Example
 my_url <- make_search_url(query = "shale gas", how = "all")
 page <- read_onepetro(my_url)
 summary_by_publisher(page)
+}
 }

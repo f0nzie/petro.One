@@ -14,6 +14,7 @@ A OnePetro URL with a query is read into a HTML page and
 converted to a dataframe
 }
 \examples{
+\dontrun{
 # Example 1
 # Search papers with keyword "smartwell"
 url_sw <- "https://www.onepetro.org/search?q=smartwell"
@@ -22,4 +23,5 @@ onepetro_page_to_dataframe(url_sw)
 # Search for exact words ""vertical lift performance"
 url_vlp <- "https://www.onepetro.org/search?q=\%22vertical+lift+performance\%22"
 onepetro_page_to_dataframe(url_vlp)
+}
 }

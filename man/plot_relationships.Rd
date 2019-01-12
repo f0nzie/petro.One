@@ -19,3 +19,16 @@ plot_relationships(df, ..., min.freq = 25, threshold = 0.1)
 Plots a diagram with relationships between words. The lines
 that link the terms are weighted according to how often the connect together
 }
+\examples{
+\dontrun{
+my_url <- make_search_url(query = "well test",
+                          dc_type = "conference-paper",
+                          from_year = 2017,
+                          to_year   = 2018,
+                          how = "all")
+df <- read_multidoc(my_url)   # create a dataframe of papers
+(tf <- term_frequency(df))    # create a term frequency table
+min_freq <- min(head(tf, 20)$freq)
+plot_relationships(df, min.freq = min_freq, threshold = 0.075)
+}
+}

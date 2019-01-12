@@ -14,8 +14,10 @@ Generate a summary by document type.
 Types are: conference-paper, journal-paper, presentation, media, other, etc.
 }
 \examples{
+\dontrun{
 #
 # Example 1
 my_url <- make_search_url(query = "well test", how = "all")
 papers_by_type(my_url)
+}
 }

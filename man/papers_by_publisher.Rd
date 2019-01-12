@@ -14,8 +14,9 @@ Generate a summary by publisher.
 Know publishers: OTC, SPE, etc.
 }
 \examples{
-#
+\dontrun{
 # Example
 my_url <- make_search_url(query = "shale gas", how = "all")
 papers_by_publisher(my_url)
+}
 }

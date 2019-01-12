@@ -2,7 +2,7 @@
 % Please edit documentation in R/joining.R
 \name{run_papers_search}
 \alias{run_papers_search}
-\title{Run a papers search providing multiple keywords}
+\title{Run a papers search providing multiple keywords and optionally save results.}
 \usage{
 run_papers_search(..., get_papers = TRUE, sleep = 3, verbose = TRUE,
   len_keywords = 3, allow_duplicates = TRUE, save_to_rda = FALSE)
@@ -27,4 +27,17 @@ paper_id}
 This search performs search of papers by provifing multiple levels of keywords.
 The levels can have one or more keywords and the levels can be as many as desired.
 Deeper levels makes the search longer.
+}
+\examples{
+\dontrun{
+major <- c("gas influx")
+minor <- c("overbalanced", "shut in")
+lesser <- c("shale", "drilling")
+more <- c("gas diffusion", "concentration gradient")
+paper_results <- run_papers_search(major, minor, lesser, more,
+                                   get_papers = TRUE,       # return with papers
+                                   verbose = FALSE,         # show progress
+                                   len_keywords = 4,        # naming the data file
+                                   allow_duplicates = FALSE) # by paper title and id
+}
 }

@@ -14,9 +14,10 @@ Generate a summary by document type.
 Types are: conference-paper, journal-paper, presentation, media, other, etc.
 }
 \examples{
-#
+\dontrun{
 # Example 1
 my_url <- make_search_url(query = "well test", how = "all")
 result <- read_onepetro(my_url)
 summary_by_doctype(result)
+}
 }

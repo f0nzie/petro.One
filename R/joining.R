@@ -1,5 +1,5 @@
 
-#' Run a papers search providing multiple keywords
+#' Run a papers search providing multiple keywords and optionally save results.
 #'
 #' This search performs search of papers by provifing multiple levels of keywords.
 #' The levels can have one or more keywords and the levels can be as many as desired.
@@ -15,6 +15,18 @@
 #' @param save_to_rda logical that indicates if we want to save results to an RDA
 #'
 #' @importFrom dplyr distinct %>%
+#' @examples
+#' \dontrun{
+#' major <- c("gas influx")
+#' minor <- c("overbalanced", "shut in")
+#' lesser <- c("shale", "drilling")
+#' more <- c("gas diffusion", "concentration gradient")
+#' paper_results <- run_papers_search(major, minor, lesser, more,
+#'                                    get_papers = TRUE,       # return with papers
+#'                                    verbose = FALSE,         # show progress
+#'                                    len_keywords = 4,        # naming the data file
+#'                                    allow_duplicates = FALSE) # by paper title and id
+#' }
 #' @export
 run_papers_search <- function(...,
                               get_papers = TRUE,
@@ -44,13 +56,13 @@ run_papers_search <- function(...,
     search_keywords <- list(...)
 
     # create filename from the keywords
-    if (save_to_rda) {
+    if (save_to_rda) {                       # enter here if save_to_rda is TRUE
         comb_keyw <- c(search_keywords[1], search_keywords[2])  # combine keywords
         rda_filename <- paste0(lapply(list(unlist(comb_keyw)),
                                       function(x) paste(substr(x, 1, len_keywords),
                                                         collapse = "_")), ".rda")
     } else {
-        rda_filename <- NULL
+        rda_filename <- NULL      # won't save the results
     }
     print(rda_filename)
 
@@ -75,6 +87,14 @@ run_papers_search <- function(...,
 #' @param sleep seconds to wait before a new quiery to OnePetro
 #' @param verbose show progress if TRUE
 #' @import data.table
+#' @examples
+#' \dontrun{
+#' major  <- c("water-injection", "water injection")
+#' minor  <- c("machine-learning", "machine learning")
+#' lesser <- c("algorithm")
+#' p.df <- join_keywords(major, minor, lesser, get_papers = TRUE,
+#'                       sleep = 2, verbose = FALSE)
+#' }
 #' @export
 join_keywords <- function(...,
                           get_papers = TRUE,
@@ -88,6 +108,7 @@ join_keywords <- function(...,
     df <- expand.grid(..., stringsAsFactors = FALSE)   # combine keywords
     sep     <- paste0("'", bool_op, "'")               # add apostrophes to operator
     # iterate through the rows of keyword combinations dataframe
+    cat("\n")
     for (i in 1:nrow(df)) {
         sf <- NULL
         papers.df <- NULL
@@ -117,7 +138,7 @@ join_keywords <- function(...,
             # papers.df <- onepetro_page_to_dataframe(url.2)    # get papers
             # # get multipages > 1000 papers
             # papers.df <- read_multipage(url.2, doctype = "conference-paper")
-            papers.df <- read_multipage(url.2, verbose = verbose)
+            papers.df <- read_multipage(url.2, verbose = FALSE)
             # cat(dim(papers.df), "\n")
             papers.df$keyword <- sf                           # add columns
             papers.df.k <- rbind(papers.df, papers.df.k)      # cumulative dataframe
