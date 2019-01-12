@@ -95,31 +95,3 @@ paper_results_9$papers
 
 
 
-## Reducing test 5.2
-
-      waterflooding
-      machine-learning    artificial intelligence
-      algorithm
-      data-mining
-      data-driven
-
-```{r, 6-keywords}
-# provide two different set of keywords to combine as vectors
-maj <- c("waterflooding")
-min <- c("machine-learning", "artificial intelligence")
-les <- c("algorithm")
-anr <- c("data-mining", "data-driven")
-
-paper_results_5 <- run_papers_search(maj, min, les, anr, 
-                                   get_papers = TRUE,       # return with papers
-                                   verbose = FALSE,         # show progress
-                                   len_keywords = 4,        # naming the data file
-                                   allow_duplicates = FALSE) # by paper title and id
-
-paper_results_5$keywords
-```
-
-```{r}
-paper_results_5$search_keywords
-```
-
