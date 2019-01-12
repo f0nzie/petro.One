@@ -4,6 +4,10 @@
 #' while creating the package
 #' @param which_one example number to use
 #' @importFrom utils unzip
+#' @examples
+#' use_example(1)
+#' use_example(2)
+#' use_example(3)
 #' @export
 use_example <- function(which_one = NULL) {
     if (is.null(which_one)) stop("an example number must be supplied")

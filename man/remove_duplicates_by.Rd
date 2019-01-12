@@ -15,9 +15,11 @@ remove_duplicates_by(df, by = "book_title")
 Duplicates are removed in a dataframe containing papers
 }
 \examples{
+\dontrun{
 major <- c("data driven")
 minor <- c("drilling")
 dd_drilling <- join_keywords(major, minor, get_papers = TRUE, sleep = 3,
                              verbose = FALSE)
 remove_duplicates_by(dd_drilling$papers, by ="paper_id" )
+}
 }

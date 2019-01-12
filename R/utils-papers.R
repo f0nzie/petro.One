@@ -4,6 +4,14 @@
 #' @param df dataframe of papers
 #' @param by variable
 #' @importFrom dplyr distinct_ arrange desc
+#' @examples
+#' \dontrun{
+#' major <- c("data driven")
+#' minor <- c("drilling")
+#' dd_drilling <- join_keywords(major, minor, get_papers = TRUE, sleep = 3,
+#'                              verbose = FALSE)
+#' remove_duplicates_by(dd_drilling$papers, by ="paper_id" )
+#' }
 #' @export
 remove_duplicates_by <- function(df, by = "book_title") {
     if (!all(names(df) %in% c("book_title", "paper_id", "dc_type", "authors",

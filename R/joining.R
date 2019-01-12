@@ -15,6 +15,18 @@
 #' @param save_to_rda logical that indicates if we want to save results to an RDA
 #'
 #' @importFrom dplyr distinct %>%
+#' @examples
+#' \dontrun{
+#' major <- c("gas influx")
+#' minor <- c("overbalanced", "shut in")
+#' lesser <- c("shale", "drilling")
+#' more <- c("gas diffusion", "concentration gradient")
+#' paper_results <- run_papers_search(major, minor, lesser, more,
+#'                                    get_papers = TRUE,       # return with papers
+#'                                    verbose = FALSE,         # show progress
+#'                                    len_keywords = 4,        # naming the data file
+#'                                    allow_duplicates = FALSE) # by paper title and id
+#' }
 #' @export
 run_papers_search <- function(...,
                               get_papers = TRUE,
@@ -75,6 +87,14 @@ run_papers_search <- function(...,
 #' @param sleep seconds to wait before a new quiery to OnePetro
 #' @param verbose show progress if TRUE
 #' @import data.table
+#' @examples
+#' \dontrun{
+#' major  <- c("water-injection", "water injection")
+#' minor  <- c("machine-learning", "machine learning")
+#' lesser <- c("algorithm")
+#' p.df <- join_keywords(major, minor, lesser, get_papers = TRUE,
+#'                       sleep = 2, verbose = FALSE)
+#' }
 #' @export
 join_keywords <- function(...,
                           get_papers = TRUE,

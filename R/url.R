@@ -48,6 +48,7 @@ check_unlimited_rows <- function(url) {
 #' @importFrom rvest html_nodes html_text
 #' @export
 #' @examples
+#' \dontrun{
 #' # Example 1
 #' url_1 <- make_search_url(query = "static gradient survey", how = "all")
 #' get_papers_count(url_1)
@@ -59,6 +60,7 @@ check_unlimited_rows <- function(url) {
 #' # Example 3
 #' url_3 <- make_search_url(query = "inflow performance relationship", how = "all")
 #' get_papers_count(url_3)
+#' }
 get_papers_count <- function(url) {
     url <- check_unlimited_rows(url)
     result <- xml2::read_html(url)
@@ -87,6 +89,7 @@ get_papers_count <- function(url) {
 #' @param how char           default="any". "all" will match exact words
 #' @export
 #' @examples
+#' \dontrun{
 #' # Example 1
 #' url_1 <- make_search_url(query = "flowing gradient survey", how = "all")
 #' onepetro_page_to_dataframe(url_1)
@@ -97,6 +100,7 @@ get_papers_count <- function(url) {
 #' url_3 <- make_search_url(query = "downhole flowrate measurement",
 #'       how = "all", from_year = 1982, to_year = 2017)
 #' onepetro_page_to_dataframe(url_3)
+#' }
 make_search_url <- function(query = NULL, start = NULL, from_year = NULL,
                             peer_reviewed = NULL,
                             published_between = NULL,

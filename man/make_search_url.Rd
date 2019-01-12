@@ -31,6 +31,7 @@ make_search_url(query = NULL, start = NULL, from_year = NULL,
 Create a URL that works in OnePetro website
 }
 \examples{
+\dontrun{
 # Example 1
 url_1 <- make_search_url(query = "flowing gradient survey", how = "all")
 onepetro_page_to_dataframe(url_1)
@@ -41,4 +42,5 @@ onepetro_page_to_dataframe(url_2)
 url_3 <- make_search_url(query = "downhole flowrate measurement",
       how = "all", from_year = 1982, to_year = 2017)
 onepetro_page_to_dataframe(url_3)
+}
 }
