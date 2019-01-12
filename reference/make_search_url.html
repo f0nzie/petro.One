@@ -86,22 +86,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/document_types_of_papers.html">Document types for Papers</a>
+      <a href="../articles/artificial_intelligence_evolution.html">Artificial Intelligence over the years</a>
     </li>
     <li>
-      <a href="../articles/gather_thousand_papers_to_dataframe.html">Thousands of Papers to Dataframe</a>
+      <a href="../articles/gas_influx_overbalanced.html">Gas Inflow Overbalanced</a>
     </li>
     <li>
-      <a href="../articles/joining_keywords.html">Reducing paper results by joining keywords</a>
-    </li>
-    <li>
-      <a href="../articles/make_wordcloud_01.html">Make a word cloud</a>
-    </li>
-    <li>
-      <a href="../articles/make_wordcloud_02.html">Improving the word cloud: custom stopwords</a>
-    </li>
-    <li>
-      <a href="../articles/permanent_downhole_gauge.html">Text Mining of Permanent Downhole Gauges</a>
+      <a href="../articles/gas_lift_keywords_variation.html">Gas Lift keywords variation</a>
     </li>
   </ul>
 </li>
@@ -195,13 +186,13 @@
 #&gt; </span><span style='color: #555555;'> 1</span><span> Detection and Removal ~ OTC-25003~ confere~ Mohamed, A.S., Dele~  </span><span style='text-decoration: underline;'>2</span><span>014 OTC   
 #&gt; </span><span style='color: #555555;'> 2</span><span> Samarang Downhole Inte~ SPE-18068~ confere~ Setiawan, Toto, PET~  </span><span style='text-decoration: underline;'>2</span><span>016 SPE   
 #&gt; </span><span style='color: #555555;'> 3</span><span> Adding Value to Gas Li~ SPE-13354~ confere~ Friedli, John David~  </span><span style='text-decoration: underline;'>2</span><span>010 SPE   
-#&gt; </span><span style='color: #555555;'> 4</span><span> Proper Selection of Mu~ SPE-17580~ confere~ Abd El Moniem, Moha~  </span><span style='text-decoration: underline;'>2</span><span>015 SPE   
-#&gt; </span><span style='color: #555555;'> 5</span><span> CO2 Tracer for Gaslift~ SPE-18926~ confere~ Sidek, Sulaiman, PE~  </span><span style='text-decoration: underline;'>2</span><span>017 SPE   
-#&gt; </span><span style='color: #555555;'> 6</span><span> Estimating Reservoir P~ URTEC-193~ confere~ Jones, R. Steven Jr~  </span><span style='text-decoration: underline;'>2</span><span>014 URTEC 
+#&gt; </span><span style='color: #555555;'> 4</span><span> CO2 Tracer for Gaslift~ SPE-18926~ confere~ Sidek, Sulaiman, PE~  </span><span style='text-decoration: underline;'>2</span><span>017 SPE   
+#&gt; </span><span style='color: #555555;'> 5</span><span> Estimating Reservoir P~ URTEC-193~ confere~ Jones, R. Steven Jr~  </span><span style='text-decoration: underline;'>2</span><span>014 URTEC 
+#&gt; </span><span style='color: #555555;'> 6</span><span> Proper Selection of Mu~ SPE-17580~ confere~ Abd El Moniem, Moha~  </span><span style='text-decoration: underline;'>2</span><span>015 SPE   
 #&gt; </span><span style='color: #555555;'> 7</span><span> CO2 Tracer Application~ SPE-19190~ confere~ Abu Bakar, Azfar Is~  </span><span style='text-decoration: underline;'>2</span><span>018 SPE   
 #&gt; </span><span style='color: #555555;'> 8</span><span> Development of an Inte~ SPE-10108~ confere~ Nadar, Manickavasak~  </span><span style='text-decoration: underline;'>2</span><span>006 SPE   
-#&gt; </span><span style='color: #555555;'> 9</span><span> Nonstatic Pressure His~ SPE-10356~ journal~ Rodgers, J.S., Otis~  </span><span style='text-decoration: underline;'>1</span><span>983 SPE   
-#&gt; </span><span style='color: #555555;'>10</span><span> Influence of Downhole ~ SPE-14329~ confere~ Bouhanna, Mahfoud, ~  </span><span style='text-decoration: underline;'>2</span><span>011 SPE   </div><div class='input'><span class='co'># Example 2</span>
+#&gt; </span><span style='color: #555555;'> 9</span><span> Influence of Downhole ~ SPE-14329~ confere~ Bouhanna, Mahfoud, ~  </span><span style='text-decoration: underline;'>2</span><span>011 SPE   
+#&gt; </span><span style='color: #555555;'>10</span><span> Acidizing: A Small Cha~ SPE-13276~ confere~ Wahib, Suhaila, Pet~  </span><span style='text-decoration: underline;'>2</span><span>010 SPE   </div><div class='input'><span class='co'># Example 2</span>
 <span class='no'>url_2</span> <span class='kw'>&lt;-</span> <span class='fu'>make_search_url</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>"static  gradient survey"</span>, <span class='kw'>how</span> <span class='kw'>=</span> <span class='st'>"all"</span>)
 <span class='fu'><a href='onepetro_page_to_dataframe.html'>onepetro_page_to_dataframe</a></span>(<span class='no'>url_2</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 10 x 6</span><span>
 #&gt;    book_title              paper_id   dc_type  authors               year source
@@ -213,8 +204,8 @@
 #&gt; </span><span style='color: #555555;'> 5</span><span> Slimhole Drilling With~ SPE-95896~ confere~ Montagna, James N.,~  </span><span style='text-decoration: underline;'>2</span><span>005 SPE   
 #&gt; </span><span style='color: #555555;'> 6</span><span> Aquifer Influx Modelli~ PETSOC-20~ confere~ Lies, H.K., HyPex C~  </span><span style='text-decoration: underline;'>2</span><span>000 PETSOC
 #&gt; </span><span style='color: #555555;'> 7</span><span> Production Monitoring ~ SPE-13796~ confere~ Tournier, Emmanuel,~  </span><span style='text-decoration: underline;'>2</span><span>010 SPE   
-#&gt; </span><span style='color: #555555;'> 8</span><span> Production Strategy of~ SPE-19566~ confere~ Dahraj, Naeem Ul Hu~  </span><span style='text-decoration: underline;'>2</span><span>018 SPE   
-#&gt; </span><span style='color: #555555;'> 9</span><span> A Case History: The In~ SPE-16637~ confere~ Bin Md Karim, Mohd ~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
+#&gt; </span><span style='color: #555555;'> 8</span><span> A Case History: The In~ SPE-16637~ confere~ Bin Md Karim, Mohd ~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
+#&gt; </span><span style='color: #555555;'> 9</span><span> Production Strategy of~ SPE-19566~ confere~ Dahraj, Naeem Ul Hu~  </span><span style='text-decoration: underline;'>2</span><span>018 SPE   
 #&gt; </span><span style='color: #555555;'>10</span><span> An Investigation on Fa~ OTC-24780~ confere~ W Razak, Wan Nurul ~  </span><span style='text-decoration: underline;'>2</span><span>014 OTC   </div><div class='input'><span class='co'># Example 3</span>
 <span class='no'>url_3</span> <span class='kw'>&lt;-</span> <span class='fu'>make_search_url</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='st'>"downhole flowrate measurement"</span>,
       <span class='kw'>how</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>from_year</span> <span class='kw'>=</span> <span class='fl'>1982</span>, <span class='kw'>to_year</span> <span class='kw'>=</span> <span class='fl'>2017</span>)
