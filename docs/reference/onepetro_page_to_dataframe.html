@@ -146,37 +146,16 @@ converted to a dataframe</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Example 1</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># Example 1</span>
 <span class='co'># Search papers with keyword "smartwell"</span>
 <span class='no'>url_sw</span> <span class='kw'>&lt;-</span> <span class='st'>"https://www.onepetro.org/search?q=smartwell"</span>
-<span class='fu'>onepetro_page_to_dataframe</span>(<span class='no'>url_sw</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 6</span><span>
-#&gt;    book_title              paper_id   dc_type  authors               year source
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'> 1</span><span> SMARTWELL® VALUATION U~ WPC-32151  confere~ Han, John T., WellD~  </span><span style='text-decoration: underline;'>2</span><span>002 WPC   
-#&gt; </span><span style='color: #555555;'> 2</span><span> A Smart Flow for Smart~ SPE-16782~ confere~ Carvajal, G.A., Hal~  </span><span style='text-decoration: underline;'>2</span><span>014 SPE   
-#&gt; </span><span style='color: #555555;'> 3</span><span> SPDC Delivers 1st Onsh~ SPE-16463~ confere~ Okpokpor, O. A., Sh~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
-#&gt; </span><span style='color: #555555;'> 4</span><span> Method of Energetic In~ SPE-16689~ confere~ Popkov, V.I., Samar~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
-#&gt; </span><span style='color: #555555;'> 5</span><span> Method of Energetic In~ SPE-16689~ confere~ Popkov, V.I., Samar~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
-#&gt; </span><span style='color: #555555;'> 6</span><span> Application of SmartWe~ SPE-10011~ confere~ Brnak, Joshua Jude,~  </span><span style='text-decoration: underline;'>2</span><span>006 SPE   
-#&gt; </span><span style='color: #555555;'> 7</span><span> Drilling and Completin~ SPE-10571~ confere~ Jacob, Suresh, Well~  </span><span style='text-decoration: underline;'>2</span><span>007 SPE   
-#&gt; </span><span style='color: #555555;'> 8</span><span> Intelligent Well Techn~ SPE-71822~ confere~ Akram, Navid, Shell~  </span><span style='text-decoration: underline;'>2</span><span>001 SPE   
-#&gt; </span><span style='color: #555555;'> 9</span><span> Smartcontrols For Smar~ OMC-2001-~ confere~ Halmoey, S., FMC Ko~  </span><span style='text-decoration: underline;'>2</span><span>001 OMC   
-#&gt; </span><span style='color: #555555;'>10</span><span> Technology Update: Pra~ SPE-0107-~ journal~ JPT staff, _, _       </span><span style='text-decoration: underline;'>2</span><span>007 SPE   </div><div class='input'><span class='co'># Example 2</span>
+<span class='fu'>onepetro_page_to_dataframe</span>(<span class='no'>url_sw</span>)
+<span class='co'># Example 2</span>
 <span class='co'># Search for exact words ""vertical lift performance"</span>
 <span class='no'>url_vlp</span> <span class='kw'>&lt;-</span> <span class='st'>"https://www.onepetro.org/search?q=%22vertical+lift+performance%22"</span>
-<span class='fu'>onepetro_page_to_dataframe</span>(<span class='no'>url_vlp</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 10 x 6</span><span>
-#&gt;    book_title              paper_id    dc_type  authors              year source
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'> 1</span><span> The Evaluation of Vert~ SPE-1557-G~ journal~ McAfee, R.V., Axel~  </span><span style='text-decoration: underline;'>1</span><span>961 SPE   
-#&gt; </span><span style='color: #555555;'> 2</span><span> An Evaluation of Water~ SPE-57272-~ confere~ Sabut, Bangkong, P~  </span><span style='text-decoration: underline;'>1</span><span>999 SPE   
-#&gt; </span><span style='color: #555555;'> 3</span><span> Production Forecast Im~ SPE-172465~ confere~ Mogbolu, Emmanuel,~  </span><span style='text-decoration: underline;'>2</span><span>014 SPE   
-#&gt; </span><span style='color: #555555;'> 4</span><span> Compositional Two-Phas~ SPE-16925-~ confere~ Salisburg, P.E., H~  </span><span style='text-decoration: underline;'>1</span><span>987 SPE   
-#&gt; </span><span style='color: #555555;'> 5</span><span> A Novel Approach to Es~ OTC-26766-~ confere~ Haindade, Zishaan ~  </span><span style='text-decoration: underline;'>2</span><span>016 OTC   
-#&gt; </span><span style='color: #555555;'> 6</span><span> Determination of Press~ SPE-178282~ confere~ Dala, J. A., Niger~  </span><span style='text-decoration: underline;'>2</span><span>015 SPE   
-#&gt; </span><span style='color: #555555;'> 7</span><span> Real-Time Evaluation o~ SPE-163920~ confere~ Fernandez Castano,~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
-#&gt; </span><span style='color: #555555;'> 8</span><span> Gas Lift - A Better Al~ ISOPE-I-91~ confere~ Kahali, Kishore, O~  </span><span style='text-decoration: underline;'>1</span><span>991 ISOPE 
-#&gt; </span><span style='color: #555555;'> 9</span><span> Dual Concentric Gas-Li~ SPE-18391-~ journal~ Moore, P.C., BP Ex~  </span><span style='text-decoration: underline;'>1</span><span>991 SPE   
-#&gt; </span><span style='color: #555555;'>10</span><span> Conceptual Design and ~ SPE-191441~ confere~ Bagci, S., Baker H~  </span><span style='text-decoration: underline;'>2</span><span>018 SPE   </div></span></pre>
+<span class='fu'>onepetro_page_to_dataframe</span>(<span class='no'>url_vlp</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
