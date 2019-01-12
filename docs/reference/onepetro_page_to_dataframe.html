@@ -87,22 +87,13 @@ converted to a dataframe" />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/document_types_of_papers.html">Document types for Papers</a>
+      <a href="../articles/artificial_intelligence_evolution.html">Artificial Intelligence over the years</a>
     </li>
     <li>
-      <a href="../articles/gather_thousand_papers_to_dataframe.html">Thousands of Papers to Dataframe</a>
+      <a href="../articles/gas_influx_overbalanced.html">Gas Inflow Overbalanced</a>
     </li>
     <li>
-      <a href="../articles/joining_keywords.html">Reducing paper results by joining keywords</a>
-    </li>
-    <li>
-      <a href="../articles/make_wordcloud_01.html">Make a word cloud</a>
-    </li>
-    <li>
-      <a href="../articles/make_wordcloud_02.html">Improving the word cloud: custom stopwords</a>
-    </li>
-    <li>
-      <a href="../articles/permanent_downhole_gauge.html">Text Mining of Permanent Downhole Gauges</a>
+      <a href="../articles/gas_lift_keywords_variation.html">Gas Lift keywords variation</a>
     </li>
   </ul>
 </li>
@@ -174,18 +165,18 @@ converted to a dataframe</p>
 <span class='co'># Search for exact words ""vertical lift performance"</span>
 <span class='no'>url_vlp</span> <span class='kw'>&lt;-</span> <span class='st'>"https://www.onepetro.org/search?q=%22vertical+lift+performance%22"</span>
 <span class='fu'>onepetro_page_to_dataframe</span>(<span class='no'>url_vlp</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 10 x 6</span><span>
-#&gt;    book_title              paper_id   dc_type  authors               year source
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> 
-#&gt; </span><span style='color: #555555;'> 1</span><span> The Evaluation of Vert~ SPE-1557-~ journal~ McAfee, R.V., Axels~  </span><span style='text-decoration: underline;'>1</span><span>961 SPE   
-#&gt; </span><span style='color: #555555;'> 2</span><span> An Evaluation of Water~ SPE-57272~ confere~ Sabut, Bangkong, Pe~  </span><span style='text-decoration: underline;'>1</span><span>999 SPE   
-#&gt; </span><span style='color: #555555;'> 3</span><span> Production Forecast Im~ SPE-17246~ confere~ Mogbolu, Emmanuel, ~  </span><span style='text-decoration: underline;'>2</span><span>014 SPE   
-#&gt; </span><span style='color: #555555;'> 4</span><span> Compositional Two-Phas~ SPE-16925~ confere~ Salisburg, P.E., He~  </span><span style='text-decoration: underline;'>1</span><span>987 SPE   
-#&gt; </span><span style='color: #555555;'> 5</span><span> A Novel Approach to Es~ OTC-26766~ confere~ Haindade, Zishaan M~  </span><span style='text-decoration: underline;'>2</span><span>016 OTC   
-#&gt; </span><span style='color: #555555;'> 6</span><span> Determination of Press~ SPE-17828~ confere~ Dala, J. A., Nigeri~  </span><span style='text-decoration: underline;'>2</span><span>015 SPE   
-#&gt; </span><span style='color: #555555;'> 7</span><span> Real-Time Evaluation o~ SPE-16392~ confere~ Fernandez Castano, ~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
-#&gt; </span><span style='color: #555555;'> 8</span><span> Dual Concentric Gas-Li~ SPE-18391~ journal~ Moore, P.C., BP Exp~  </span><span style='text-decoration: underline;'>1</span><span>991 SPE   
-#&gt; </span><span style='color: #555555;'> 9</span><span> Gas Lift - A Better Al~ ISOPE-I-9~ confere~ Kahali, Kishore, Oi~  </span><span style='text-decoration: underline;'>1</span><span>991 ISOPE 
-#&gt; </span><span style='color: #555555;'>10</span><span> Determination of Aband~ SPE-16295~ confere~ Dike, Francis, SPDC~  </span><span style='text-decoration: underline;'>2</span><span>012 SPE   </div></span></pre>
+#&gt;    book_title              paper_id    dc_type  authors              year source
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> 
+#&gt; </span><span style='color: #555555;'> 1</span><span> The Evaluation of Vert~ SPE-1557-G~ journal~ McAfee, R.V., Axel~  </span><span style='text-decoration: underline;'>1</span><span>961 SPE   
+#&gt; </span><span style='color: #555555;'> 2</span><span> An Evaluation of Water~ SPE-57272-~ confere~ Sabut, Bangkong, P~  </span><span style='text-decoration: underline;'>1</span><span>999 SPE   
+#&gt; </span><span style='color: #555555;'> 3</span><span> Production Forecast Im~ SPE-172465~ confere~ Mogbolu, Emmanuel,~  </span><span style='text-decoration: underline;'>2</span><span>014 SPE   
+#&gt; </span><span style='color: #555555;'> 4</span><span> Compositional Two-Phas~ SPE-16925-~ confere~ Salisburg, P.E., H~  </span><span style='text-decoration: underline;'>1</span><span>987 SPE   
+#&gt; </span><span style='color: #555555;'> 5</span><span> A Novel Approach to Es~ OTC-26766-~ confere~ Haindade, Zishaan ~  </span><span style='text-decoration: underline;'>2</span><span>016 OTC   
+#&gt; </span><span style='color: #555555;'> 6</span><span> Determination of Press~ SPE-178282~ confere~ Dala, J. A., Niger~  </span><span style='text-decoration: underline;'>2</span><span>015 SPE   
+#&gt; </span><span style='color: #555555;'> 7</span><span> Real-Time Evaluation o~ SPE-163920~ confere~ Fernandez Castano,~  </span><span style='text-decoration: underline;'>2</span><span>013 SPE   
+#&gt; </span><span style='color: #555555;'> 8</span><span> Gas Lift - A Better Al~ ISOPE-I-91~ confere~ Kahali, Kishore, O~  </span><span style='text-decoration: underline;'>1</span><span>991 ISOPE 
+#&gt; </span><span style='color: #555555;'> 9</span><span> Dual Concentric Gas-Li~ SPE-18391-~ journal~ Moore, P.C., BP Ex~  </span><span style='text-decoration: underline;'>1</span><span>991 SPE   
+#&gt; </span><span style='color: #555555;'>10</span><span> Conceptual Design and ~ SPE-191441~ confere~ Bagci, S., Baker H~  </span><span style='text-decoration: underline;'>2</span><span>018 SPE   </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
