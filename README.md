@@ -42,7 +42,7 @@ You can install `petro.One` from Github with:
 devtools::install_github("f0nzie/petro.One")
 ```
 
-Or, the latest dvelopment version:
+Or, the latest development version with:
 
 ``` r
 # install from the *develop* branch
@@ -65,7 +65,8 @@ install.packages(c("tm",
                    "urltools",
                    "RWeka",
                    "tidyverse",
-                   "data.table"
+                   "data.table",
+                   "SnowBallC"
                    ))
 
 # from BioConductor
@@ -145,13 +146,12 @@ in returning results with `any` and `how = all` for the same keywords
 ``` r
 library(petro.One)
 library(tidyverse)
-#> -- Attaching packages ------------------------------------------ tidyverse 1.2.1 --
+#> -- Attaching packages -------------------------------------- tidyverse 1.2.1 --
 #> v ggplot2 3.1.0     v purrr   0.2.5
 #> v tibble  2.0.0     v dplyr   0.7.8
 #> v tidyr   0.8.2     v stringr 1.3.1
 #> v readr   1.3.1     v forcats 0.3.0
-#> Warning: package 'readr' was built under R version 3.5.2
-#> -- Conflicts --------------------------------------------- tidyverse_conflicts() --
+#> -- Conflicts ----------------------------------------- tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
 
@@ -160,14 +160,14 @@ url_any <- make_search_url(query = "neural network", how = "any")
 url_any
 #> [1] "https://www.onepetro.org/search?q=neural+network&peer_reviewed=&published_between=&from_year=&to_year="
 get_papers_count(url_any)
-#> [1] 3930
+#> [1] 3931
 
 # search for papers that have "neural" and "network" at the same time
 url_all <- make_search_url(query = "neural network", how = "all")
 url_all
 #> [1] "https://www.onepetro.org/search?q=\"neural+network\"&peer_reviewed=&published_between=&from_year=&to_year="
 get_papers_count(url_all)
-#> [1] 3614
+#> [1] 3615
 ```
 
 ## Read papers from *from\_year* to *to\_year*
@@ -197,13 +197,13 @@ df
 #>  1 Deconvolution Using~ SEG-1996~ confere~ Essenreiter, Rober~  1996 SEG   
 #>  2 Neural Network Stac~ SEG-1992~ confere~ Schmidt, Jumndyr, ~  1992 SEG   
 #>  3 Neural Networks And~ SEG-1995~ confere~ Leggett, Miles, Br~  1995 SEG   
-#>  4 Drill-Bit Diagnosis~ SPE-1955~ journal~ Arehart, R.A., Exx~  1990 SPE   
-#>  5 Inversion of Seismi~ SEG-1992~ confere~ Ro&uml;th, Gunter,~  1992 SEG   
+#>  4 First Break Picking~ SEG-1990~ confere~ Wagner, D.E., Amoc~  1990 SEG   
+#>  5 Drill-Bit Diagnosis~ SPE-1955~ journal~ Arehart, R.A., Exx~  1990 SPE   
 #>  6 Seismic Principal C~ SEG-1996~ confere~ Huang, Kou-Yuan, N~  1996 SEG   
-#>  7 First Break Picking~ SEG-1990~ confere~ Wagner, D.E., Amoc~  1990 SEG   
-#>  8 Artificial Intellig~ SEG-1992~ confere~ Guo, Yi, Center fo~  1992 SEG   
-#>  9 Neural Networks In ~ SEG-1991~ confere~ McCormack, Michael~  1991 SEG   
-#> 10 Reservoir Character~ SEG-1993~ confere~ An, P., University~  1993 SEG
+#>  7 Reservoir Character~ SEG-1993~ confere~ An, P., University~  1993 SEG   
+#>  8 Seismic Attribute C~ SEG-1993~ confere~ Johnston, David H.~  1993 SEG   
+#>  9 Neural Networks For~ SEG-1993~ confere~ Hansen, Kim Vejlby~  1993 SEG   
+#> 10 Neural Networks In ~ SEG-1991~ confere~ McCormack, Michael~  1991 SEG
 ```
 
 And these are the terms that repeat more freqently:
@@ -219,10 +219,10 @@ term_frequency(df)
 #>  4 seismic       3
 #>  5 pick          2
 #>  6 analysi       1
-#>  7 artifici      1
+#>  7 attribut      1
 #>  8 break         1
-#>  9 character     1
-#> 10 compon        1
+#>  9 calibr        1
+#> 10 character     1
 #> # ... with 17 more rows
 ```
 
@@ -275,26 +275,26 @@ my_url <- make_search_url(query = "well test",
                           how = "all")
 
 get_papers_count(my_url)      # get the paper count
-#> [1] 949
+#> [1] 956
 df <- read_multidoc(my_url)   # create a dataframe of papers
 print(dim(df))                # dimension of the dataframe
-#> [1] 949   6
+#> [1] 956   6
 
 (tf <- term_frequency(df))    # create a term frequency table
-#> # A tibble: 1,960 x 2
+#> # A tibble: 1,974 x 2
 #>    word       freq
 #>    <chr>     <dbl>
-#>  1 reservoir   319
-#>  2 well        267
-#>  3 field       221
-#>  4 fractur     160
-#>  5 model       159
-#>  6 gas         149
-#>  7 case        136
-#>  8 product     133
-#>  9 use         133
-#> 10 studi       122
-#> # ... with 1,950 more rows
+#>  1 reservoir   325
+#>  2 well        269
+#>  3 field       223
+#>  4 model       161
+#>  5 fractur     160
+#>  6 gas         152
+#>  7 case        139
+#>  8 use         136
+#>  9 product     135
+#> 10 studi       124
+#> # ... with 1,964 more rows
 
 # calculate the minimum frequency for, let's say, the first 20th term
 min_freq <- min(head(tf, 20)$freq)
@@ -304,7 +304,7 @@ min_freq <- min(head(tf, 20)$freq)
 
 ``` r
 print(min_freq)
-#> [1] 75
+#> [1] 76
 # plot most frequent terms
 plot_bars(df, min.freq = min_freq)
 ```
@@ -351,154 +351,13 @@ my_url <- make_search_url(query = "artificial intelligence",
 
 | name       | value |
 | :--------- | ----: |
-| Since 2018 |   413 |
-| Since 2017 |   626 |
-| Since 2016 |   804 |
-| Since 2015 |   950 |
-| Since 2014 |  1053 |
-| Since 2013 |  1191 |
-| Since 2012 |  1321 |
-| Since 2011 |  1430 |
-| Since 2010 |  1546 |
-| Since 2009 |  1613 |
-
-# Text Mining
-
-## Providing multiple keywords
-
-``` r
-library(petro.One)
-library(tidyverse)
-
-# provide two different set of keywords to combine as vectors
-major   <- c("artificial intelligence")
-
-paper_results <- run_papers_search(major, 
-                                   get_papers = TRUE,       # return with papers
-                                   verbose = FALSE,         # show progress
-                                   len_keywords = 4,        # naming the data file
-                                   allow_duplicates = FALSE) # by paper title and id
-#> NULL
-
-(papers <- paper_results$papers)
-#> # A tibble: 2,783 x 7
-#>    book_title       paper_id   dc_type  authors        year source keyword 
-#>    <fct>            <fct>      <fct>    <chr>         <int> <fct>  <chr>   
-#>  1 Artificial Inte~ SPE-19282~ confere~ Hojageldiyev~  2018 SPE    'artifi~
-#>  2 Production Moni~ SPE-14959~ confere~ Olivares Vel~  2012 SPE    'artifi~
-#>  3 Artificial Inte~ SPE-19155~ confere~ Gupta, Supri~  2018 SPE    'artifi~
-#>  4 Multilateral We~ SPE-18350~ confere~ Al-Mashhad, ~  2016 SPE    'artifi~
-#>  5 Multilateral We~ SPE-18368~ confere~ Buhulaigah, ~  2017 SPE    'artifi~
-#>  6 Profiling Downh~ SPE-17342~ confere~ AlAjmi, Moha~  2015 SPE    'artifi~
-#>  7 Artificial Inte~ SPE-16950~ confere~ Shahkarami, ~  2014 SPE    'artifi~
-#>  8 Forecasting Inc~ ASSE-07-1~ confere~ Al-Mutairi, ~  2007 ASSE   'artifi~
-#>  9 Formation Dip D~ SPWLA-198~ journal~ Kerzner, Mar~  1983 SPWLA  'artifi~
-#> 10 Estimating Dewp~ SPE-16091~ confere~ Alarfaj, Mal~  2012 SPE    'artifi~
-#> # ... with 2,773 more rows
-```
-
-``` r
-# plot on AI by year of publication
-papers %>% 
-    group_by(year) %>% 
-    na.omit() %>% 
-    summarize(n = n()) %>% 
-    
-    ggplot(., aes(x = year, y = n)) +
-    geom_point() +
-    geom_smooth(method = "loess") +
-    labs(title = "Artificial Intelligence papers by Year")
-```
-
-![](man/figures/README-unnamed-chunk-13-1.png)<!-- -->
-
-``` r
-tf <- term_frequency(papers)
-tf
-#> # A tibble: 3,171 x 2
-#>    word       freq
-#>    <chr>     <dbl>
-#>  1 use         568
-#>  2 reservoir   433
-#>  3 system      387
-#>  4 well        368
-#>  5 model       361
-#>  6 intellig    323
-#>  7 data        318
-#>  8 predict     305
-#>  9 artifici    287
-#> 10 optim       268
-#> # ... with 3,161 more rows
-```
-
-``` r
-# one word or gram
-term_frequency_n_grams(df = papers, gram.min = 1, gram.max = 1)
-#> # A tibble: 3,171 x 2
-#>    word       freq
-#>    <chr>     <dbl>
-#>  1 use         568
-#>  2 reservoir   433
-#>  3 system      387
-#>  4 well        368
-#>  5 model       361
-#>  6 intellig    323
-#>  7 data        318
-#>  8 predict     305
-#>  9 artifici    287
-#> 10 optim       268
-#> # ... with 3,161 more rows
-```
-
-``` r
-# calculate the minimum frequency for, let's say, the first 20th term
-(min_freq <- min(head(tf, 20)$freq))
-#> [1] 188
-```
-
-``` r
-# plot the most frequent terms
-plot_bars(papers, min.freq = min_freq)
-```
-
-![](man/figures/README-unnamed-chunk-17-1.png)<!-- -->
-
-``` r
-# by default the number of grams is two (2)
-tf2 <- term_frequency_n_grams(papers)
-tf2
-#> # A tibble: 13,613 x 2
-#>    word               freq
-#>    <chr>             <dbl>
-#>  1 neural network      206
-#>  2 artifici intellig   169
-#>  3 expert system       115
-#>  4 machin learn        108
-#>  5 artifici neural      91
-#>  6 use artifici         83
-#>  7 case studi           76
-#>  8 oil gas              59
-#>  9 well log             47
-#> 10 histori match        43
-#> # ... with 13,603 more rows
-```
-
-``` r
-plot_bars(papers, min.freq = 100)
-```
-
-![](man/figures/README-unnamed-chunk-19-1.png)<!-- -->
-
-``` r
-# plot for two-grams
-plot_bars(papers, gram.min = 2, gram.max = 2, min.freq = 35)
-```
-
-![](man/figures/README-unnamed-chunk-20-1.png)<!-- -->
-
-``` r
-# plot for three-grams
-plot_bars(papers, gram.min = 3, gram.max = 3, min.freq = 12)
-```
-
-![](man/figures/README-unnamed-chunk-21-1.png)<!-- -->
+| Since 2019 |     1 |
+| Since 2018 |   416 |
+| Since 2017 |   629 |
+| Since 2016 |   807 |
+| Since 2015 |   953 |
+| Since 2014 |  1056 |
+| Since 2013 |  1194 |
+| Since 2012 |  1324 |
+| Since 2011 |  1433 |
+| Since 2010 |  1549 |
