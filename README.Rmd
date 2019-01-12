@@ -35,7 +35,7 @@ You can install `petro.One` from Github with:
 devtools::install_github("f0nzie/petro.One")
 ```
 
-Or, the latest dvelopment version:
+Or, the latest development version with:
 
 ```{r, eval = FALSE}
 # install from the *develop* branch
@@ -59,7 +59,8 @@ install.packages(c("tm",
                    "urltools",
                    "RWeka",
                    "tidyverse",
-                   "data.table"
+                   "data.table",
+                   "SnowBallC"
                    ))
 
 # from BioConductor

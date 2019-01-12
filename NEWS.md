@@ -1,3 +1,14 @@
+## petro.One 0.2.0
+* new vignettes
+* new function run_papers_search() that saves results to rda
+* added new tests
+* added new html offline files
+* smaller README
+* remove calls to rNodal.utils
+* add examples in external functions
+* add package SnowBallC
+* add more functions to _pkgdown.yaml
+
 ## petro.One 0.1.3.9004
 * bump version to 0.1.3.9004
 * add plot of tri-gram
