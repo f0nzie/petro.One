@@ -50,22 +50,14 @@ reference:
     - use_example
 
 articles:
-  - title: "Papers by Document Type"
+  - title: "Gas Influx Overbalanced Shale Well"
     contents:
-    - document_types_of_papers
-  - title: "Convert thousands of papers to a dataframe"
+    - gas_influx_overbalanced
+  - title: "Artificial Intelligence papers over the years"
     contents:
-    - gather_thousand_papers_to_dataframe
-  - title: "Making a word cloud"
+    - artificial_intelligence_evolution
+  - title: "Gas Lift keywords variation"
     contents:
-    - make_wordcloud_01
-  - title: "Improving the word cloud with custom stopwords"
-    contents:
-    - make_wordcloud_02
-  - title: "Reducing paper results by joining keywords"
-    contents:
-    - joining_keywords
-  - title: "Searching for Permanent DOwnhole Gauge papers"
-    contents:
-      - permanent_downhole_gauge
+    - gas_lift_keywords_variation
+
 
