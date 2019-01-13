@@ -1,11 +1,6 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+install:
+- R -e 'devtools::install_deps(dep = T)'
 
-language: R
- cache: packages
- sudo: false
-
-addons:
-   apt:
-     packages:
-       - libgsl0-dev # for topicmodels
-       - libxml2-dev # for XML, a dependency of quanteda
+script:
+- R CMD build .
+- R CMD check *tar.gz
