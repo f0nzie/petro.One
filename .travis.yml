@@ -1,7 +1,7 @@
 # https://github.com/travis-ci/travis-ci/issues/5650
 language: r
 r:
- - 3.5.2
+ - 3.5.1
  - devel
 cache: packages
 sudo: false
@@ -13,14 +13,29 @@ git:
 
 r_packages:
  - devtools
- - ape
  - covr
- - memoise
- - phangorn
- - R.cache
- - Rdpack
  - roxygen2
  - testthat
+ - rmarkdown
+ - knitr
+ - rvest
+ - xml2
+ - magrittr
+ - tibble
+ - tm
+ - wordcloud
+ - urltools
+ - dplyr
+ - ggplot2
+ - RWeka
+ - cluster
+ - RColorBrewer
+ - data.table
+ - SnowballC
+
+bioc_packages:
+  - graph
+  - Rgraphviz
 
 before_script:
  - R -e "devtools::document()"
