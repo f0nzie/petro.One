@@ -1,46 +1,29 @@
-#----------------------------------------------------------------
-# Travis-CI configuration for Bioconductor packages
-#
-# REFERENCES:
-# * Travis CI: https://travis-ci.org/
-# * tutorial: https://docs.travis-ci.com/user/languages/r
-# * see also: https://blog.rstudio.org/2016/03/09/r-on-travis-ci/
-# * covr: https://github.com/jimhester/covr
-# * Coveralls: https://coveralls.io/
-#
-# Validate your .travis.yml file at http://lint.travis-ci.org/
-#----------------------------------------------------------------
+# https://github.com/travis-ci/travis-ci/issues/5650
 language: r
-cache: packages
-
-# R versions to be tested on
 r:
-  - bioc-release
-  - bioc-devel
+ - 3.5.2
+ - devel
+cache: packages
+sudo: false
+warnings_are_errors: true
+r_check_args: --as-cran
 
-## Turn this to true before submission to CRAN/Bioconductor
-warnings_are_errors: false
+git:
+  depth: 5
 
-r_build_args: "--no-build-vignettes"
-r_check_args: "--no-vignettes"
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
-
-## Use patched devtools
-r_github_packages:
-  - hadley/devtools
-
-## Code coverage
 r_packages:
-  - covr
+ - devtools
+ - ape
+ - covr
+ - memoise
+ - phangorn
+ - R.cache
+ - Rdpack
+ - roxygen2
+ - testthat
 
-## BiocCheck
-bioc_packages:
-  - BiocCheck
+before_script:
+ - R -e "devtools::document()"
 
 after_success:
-  - Rscript -e 'covr::coveralls()'
-  - R CMD BiocCheck .
+  - Rscript -e "covr::codecov()"
