@@ -1,3 +1,7 @@
+## petro.One 0.2.2
+* add names to VignetteIndexEntry
+* add Depends: R (>= 3.5.0)
+
 ## petro.One 0.2.1
 * two notes from CRAN after submission
 * 1 note from Debian, two notes from Windows
