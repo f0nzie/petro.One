@@ -10,6 +10,7 @@ Description: Application that retrieves papers metadata from the OnePetro websit
     are some statistics and data mining provided such as word cloud plots, keywords 
     frequency, conversion to corpus document, and removal of common usage words.
     OnePetro link: <https://www.onepetro.org/>.
+Depends: R (>= 3.4.0)    
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
