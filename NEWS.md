@@ -1,3 +1,6 @@
+## petro.One 0.2.3
+* release to CRAN
+
 ## petro.One 0.2.2.9003
 * remove Depends: R (>= 3.5.1) because crashes Travis
 
