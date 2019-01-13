@@ -1,4 +1,9 @@
 language: R
+
+## Use patched devtools
+r_github_packages:
+  - hadley/devtools@efa894ffa
+
 install:
 - R -e 'devtools::install_deps(dep = T)'
 
