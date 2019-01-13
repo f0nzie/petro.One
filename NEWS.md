@@ -1,3 +1,7 @@
+## petro.One 0.2.1
+* two notes from CRAN after submission
+* 1 note from Debian, two notes from Windows
+
 ## petro.One 0.2.0
 * new vignettes
 * new function run_papers_search() that saves results to rda
