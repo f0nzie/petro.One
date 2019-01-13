@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">petro.One</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -239,12 +239,12 @@ They key is build a search URL that is recognizable by OnePetro. To do that I wr
 <p>The option <code>how = "any"</code> means to search for papers that contain the word <code>neural</code> or the word <code>network</code>. Let’s take a look at the difference in returning results with <code>any</code> and <code>how = all</code> for the same keywords <code>neural network</code>. Here we make of use of two functions in <em>petro.One</em>: <code><a href="reference/make_search_url.html">make_search_url()</a></code> and <code><a href="reference/get_papers_count.html">get_papers_count()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(petro.One)</a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; -- Attaching packages -------------------------------------- tidyverse 1.2.1 --</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; -- Attaching packages ----------------- tidyverse 1.2.1 --</span></a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; v ggplot2 3.1.0     v purrr   0.2.5</span></a>
 <a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; v tibble  2.0.0     v dplyr   0.7.8</span></a>
 <a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; v tidyr   0.8.2     v stringr 1.3.1</span></a>
 <a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt; v readr   1.3.1     v forcats 0.3.0</span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt; -- Conflicts ----------------------------------------- tidyverse_conflicts() --</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt; -- Conflicts -------------------- tidyverse_conflicts() --</span></a>
 <a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt; x dplyr::filter() masks stats::filter()</span></a>
 <a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt; x dplyr::lag()    masks stats::lag()</span></a>
 <a class="sourceLine" id="cb7-11" title="11"></a>
@@ -282,29 +282,29 @@ They key is build a search URL that is recognizable by OnePetro. To do that I wr
 <a class="sourceLine" id="cb8-13" title="13"><span class="co">#&gt;    &lt;fct&gt;                &lt;fct&gt;     &lt;fct&gt;    &lt;chr&gt;               &lt;int&gt; &lt;fct&gt; </span></a>
 <a class="sourceLine" id="cb8-14" title="14"><span class="co">#&gt;  1 Deconvolution Using~ SEG-1996~ confere~ Essenreiter, Rober~  1996 SEG   </span></a>
 <a class="sourceLine" id="cb8-15" title="15"><span class="co">#&gt;  2 Neural Network Stac~ SEG-1992~ confere~ Schmidt, Jumndyr, ~  1992 SEG   </span></a>
-<a class="sourceLine" id="cb8-16" title="16"><span class="co">#&gt;  3 Neural Networks And~ SEG-1995~ confere~ Leggett, Miles, Br~  1995 SEG   </span></a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="co">#&gt;  3 Seismic Principal C~ SEG-1996~ confere~ Huang, Kou-Yuan, N~  1996 SEG   </span></a>
 <a class="sourceLine" id="cb8-17" title="17"><span class="co">#&gt;  4 First Break Picking~ SEG-1990~ confere~ Wagner, D.E., Amoc~  1990 SEG   </span></a>
-<a class="sourceLine" id="cb8-18" title="18"><span class="co">#&gt;  5 Drill-Bit Diagnosis~ SPE-1955~ journal~ Arehart, R.A., Exx~  1990 SPE   </span></a>
-<a class="sourceLine" id="cb8-19" title="19"><span class="co">#&gt;  6 Seismic Principal C~ SEG-1996~ confere~ Huang, Kou-Yuan, N~  1996 SEG   </span></a>
-<a class="sourceLine" id="cb8-20" title="20"><span class="co">#&gt;  7 Reservoir Character~ SEG-1993~ confere~ An, P., University~  1993 SEG   </span></a>
-<a class="sourceLine" id="cb8-21" title="21"><span class="co">#&gt;  8 Seismic Attribute C~ SEG-1993~ confere~ Johnston, David H.~  1993 SEG   </span></a>
-<a class="sourceLine" id="cb8-22" title="22"><span class="co">#&gt;  9 Neural Networks For~ SEG-1993~ confere~ Hansen, Kim Vejlby~  1993 SEG   </span></a>
-<a class="sourceLine" id="cb8-23" title="23"><span class="co">#&gt; 10 Neural Networks In ~ SEG-1991~ confere~ McCormack, Michael~  1991 SEG</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-18" title="18"><span class="co">#&gt;  5 Neural Networks And~ SEG-1995~ confere~ Leggett, Miles, Br~  1995 SEG   </span></a>
+<a class="sourceLine" id="cb8-19" title="19"><span class="co">#&gt;  6 Drill-Bit Diagnosis~ SPE-1955~ journal~ Arehart, R.A., Exx~  1990 SPE   </span></a>
+<a class="sourceLine" id="cb8-20" title="20"><span class="co">#&gt;  7 Conductive fracture~ ARMA-95-~ confere~ Thomas, Andrew L.,~  1995 ARMA  </span></a>
+<a class="sourceLine" id="cb8-21" title="21"><span class="co">#&gt;  8 Reservoir Character~ SEG-1993~ confere~ An, P., University~  1993 SEG   </span></a>
+<a class="sourceLine" id="cb8-22" title="22"><span class="co">#&gt;  9 Seismic Attribute C~ SEG-1993~ confere~ Johnston, David H.~  1993 SEG   </span></a>
+<a class="sourceLine" id="cb8-23" title="23"><span class="co">#&gt; 10 Neural Networks For~ SEG-1993~ confere~ Hansen, Kim Vejlby~  1993 SEG</span></a></code></pre></div>
 <p>And these are the terms that repeat more freqently:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="reference/term_frequency.html">term_frequency</a></span>(df)</a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="co">#&gt; # A tibble: 27 x 2</span></a>
-<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt;    word       freq</span></a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt;  1 network      10</span></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt;  2 neural       10</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt;  3 use           5</span></a>
-<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt;  4 seismic       3</span></a>
-<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt;  5 pick          2</span></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt;  6 analysi       1</span></a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt;  7 attribut      1</span></a>
-<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt;  8 break         1</span></a>
-<a class="sourceLine" id="cb9-13" title="13"><span class="co">#&gt;  9 calibr        1</span></a>
-<a class="sourceLine" id="cb9-14" title="14"><span class="co">#&gt; 10 character     1</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt;    word      freq</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="co">#&gt;    &lt;chr&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="co">#&gt;  1 network     10</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="co">#&gt;  2 neural      10</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="co">#&gt;  3 use          6</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="co">#&gt;  4 seismic      3</span></a>
+<a class="sourceLine" id="cb9-9" title="9"><span class="co">#&gt;  5 identif      2</span></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="co">#&gt;  6 pick         2</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="co">#&gt;  7 analysi      1</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="co">#&gt;  8 attribut     1</span></a>
+<a class="sourceLine" id="cb9-13" title="13"><span class="co">#&gt;  9 break        1</span></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="co">#&gt; 10 calibr       1</span></a>
 <a class="sourceLine" id="cb9-15" title="15"><span class="co">#&gt; # ... with 17 more rows</span></a></code></pre></div>
 </div>
 <div id="get-papers-by-document-type-dc_type" class="section level2">
