@@ -1,7 +1,7 @@
 Package: petro.One
 Type: Package
 Title: Statistics and Text Mining for Oil and Gas Papers from OnePetro Metadata
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: person("Alfonso R.", "Reyes", role = c("aut", "cre"), email = "alfonso.reyes@oilgainsanalytics.com")
 Description: Application that retrieves papers metadata from the OnePetro website.
     Thousands of papers on oil and gas live in OnePetro. By retrieving metadata 
@@ -11,7 +11,6 @@ Description: Application that retrieves papers metadata from the OnePetro websit
     frequency, conversion to corpus document, and removal of common usage words.
     OnePetro link: <https://www.onepetro.org/>.
 License: GPL-2
-Depends: R (>= 3.2.0)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1

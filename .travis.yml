@@ -1,11 +1,45 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+# https://github.com/travis-ci/travis-ci/issues/5650
+# this travis.yml is passing in Travis
+language: r
+r:
+ - 3.5.2
+ - devel
+cache: packages
+sudo: false
+warnings_are_errors: true
+r_check_args: --as-cran
 
-language: R
- cache: packages
- sudo: false
+git:
+  depth: 5
 
-addons:
-   apt:
-     packages:
-       - libgsl0-dev # for topicmodels
-       - libxml2-dev # for XML, a dependency of quanteda
+r_packages:
+ - devtools
+ - covr
+ - roxygen2
+ - testthat
+ - rmarkdown
+ - knitr
+ - rvest
+ - xml2
+ - magrittr
+ - tibble
+ - tm
+ - wordcloud
+ - urltools
+ - dplyr
+ - ggplot2
+ - RWeka
+ - cluster
+ - RColorBrewer
+ - data.table
+ - SnowballC
+
+bioc_packages:
+  - graph
+  - Rgraphviz
+
+before_script:
+ - R -e "devtools::document()"
+
+after_success:
+  - Rscript -e "covr::codecov()"

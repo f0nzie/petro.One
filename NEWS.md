@@ -1,3 +1,9 @@
+## petro.One 0.2.1
+* two notes from CRAN after submission
+* 1 note from Debian, two notes from Windows
+* change the travis.yml configuration file <- problem with devtools
+* run in Mac osX, Windows and Mint 19
+
 ## petro.One 0.2.0
 * new vignettes
 * new function run_papers_search() that saves results to rda
