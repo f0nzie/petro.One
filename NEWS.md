@@ -1,3 +1,6 @@
+## petro.One 0.2.2.9003
+* remove Depends: R (>= 3.5.1) because crashes Travis
+
 ## petro.One 0.2.2.9002
 * add Depends: R (>= 3.5.1)
 
