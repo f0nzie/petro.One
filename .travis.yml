@@ -1,4 +1,4 @@
-language: r
+language: R
 install:
 - R -e 'devtools::install_deps(dep = T)'
 
