@@ -1,3 +1,6 @@
+## petro.One 0.2.2.9001
+* remove devel from travis.yml
+
 ## petro.One 0.2.2.9000
 * remove Depends. Causing errors in Travis
 * adopting different numbering system for version
