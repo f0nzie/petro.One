@@ -1,3 +1,16 @@
+## petro.One 0.2.3
+* release to CRAN
+
+## petro.One 0.2.2.9003
+* remove Depends: R (>= 3.5.1) because crashes Travis
+
+## petro.One 0.2.2.9002
+* add Depends: R (>= 3.5.1)
+
+## petro.One 0.2.2.9001
+* remove devel from travis.yml
+* add Depends: R (>= 3.4.0)
+
 ## petro.One 0.2.2.9000
 * remove Depends. Causing errors in Travis
 * adopting different numbering system for version
